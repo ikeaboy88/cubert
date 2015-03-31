@@ -9,9 +9,10 @@ import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.comm.NXTConnection;
 import lejos.nxt.comm.USB;
+import lejos.nxt.comm.USBConnection;
 
 public class Main {
-	NXTConnection connection = null;
+	USBConnection connection = null;
 	DataOutputStream dos = null;
 	DataInputStream dis = null;
 	private int sendInt = 5678;
@@ -73,9 +74,10 @@ public class Main {
 		}
 
 		/*
-		 * recieve keyboardinput just in time String recievedString = null;
-		 * recievedString = dis.readChar(); LCD.clear();
-		 * LCD.drawChar(recievedString, 1, 1); LCD.refresh();
+		  recieve keyboardinput just in time 
+		  String recievedString = null;
+		  recievedString = dis.readChar(); LCD.clear();
+		  LCD.drawChar(recievedString, 1, 1); LCD.refresh();
 		 */
 	}
 
