@@ -15,7 +15,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		// set up variabel which temporarily stores input from pc
-		int recievedInt = 0;
+		int recievedInt = 0, sendInt = 5678;
 		char recievedString = 0;
 		
 		LCD.drawString("Right BT->USB Verbindung", 0, 0);
@@ -30,22 +30,25 @@ public class Main {
 		LCD.drawString("connected", 0, 0);
 		
 		// open Streams for sending/recieving data
-		DataInputStream dis = connection.openDataInputStream();
 		DataOutputStream dos = connection.openDataOutputStream();
+		DataInputStream dis = connection.openDataInputStream();
 		
 		Button.waitForAnyPress();
 		LCD.clear();
-		LCD.drawString("trying to recieve data...", 0, 0);
 
 		// stop programm by pressing left button
-		while (!Button.LEFT.isDown()) 
-		{
+		//while (!Button.LEFT.isDown()) 
+	//	{
 
 			// send data to pc
 			try 
 			{
-				dos.write(56789);
+				LCD.drawInt(sendInt, 1, 2);
+				LCD.drawString("sending data to pc...", 1,3);
+				dos.writeInt(sendInt);
 				dos.flush();
+				LCD.drawString("press BT", 1, 4);
+				Button.waitForAnyPress();
 			} catch (IOException e1) 
 			{
 				e1.printStackTrace();
@@ -57,14 +60,14 @@ public class Main {
 				{
 					LCD.clear();
 					recievedInt = dis.readInt();
-					LCD.drawInt(recievedInt, 0, 0);
+					LCD.drawString("Recieved Data:", 0,0);
+					LCD.drawInt(recievedInt, 0, 1);
 
 					// recieve keyboard input ;-)
 					/*
 					  recievedString = dis.readChar(); LCD.clear();
 					  LCD.drawChar(recievedString, 1, 1); LCD.refresh();
 					 */
-
 				} catch (IOException e) 
 				{
 					// close connection when error
@@ -73,6 +76,15 @@ public class Main {
 					System.exit(0);
 				}
 			}
-		}
+//		}
+			Button.waitForAnyPress();
+			try {
+				dos.close();
+				dis.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 	}
 }
