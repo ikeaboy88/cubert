@@ -1,4 +1,4 @@
-package pc;
+package com.pc;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
