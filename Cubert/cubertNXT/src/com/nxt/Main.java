@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
+import lejos.nxt.Motor;
 import lejos.nxt.comm.NXTConnection;
 import lejos.nxt.comm.USB;
 import lejos.nxt.comm.USBConnection;
@@ -18,11 +19,28 @@ public class Main {
 	private int sendInt = 5678;
 
 	public static void main(String[] args) {
-		Main main = new Main();
-		main.connectToPC();
-		main.sendDatatoPC(main.sendInt);
-		main.recieveDatafromPC();
-		main.closeStreams();
+		// Create object to execute movements on Cubert
+		Movement move = new Movement();
+		
+		//***********************************
+		// "Runtime loop"
+		while (true){
+			// After pressing a button... 
+			Button.waitForAnyPress();
+			// Exit loop when escape button was pressed
+			if (Button.ESCAPE.isDown()){
+				break;
+			}
+			// ...execute code below
+			move.rotateTable(90);
+		}
+		//***********************************
+		
+//		Main main = new Main();
+//		main.connectToPC();
+//		main.sendDatatoPC(main.sendInt);
+//		main.recieveDatafromPC();
+//		main.closeStreams();
 	}
 
 	public void connectToPC() {
