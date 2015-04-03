@@ -13,7 +13,7 @@ public class Connection {
 	USBConnection connection = null;
 	DataOutputStream dos = null;
 	DataInputStream dis = null;
-	private int sendInt = 5678;
+	private int send_Int = 5678;
 
 	public void connectToPC() {
 		LCD.drawString("Right BT->USB Verbindung", 0, 0);
@@ -81,10 +81,10 @@ public class Connection {
 	}
 
 	public int getSendInt() {
-		return sendInt;
+		return send_Int;
 	}
 
 	public void setSendInt(int sendInt) {
-		this.sendInt = sendInt;
+		this.send_Int = sendInt;
 	}
 }
