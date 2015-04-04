@@ -1,6 +1,8 @@
 package com.nxt;
 
 import lejos.nxt.Motor;
+import lejos.nxt.MotorPort;
+import lejos.util.Delay;
 
 /**
  * 
@@ -27,5 +29,26 @@ public class Movement {
 
 		return angle_translated;
 	}
+	
+	public void tiltCube() {
+		MotorPort.C.controlMotor(80, 2);
+		Delay.msDelay(295);
+		MotorPort.C.controlMotor(80, 3);
+		Delay.msDelay(250);
+		MotorPort.C.controlMotor(80, 1);
+		Delay.msDelay(295);
+		MotorPort.C.controlMotor(80, 3);
+	}
+	
+	public void releaseCube() {
+		MotorPort.C.controlMotor(80, 1);
+		Delay.msDelay(310);
+		MotorPort.C.controlMotor(80, 3);
+	}
 
+	public void holdCube() {
+		MotorPort.C.controlMotor(80, 2);
+		Delay.msDelay(310);
+		MotorPort.C.controlMotor(80, 3);
+	}
 }
