@@ -2,6 +2,8 @@ package com.nxt;
 
 import lejos.nxt.Motor;
 import lejos.nxt.MotorPort;
+import lejos.nxt.NXTMotor;
+import lejos.nxt.TachoMotorPort;
 import lejos.util.Delay;
 
 /**
@@ -11,6 +13,14 @@ import lejos.util.Delay;
  *
  */
 public class Movement {
+	
+	NXTMotor motor_a;
+	NXTMotor motor_c; 
+
+	public Movement(){
+		motor_a = new NXTMotor(MotorPort.A);
+		motor_c = new NXTMotor(MotorPort.C);
+	}
 
 	/**
 	 * Rotate the table for a given angle in degrees
@@ -31,24 +41,41 @@ public class Movement {
 	}
 	
 	public void tiltCube() {
-		MotorPort.C.controlMotor(80, 2);
-		Delay.msDelay(295);
-		MotorPort.C.controlMotor(80, 3);
-		Delay.msDelay(250);
-		MotorPort.C.controlMotor(80, 1);
-		Delay.msDelay(295);
-		MotorPort.C.controlMotor(80, 3);
+		motor_c.setPower(60);
+
+		for (int i = 1; i <= 2; i++){
+			motor_c.resetTachoCount();
+
+			while (Math.abs(motor_c.getTachoCount()) < 90){
+				if (i == 1){
+					motor_c.backward();
+				}
+				if (i == 2){
+					motor_c.forward();
+				}
+			}
+			motor_c.stop();
+			Delay.msDelay(200);
+		}
 	}
 	
 	public void releaseCube() {
-		MotorPort.C.controlMotor(80, 1);
-		Delay.msDelay(310);
-		MotorPort.C.controlMotor(80, 3);
+		motor_c.resetTachoCount();
+		motor_c.setPower(60);
+		
+		while (Math.abs(motor_c.getTachoCount()) < 110){
+			motor_c.forward();
+		}
+		motor_c.stop();
 	}
 
 	public void holdCube() {
-		MotorPort.C.controlMotor(80, 2);
-		Delay.msDelay(310);
-		MotorPort.C.controlMotor(80, 3);
+		motor_c.resetTachoCount();
+		motor_c.setPower(60);
+		
+		while (Math.abs(motor_c.getTachoCount()) < 110){
+			motor_c.backward();
+		}
+		motor_c.stop();
 	}
 }
