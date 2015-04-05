@@ -17,28 +17,42 @@ public class Main {
 	public static void main(String[] args) {
 		// Create object to execute movements on Cubert
 		Movement move = new Movement();
-		
-		//***********************************
+
+		// ***********************************
 		// "Runtime loop"
-		while (true){
-			// After pressing a button... 
+		while (true) {
+			// After pressing a button...
 			Button.waitForAnyPress();
+
 			// Exit loop when escape button was pressed
-			if (Button.ESCAPE.isDown()){
+			if (Button.ESCAPE.isDown()) {
 				break;
 			}
 			// ...execute code below
-			move.rotateTable(90);
+			LCD.drawString("MIDscannen?", 2, 2);
+			Button.waitForAnyPress();
+			move.scanMiddleCubi();
+			LCD.clear();
+
+			LCD.drawString("SIDEscannen?", 2, 2);
+			Button.waitForAnyPress();
+			move.scanSideCubi();
+			LCD.clear();
+			
+			LCD.drawString("Test?", 2, 2);
+			Button.waitForAnyPress();
+				move.removeSensorFromCube();
+			//LCD.clear();
+			// move.rotateTable(90);
 		}
-		//***********************************
-		
+		// ***********************************
+
 		/* Connection between NXT and PC */
-		//Connection connect_NXT = new Connection();
-		//connect_NXT.connectToPC();
-		//connect_NXT.sendDatatoPC(connect_NXT.getSendInt());
-		//connect_NXT.recieveDatafromPC();
-		//connect_NXT.closeStreams();
+		// Connection connect_NXT = new Connection();
+		// connect_NXT.connectToPC();
+		// connect_NXT.sendDatatoPC(connect_NXT.getSendInt());
+		// connect_NXT.recieveDatafromPC();
+		// connect_NXT.closeStreams();
 	}
 
-	
 }
