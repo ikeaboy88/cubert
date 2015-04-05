@@ -14,10 +14,7 @@ import lejos.util.Delay;
  *
  */
 public class Movement {
-//	Automaton automation = new Automaton();
-	int tacho_count_current = 0;
-	
-	NXTMotor motor_b = new NXTMotor(MotorPort.B);
+	NXTMotor mc = new NXTMotor(MotorPort.B);
 
 	/**
 	 * Rotate the table for a given angle in degrees
@@ -40,38 +37,35 @@ public class Movement {
 
 	//represents the colorsensors initial (start/stop) position
 	public void moveToInitial() {
-		motor_b.resetTachoCount();
-		motor_b.setPower(50);
-		while(Math.abs(motor_b.getTachoCount())<90)
+		mc.resetTachoCount();
+		mc.setPower(50);
+		while(Math.abs(mc.getTachoCount())<90)
 		{
-			motor_b.forward();
+			mc.forward();
 		}
-		motor_b.stop();
-//		automation.setState(State.REMOVED);
+		mc.stop();
 		
 	}
 
 	//moves 180° forward = above middle cubie
 	public void moveAboveMiddleCubie() {
-		motor_b.resetTachoCount();
-		motor_b.setPower(50);
-		while(Math.abs(motor_b.getTachoCount())<180)
+		mc.resetTachoCount();
+		mc.setPower(50);
+		while(Math.abs(mc.getTachoCount())<180)
 		{
-			motor_b.forward();
+			mc.forward();
 		}
-		motor_b.stop();
-//		automation.setState(State.MIDDLE);
+		mc.stop();
 	}
 	
 	//moves 180° forward = above side cubie
 	public void moveAboveSideCubie() {
-		motor_b.resetTachoCount();
-		motor_b.setPower(50);
-		while(Math.abs(motor_b.getTachoCount())<270)
+		mc.resetTachoCount();
+		mc.setPower(50);
+		while(Math.abs(mc.getTachoCount())<270)
 		{
-			motor_b.backward();
+			mc.backward();
 		}
-		motor_b.stop();
-//		automation.setState(State.SIDE);
+		mc.stop();
 	}
 }
