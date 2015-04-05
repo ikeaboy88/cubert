@@ -1,5 +1,6 @@
 package com.nxt;
 
+import lejos.nxt.LCD;
 import lejos.nxt.MotorPort;
 import lejos.nxt.NXTMotor;
 import lejos.nxt.NXTRegulatedMotor;
@@ -9,6 +10,8 @@ import lejos.util.Delay;
  * Perform movement actions like turn, tilt, hold, ... the cube
  */
 public class Movement {
+	//dummy state
+	int state;
 	
 	// Regulated motor for the table
 	private NXTRegulatedMotor ma;
@@ -23,6 +26,7 @@ public class Movement {
 		ma = new NXTRegulatedMotor(MotorPort.A);
 		mb = new NXTMotor(MotorPort.B);
 		mc = new NXTMotor(MotorPort.C);
+		initialPosition();
 	}
 
 	/**
@@ -88,16 +92,40 @@ public class Movement {
 		}
 		mc.stop();
 	}
+	
+	//move cube to initial position with most distance to cube 
+	public void initialPosition(){
+		mb.resetTachoCount();
+		mb.setPower(70);
+		
+		
+		while (Math.abs(mb.getTachoCount()) <45 ) {
+			mb.forward();
+		}
+		mb.stop();
+		state = 0;
+	}
 
-	//represents the colorsensors initial (start/stop) position
 	public void removeSensor() {
 		mb.resetTachoCount();
 		mb.setPower(70);
 
-		while (Math.abs(mb.getTachoCount()) < ) {
-			mb.forward();
+		//when sensor is located in center
+		if(state == 2){
+			while (Math.abs(mb.getTachoCount()) <180 ) {
+				mb.backward();
+			}
 		}
+		//when sensor is located on edge 
+		else if(state == 3){
+			while (Math.abs(mb.getTachoCount()) <120 ) {
+				mb.backward();
+			}
+		}else LCD.drawString("kein remove state", 0, 0);
+		
+
 		mb.stop();
+		state=1;
 //		statemachine.setState(State.ColorsensorREMOVED);
 	}
 
@@ -105,11 +133,30 @@ public class Movement {
 	public void moveSensorToCenter() {
 		mb.resetTachoCount();
 		mb.setPower(70);
-		//280
-		while (Math.abs(mb.getTachoCount()) < 60)	{
-			mb.forward();
+
+		//when sensor is removed 
+		if(state == 0){
+			
+			while (Math.abs(mb.getTachoCount()) < 180)	{
+				mb.forward();
+			}
+			
+		}else if( state == 1){
+			
+			while (Math.abs(mb.getTachoCount()) < 120)	{
+				mb.forward();
+			}
 		}
+		//when sensor is on edge 
+			else if(state == 3 ){
+			
+			while (Math.abs(mb.getTachoCount()) < 60)	{
+				mb.forward();
+			}
+		}else LCD.drawString("kein center state", 0, 1);
+		
 		mb.stop();
+		state=2;
 	}
 	
 	//moves 180 degrees forward = above side cubie
@@ -117,9 +164,19 @@ public class Movement {
 		mb.resetTachoCount();
 		mb.setPower(70);
 
-		while (Math.abs(mb.getTachoCount()) < 60) {
-			mb.backward();
-		}
+		if(state == 0){
+			
+			while (Math.abs(mb.getTachoCount()) < 120) {
+				mb.forward();
+			}
+		}else if(state == 2){
+			
+			while (Math.abs(mb.getTachoCount()) < 60) {
+				mb.backward();
+			}
+		}else LCD.drawString("kein edge state", 0, 2);
+		
 		mb.stop();
+		state=3;
 	}
 }
