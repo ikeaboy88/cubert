@@ -16,6 +16,8 @@ public class Movement {
 	private NXTMotor mb;
 	// Unregulated motor for the arm
 	private NXTMotor mc; 
+	
+//	private Statemachine statemachine = new Statemachine();
 
 	public Movement() {
 		ma = new NXTRegulatedMotor(MotorPort.A);
@@ -90,20 +92,21 @@ public class Movement {
 	//represents the colorsensors initial (start/stop) position
 	public void removeSensor() {
 		mb.resetTachoCount();
-		mb.setPower(50);
+		mb.setPower(70);
 
-		while (Math.abs(mb.getTachoCount()) < 90) {
+		while (Math.abs(mb.getTachoCount()) < ) {
 			mb.forward();
 		}
 		mb.stop();
+//		statemachine.setState(State.ColorsensorREMOVED);
 	}
 
 	//moves 180 degrees forward = above middle cubie
 	public void moveSensorToCenter() {
 		mb.resetTachoCount();
-		mb.setPower(50);
-
-		while (Math.abs(mb.getTachoCount()) < 180)	{
+		mb.setPower(70);
+		//280
+		while (Math.abs(mb.getTachoCount()) < 60)	{
 			mb.forward();
 		}
 		mb.stop();
@@ -112,9 +115,9 @@ public class Movement {
 	//moves 180 degrees forward = above side cubie
 	public void moveSensorToEdge() {
 		mb.resetTachoCount();
-		mb.setPower(50);
+		mb.setPower(70);
 
-		while (Math.abs(mb.getTachoCount()) < 270) {
+		while (Math.abs(mb.getTachoCount()) < 60) {
 			mb.backward();
 		}
 		mb.stop();
