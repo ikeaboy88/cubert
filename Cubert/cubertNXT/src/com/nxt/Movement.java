@@ -10,7 +10,7 @@ import lejos.util.Delay;
  */
 public class Movement {
 	
-	// Unregulated motor for the table
+	// Regulated motor for the table
 	private NXTRegulatedMotor ma;
 	// Unregulated motor for the arm
 	private NXTMotor mc; 
