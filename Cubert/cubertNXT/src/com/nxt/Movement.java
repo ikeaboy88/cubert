@@ -1,7 +1,5 @@
 package com.nxt;
 
-import lejos.nxt.Button;
-import lejos.nxt.LCD;
 import lejos.nxt.MotorPort;
 import lejos.nxt.NXTMotor;
 import lejos.nxt.NXTRegulatedMotor;
@@ -19,7 +17,7 @@ public class Movement {
 	// Unregulated motor for the arm
 	private NXTMotor mc; 
 
-	public Movement(){
+	public Movement() {
 		ma = new NXTRegulatedMotor(MotorPort.A);
 		mb = new NXTMotor(MotorPort.B);
 		mc = new NXTMotor(MotorPort.C);
@@ -47,17 +45,17 @@ public class Movement {
 		mc.setPower(100);
 
 		// tilt consists of 2 moves: pull and push
-		for (int i = 1; i <= 2; i++){
+		for (int i = 1; i <= 2; i++) {
 			mc.resetTachoCount();
 
 			// move 90 degrees
-			while (Math.abs(mc.getTachoCount()) < 95){
+			while (Math.abs(mc.getTachoCount()) < 95) {
 				// first move: pull cube
-				if (i == 1){
+				if (i == 1) {
 					mc.backward();
 				}
 				// second move: push cube
-				if (i == 2){
+				if (i == 2) {
 					// push cube
 					mc.forward();
 				}
@@ -72,7 +70,7 @@ public class Movement {
 		mc.setPower(60);
 		
 		// move 110 degrees
-		while (Math.abs(mc.getTachoCount()) < 110){
+		while (Math.abs(mc.getTachoCount()) < 110) {
 			mc.forward();
 		}
 		mc.stop();
@@ -83,14 +81,14 @@ public class Movement {
 		mc.setPower(60);
 		
 		// move 110 degrees
-		while (Math.abs(mc.getTachoCount()) < 110){
+		while (Math.abs(mc.getTachoCount()) < 110) {
 			mc.backward();
 		}
 		mc.stop();
 	}
 
 	//represents the colorsensors initial (start/stop) position
-	public void moveToInitial() {
+	public void removeSensor() {
 		mb.resetTachoCount();
 		mb.setPower(50);
 
@@ -100,8 +98,8 @@ public class Movement {
 		mb.stop();
 	}
 
-	//moves 180° forward = above middle cubie
-	public void moveAboveMiddleCubie() {
+	//moves 180 degrees forward = above middle cubie
+	public void moveSensorToCenter() {
 		mb.resetTachoCount();
 		mb.setPower(50);
 
@@ -111,8 +109,8 @@ public class Movement {
 		mb.stop();
 	}
 	
-	//moves 180° forward = above side cubie
-	public void moveAboveSideCubie() {
+	//moves 180 degrees forward = above side cubie
+	public void moveSensorToEdge() {
 		mb.resetTachoCount();
 		mb.setPower(50);
 
