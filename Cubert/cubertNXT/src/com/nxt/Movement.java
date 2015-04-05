@@ -1,25 +1,23 @@
 package com.nxt;
 
-import lejos.nxt.Motor;
 import lejos.nxt.MotorPort;
 import lejos.nxt.NXTMotor;
-import lejos.nxt.TachoMotorPort;
+import lejos.nxt.NXTRegulatedMotor;
 import lejos.util.Delay;
 
 /**
- * 
- * @author Maximilian Braun Perform movement actions like turn, tilt, hold, ...
- *         the cube
- *
+ * Perform movement actions like turn, tilt, hold, ... the cube
  */
 public class Movement {
 	
-	NXTMotor motor_a;
-	NXTMotor motor_c; 
+	// Unregulated motor for the table
+	private NXTRegulatedMotor ma;
+	// Unregulated motor for the arm
+	private NXTMotor mc; 
 
 	public Movement(){
-		motor_a = new NXTMotor(MotorPort.A);
-		motor_c = new NXTMotor(MotorPort.C);
+		ma = new NXTRegulatedMotor(MotorPort.A);
+		mc = new NXTMotor(MotorPort.C);
 	}
 
 	/**
@@ -33,49 +31,55 @@ public class Movement {
 		// Translate gear transmission (Small gear: 24 cogs, Large gear: 56 cogs)
 		angle_translated = (int) (angle * 56 / 24);
 
-		Motor.A.setSpeed(360);
-		Motor.A.rotate(angle_translated);
-//		System.out.println(angle + ", -  " + angle_translated);
+		ma.setSpeed(360);
+		ma.rotate(angle_translated);
 
 		return angle_translated;
 	}
 	
 	public void tiltCube() {
-		motor_c.setPower(60);
+		mc.setPower(100);
 
+		// tilt consists of 2 moves: pull and push
 		for (int i = 1; i <= 2; i++){
-			motor_c.resetTachoCount();
+			mc.resetTachoCount();
 
-			while (Math.abs(motor_c.getTachoCount()) < 90){
+			// move 90 degrees
+			while (Math.abs(mc.getTachoCount()) < 95){
+				// first move: pull cube
 				if (i == 1){
-					motor_c.backward();
+					mc.backward();
 				}
+				// second move: push cube
 				if (i == 2){
-					motor_c.forward();
+					// push cube
+					mc.forward();
 				}
 			}
-			motor_c.stop();
+			mc.stop();
 			Delay.msDelay(200);
 		}
 	}
 	
 	public void releaseCube() {
-		motor_c.resetTachoCount();
-		motor_c.setPower(60);
+		mc.resetTachoCount();
+		mc.setPower(60);
 		
-		while (Math.abs(motor_c.getTachoCount()) < 110){
-			motor_c.forward();
+		// move 110 degrees
+		while (Math.abs(mc.getTachoCount()) < 110){
+			mc.forward();
 		}
-		motor_c.stop();
+		mc.stop();
 	}
 
 	public void holdCube() {
-		motor_c.resetTachoCount();
-		motor_c.setPower(60);
+		mc.resetTachoCount();
+		mc.setPower(60);
 		
-		while (Math.abs(motor_c.getTachoCount()) < 110){
-			motor_c.backward();
+		// move 110 degrees
+		while (Math.abs(mc.getTachoCount()) < 110){
+			mc.backward();
 		}
-		motor_c.stop();
+		mc.stop();
 	}
 }
