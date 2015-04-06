@@ -2,6 +2,8 @@ package com.nxt;
 
 import com.nxt.NXTRegulatedMotor_State.Table;
 import com.nxt.NXTUnregulatedMotor_State.Arm;
+import com.nxt.NXTRegulatedMotor_State.Sensor;
+
 import lejos.nxt.MotorPort;
 import lejos.util.Delay;
 
@@ -13,13 +15,13 @@ public class Movement {
 	// Regulated motor for the table
 	private NXTRegulatedMotor_State ma;
 	// Unregulated motor for the sensor
-	private NXTUnregulatedMotor_State mb;
+	private NXTRegulatedMotor_State mb;
 	// Unregulated motor for the arm
 	private NXTUnregulatedMotor_State mc;
 
 	public Movement() {
 		ma = new NXTRegulatedMotor_State(MotorPort.A);
-		mb = new NXTUnregulatedMotor_State(MotorPort.B);
+		mb = new NXTRegulatedMotor_State(MotorPort.B);
 		mc = new NXTUnregulatedMotor_State(MotorPort.C);
 	}
 
@@ -105,39 +107,52 @@ public class Movement {
 			mc.stop();
 			mc.setArmState(Arm.HOLDING);
 		}
+		//TODO return set
 		return mc.getArmState();
 	}
 
 	//represents the colorsensors initial (start/stop) position
-	public void removeSensor() {
-		mb.resetTachoCount();
-		mb.setPower(50);
-
-		while (Math.abs(mb.getTachoCount()) < 90) {
-			mb.forward();
+	public Enum<Sensor> removeSensor() {
+		if (mb.getSensorState() != Sensor.MOVING && mb.getSensorState() != Sensor.REMOVED) {
+				
+			mb.resetTachoCount();
+	
+			if (mb.getSensorState() == Sensor.EDGE) {
+				mb.rotateTo(-135);
+			}
+			System.out.println(mb.setSensorState(Sensor.MOVING));
+			mb.stop();
 		}
-		mb.stop();
+		return mb.setSensorState(Sensor.REMOVED);
 	}
 
 	//moves 180 degrees forward = above middle cubie
-	public void moveSensorToCenter() {
-		mb.resetTachoCount();
-		mb.setPower(50);
-
-		while (Math.abs(mb.getTachoCount()) < 180)	{
-			mb.forward();
+	public Enum<Sensor> moveSensorToCenter() {
+		if (mb.getSensorState() != Sensor.MOVING && mb.getSensorState() != Sensor.CENTER) {
+	
+			mb.resetTachoCount();
+	
+			if (mb.getSensorState() == Sensor.REMOVED) {
+				mb.rotateTo(195);
+			}
+			System.out.println(mb.setSensorState(Sensor.MOVING));
+			mb.stop();
 		}
-		mb.stop();
+		return mb.setSensorState(Sensor.CENTER);
 	}
 	
 	//moves 180 degrees forward = above side cubie
-	public void moveSensorToEdge() {
-		mb.resetTachoCount();
-		mb.setPower(50);
-
-		while (Math.abs(mb.getTachoCount()) < 270) {
-			mb.backward();
+	public Enum<Sensor> moveSensorToEdge() {
+		if (mb.getSensorState() != Sensor.MOVING && mb.getSensorState() != Sensor.EDGE) {
+	
+			mb.resetTachoCount();
+	
+			if (mb.getSensorState() == Sensor.CENTER) {
+				mb.rotateTo(-60);
+			}
+			System.out.println(mb.setSensorState(Sensor.MOVING));
+			mb.stop();
 		}
-		mb.stop();
+		return mb.setSensorState(Sensor.EDGE);
 	}
 }

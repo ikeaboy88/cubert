@@ -9,7 +9,13 @@ public class NXTRegulatedMotor_State extends NXTRegulatedMotor {
 	public enum Table {
 		MOVING, RESTING;
 	}
+	// States of the sensor
+	public enum Sensor {
+		REMOVED, CENTER, EDGE, MOVING;
+	}
 	
+	// Initial state for the sensor
+	private Enum<Sensor> sensor_state = Sensor.REMOVED;
 	// Initial state for the table
 	private Enum<Table> table_state = Table.RESTING;
 		
@@ -20,11 +26,17 @@ public class NXTRegulatedMotor_State extends NXTRegulatedMotor {
 	}
 
 	// Setter
+	public Enum<Sensor> setSensorState(Sensor s) {
+		return this.sensor_state = s;
+	}
 	public Enum<Table> setTableState(Table t) {
 		return this.table_state = t;
 	}
 	
 	// Getter
+	public Enum<Sensor> getSensorState() {
+		return this.sensor_state;
+	}
 	public Enum<Table> getTableState() {
 		return this.table_state;
 	}
