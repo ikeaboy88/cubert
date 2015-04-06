@@ -3,7 +3,10 @@ package com.nxt;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.TachoMotorPort;
 
-public class NXTRegulatedMotor_State extends NXTRegulatedMotor {
+/**
+ * Extends the regulated NXTRegulatedMotor class by enums of states and getter/setter methods
+ */
+public class NXTRegulatedStateMotor extends NXTRegulatedMotor {
 
 	// States of the table
 	public enum Table {
@@ -15,14 +18,16 @@ public class NXTRegulatedMotor_State extends NXTRegulatedMotor {
 	}
 	
 	// Initial state for the sensor
-	private Enum<Sensor> sensor_state = Sensor.REMOVED;
+	private Enum<Sensor> sensor_state;
 	// Initial state for the table
-	private Enum<Table> table_state = Table.RESTING;
+	private Enum<Table> table_state;
 		
 	// Super constructors
-	public NXTRegulatedMotor_State(TachoMotorPort port) {
+	public NXTRegulatedStateMotor(TachoMotorPort port) {
 		super(port);
-		// TODO Auto-generated constructor stub
+		// set initial states
+		sensor_state = Sensor.REMOVED;
+		table_state = Table.RESTING;
 	}
 
 	// Setter

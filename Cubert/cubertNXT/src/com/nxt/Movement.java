@@ -1,8 +1,8 @@
 package com.nxt;
 
-import com.nxt.NXTRegulatedMotor_State.Table;
-import com.nxt.NXTUnregulatedMotor_State.Arm;
-import com.nxt.NXTRegulatedMotor_State.Sensor;
+import com.nxt.NXTRegulatedStateMotor.Table;
+import com.nxt.NXTUnregulatedStateMotor.Arm;
+import com.nxt.NXTRegulatedStateMotor.Sensor;
 
 import lejos.nxt.MotorPort;
 import lejos.util.Delay;
@@ -13,16 +13,16 @@ import lejos.util.Delay;
 public class Movement {
 	
 	// Regulated motor for the table
-	private NXTRegulatedMotor_State ma;
+	private NXTRegulatedStateMotor ma;
 	// Unregulated motor for the sensor
-	private NXTRegulatedMotor_State mb;
+	private NXTRegulatedStateMotor mb;
 	// Unregulated motor for the arm
-	private NXTUnregulatedMotor_State mc;
+	private NXTUnregulatedStateMotor mc;
 
 	public Movement() {
-		ma = new NXTRegulatedMotor_State(MotorPort.A);
-		mb = new NXTRegulatedMotor_State(MotorPort.B);
-		mc = new NXTUnregulatedMotor_State(MotorPort.C);
+		ma = new NXTRegulatedStateMotor(MotorPort.A);
+		mb = new NXTRegulatedStateMotor(MotorPort.B);
+		mc = new NXTUnregulatedStateMotor(MotorPort.C);
 	}
 
 	/**
