@@ -21,20 +21,36 @@ public class NXTRegulatedStateMotor extends NXTRegulatedMotor {
 	private Enum<Sensor> sensor_state;
 	// Initial state for the table
 	private Enum<Table> table_state;
+	// Display the current state
+	private boolean debug;
 		
 	// Super constructors
 	public NXTRegulatedStateMotor(TachoMotorPort port) {
 		super(port);
 		// set initial states
-		sensor_state = Sensor.REMOVED;
-		table_state = Table.RESTING;
+		this.sensor_state = Sensor.REMOVED;
+		this.table_state = Table.RESTING;
+		this.debug = false;
+	}
+	public NXTRegulatedStateMotor(TachoMotorPort port, boolean debug) {
+		super(port);
+		// set initial states
+		this.sensor_state = Sensor.REMOVED;
+		this.table_state = Table.RESTING;
+		this.debug = debug; 
 	}
 
 	// Setter
 	public Enum<Sensor> setSensorState(Sensor s) {
+		if (debug) {
+			System.out.println("Sensor: " + s);
+		}
 		return this.sensor_state = s;
 	}
 	public Enum<Table> setTableState(Table t) {
+		if (debug) {
+			System.out.println("Table: " + t);
+		}
 		return this.table_state = t;
 	}
 	
