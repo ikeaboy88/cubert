@@ -183,4 +183,27 @@ public class Movement {
 		}
 		return mb.getSensorState();
 	}
+	
+	public Enum<Sensor> nodSensor() {
+		// only when in center or edge state (sensor above cubie)
+		if (mb.getSensorState() == Sensor.EDGE || mb.getSensorState() == Sensor.CENTER) {
+
+			mb.setSensorState(Sensor.NODDING);
+			mb.resetTachoCount();
+			int nod = 0;
+			int time = 0;
+			//as long as color isn't reliable detected sensor should nod
+			do{
+				mb.rotateTo(nod-2);
+				mb.rotateTo(nod+2);
+				Delay.msDelay(500);
+				time += 1;
+				
+			}while(time<5 && nod!=0);
+			
+			mb.stop();
+			mb.setSensorState(Sensor.EDGE);
+		}
+		return mb.getSensorState();
+	}
 }

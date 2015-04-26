@@ -32,11 +32,12 @@ public class Main {
 				break;
 			}
 			// ...execute code below
-			Button.waitForAnyPress();
 			move.moveSensorToCenter();
 			Delay.msDelay(2000);
+//			move.nodSensor();
 			move.moveSensorToEdge();
 			Delay.msDelay(2000);
+//			move.nodSensor();
 			move.removeSensor();
 			Delay.msDelay(2000);
 			move.holdCube();
@@ -47,12 +48,14 @@ public class Main {
 			Delay.msDelay(2000);
 			move.moveSensorToCenter();
 			Delay.msDelay(2000);
+//			move.nodSensor();
 			move.moveSensorToEdge();
 			Delay.msDelay(2000);
+//			move.nodSensor();
 			move.removeSensor();
 			Delay.msDelay(2000);
 			move.rotateTable(90);
-			Delay.msDelay(2000);
+			Delay.msDelay(1000);
 			move.holdCube();
 			Delay.msDelay(1000);
 			move.tiltCube();
