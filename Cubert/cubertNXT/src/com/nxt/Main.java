@@ -8,9 +8,12 @@ import java.io.IOException;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
+import lejos.nxt.MotorPort;
+import lejos.nxt.TachoMotorPort;
 import lejos.nxt.comm.NXTConnection;
 import lejos.nxt.comm.USB;
 import lejos.nxt.comm.USBConnection;
+import lejos.util.Delay;
 
 public class Main {
 
@@ -29,21 +32,33 @@ public class Main {
 				break;
 			}
 			// ...execute code below
-			LCD.drawString("MIDscannen?", 2, 2);
 			Button.waitForAnyPress();
-			move.scanMiddleCubi();
-			LCD.clear();
-
-			LCD.drawString("SIDEscannen?", 2, 2);
-			Button.waitForAnyPress();
-			move.scanSideCubi();
-			LCD.clear();
+			move.moveSensorToCenter();
+			Delay.msDelay(2000);
+			move.moveSensorToEdge();
+			Delay.msDelay(2000);
+			move.removeSensor();
+			Delay.msDelay(2000);
+			move.holdCube();
+			Delay.msDelay(1000);
+			move.tiltCube();
+			Delay.msDelay(1000);
+			move.releaseCube();
+			Delay.msDelay(2000);
+			move.moveSensorToCenter();
+			Delay.msDelay(2000);
+			move.moveSensorToEdge();
+			Delay.msDelay(2000);
+			move.removeSensor();
+			Delay.msDelay(2000);
+			move.rotateTable(90);
+			Delay.msDelay(2000);
+			move.holdCube();
+			Delay.msDelay(1000);
+			move.tiltCube();
+			Delay.msDelay(1000);
+			move.releaseCube();
 			
-			LCD.drawString("Test?", 2, 2);
-			Button.waitForAnyPress();
-				move.removeSensorFromCube();
-			//LCD.clear();
-			// move.rotateTable(90);
 		}
 		// ***********************************
 
