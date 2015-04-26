@@ -14,7 +14,7 @@ public class NXTRegulatedStateMotor extends NXTRegulatedMotor {
 	}
 	// States of the sensor
 	public enum Sensor {
-		REMOVED, CENTER, EDGE, MOVING;
+		REMOVED, CENTER, EDGE, NODDING, MOVING;
 	}
 	
 	// Initial state for the sensor
