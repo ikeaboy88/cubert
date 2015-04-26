@@ -25,6 +25,10 @@ public class Movement {
 		mc = new NXTUnregulatedStateMotor(MotorPort.C, true);
 	}
 
+	public NXTRegulatedStateMotor getMb() {
+		return mb;
+	}
+
 	/**
 	 * Rotate the table for a given angle in degrees
 	 * 
