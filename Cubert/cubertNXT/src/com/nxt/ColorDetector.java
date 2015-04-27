@@ -26,6 +26,13 @@ public class ColorDetector {
 	private int greenValue;
 	private int blueValue;
 	private int sumColorValue;
+	
+	private int[] red_rgb_ref = {33, 0, 0};
+	private int[] green_rgb_ref = {1, 0, 10};
+	private int[] blue_rgb_ref = {0, 0, 17};
+	private int[] white_rgb_ref = {53, 44, 54};
+	private int[] yellow_rgb_ref = {56, 73, 0};
+	private int[] orange_rgb_ref = {53, 13, 0};
 		
 	ColorHTSensor colorSensor;
 	final static int INTERVAL = 200; // milliseconds
