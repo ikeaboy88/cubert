@@ -20,7 +20,9 @@ public class Main {
 	public static void main(String[] args) {
 		// Create object to execute movements on Cubert
 		Movement move = new Movement();
+		ColorDetector colorDetector = new ColorDetector();
 
+//		colorDetector.calibrate();
 		// ***********************************
 		// "Runtime loop"
 		while (true) {
@@ -32,6 +34,7 @@ public class Main {
 				break;
 			}
 			// ...execute code below
+			/*
 			Button.waitForAnyPress();
 			move.moveSensorToCenter();
 			Delay.msDelay(2000);
@@ -58,6 +61,34 @@ public class Main {
 			move.tiltCube();
 			Delay.msDelay(1000);
 			move.releaseCube();
+			*/
+			
+			move.moveSensorToCenter();
+			Delay.msDelay(1000);
+			while (true) {
+				// After pressing a button...
+				Delay.msDelay(300);
+				colorDetector.detectColor();
+				// Exit loop when escape button was pressed
+				if (Button.ESCAPE.isDown()) {
+					break;
+				}
+			}
+			Button.waitForAnyPress();
+			move.moveSensorToEdge();
+			Delay.msDelay(1000);
+			while (true) {
+				// After pressing a button...
+				Delay.msDelay(300);
+				colorDetector.detectColor();
+				// Exit loop when escape button was pressed
+				if (Button.ESCAPE.isDown()) {
+					break;
+				}
+			}
+			Button.waitForAnyPress();
+			move.removeSensor();
+			
 			
 		}
 		// ***********************************
