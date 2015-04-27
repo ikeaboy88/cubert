@@ -69,7 +69,7 @@ public class Movement {
 				mc.resetTachoCount();
 	
 				// move 90 degrees
-				while (Math.abs(mc.getTachoCount()) < 90) {
+				while (Math.abs(mc.getTachoCount()) < 75) {
 					// first move: pull cube
 					if (i == 1) {
 						mc.backward();
@@ -81,7 +81,7 @@ public class Movement {
 					}
 				}
 				mc.stop();
-				Delay.msDelay(200);
+				Delay.msDelay(300);
 			}
 			mc.setArmState(Arm.HOLDING);
 		}
