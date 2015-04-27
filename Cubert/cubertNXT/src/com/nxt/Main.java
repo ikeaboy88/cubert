@@ -7,87 +7,108 @@ import java.io.IOException;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
+import lejos.nxt.Motor;
+import lejos.nxt.MotorPort;
+import lejos.nxt.TachoMotorPort;
 import lejos.nxt.comm.NXTConnection;
 import lejos.nxt.comm.USB;
 import lejos.nxt.comm.USBConnection;
+import lejos.util.Delay;
 
 public class Main {
-	USBConnection connection = null;
-	DataOutputStream dos = null;
-	DataInputStream dis = null;
-	private int sendInt = 5678;
 
 	public static void main(String[] args) {
-		Main main = new Main();
-		main.connectToPC();
-		main.sendDatatoPC(main.sendInt);
-		main.recieveDatafromPC();
-		main.closeStreams();
-	}
+		// Create object to execute movements on Cubert
+		Movement move = new Movement();
+		ColorDetector colorDetector = new ColorDetector();
 
-	public void connectToPC() {
-		LCD.drawString("Right BT->USB Verbindung", 0, 0);
-
-		if (Button.waitForAnyPress() == Button.ID_RIGHT) {
-			LCD.drawString("Waiting for USB connection", 0, 1);
-			connection = USB.waitForConnection();
-		}
-		LCD.clear();
-		LCD.drawString("connected", 0, 0);
-	}
-
-	public void sendDatatoPC(int sendInt) {
-		LCD.clear();
-		LCD.drawInt(sendInt, 1, 2);
-		LCD.drawString("sending data to pc...", 1, 3);
-		try {
-			dos = connection.openDataOutputStream();
-			dos.writeInt(sendInt);
-			dos.flush();
-		} catch (IOException e) {
-			LCD.drawString("Can't send data to PC", 1, 4);
-			e.printStackTrace();
-		}
-		LCD.drawString("press BT", 1, 4);
+//		colorDetector.calibrate();
+		// ***********************************
+		// "Runtime loop"
 		Button.waitForAnyPress();
-	}
+		while (true) {
+			// After pressing a button...
 
-	// return type should be int ,void only for testing
-	public void recieveDatafromPC() {
-		int recievedInt = 0;
-		try {
-			dis = connection.openDataInputStream();
-			// check whether data is available to read
-			if (connection.available() > 0) {
-				LCD.clear();
-				recievedInt = dis.readInt();
-				LCD.drawString("Recieved Data:", 0, 0);
-				LCD.drawInt(recievedInt, 0, 1);
-				LCD.drawString("Press to End", 0, 2);
-				Button.waitForAnyPress();
-			} else {
-				System.out.println("nothing to read");
+			// Exit loop when escape button was pressed
+			if (Button.ESCAPE.isDown()) {
+				break;
 			}
-		} catch (IOException e1) {
-			System.out.println("Can't communicate");
-			e1.printStackTrace();
-		}
+			// ...execute code below
+			/*
+			Button.waitForAnyPress();
+			move.moveSensorToCenter();
+			Delay.msDelay(2000);
+			move.moveSensorToEdge();
+			Delay.msDelay(2000);
+			move.removeSensor();
+			Delay.msDelay(2000);
+			move.holdCube();
+			Delay.msDelay(1000);
+			move.tiltCube();
+			Delay.msDelay(1000);
+			move.releaseCube();
+			Delay.msDelay(2000);
+			move.moveSensorToCenter();
+			Delay.msDelay(2000);
+			move.moveSensorToEdge();
+			Delay.msDelay(2000);
+			move.removeSensor();
+			Delay.msDelay(2000);
+			move.rotateTable(90);
+			Delay.msDelay(2000);
+			move.holdCube();
+			Delay.msDelay(1000);
+			move.tiltCube();
+			Delay.msDelay(1000);
+			move.releaseCube();
+			*/
+			
 
-		/*
-		  recieve keyboardinput just in time 
-		  String recievedString = null;
-		  recievedString = dis.readChar(); LCD.clear();
-		  LCD.drawChar(recievedString, 1, 1); LCD.refresh();
-		 */
+			//Scan center
+			move.moveSensorToCenter();
+			Delay.msDelay(200);
+			colorDetector.detectColor();
+			//Button.waitForAnyPress();
+			
+			//Scan edges
+			move.moveSensorToEdge();
+			Delay.msDelay(200);
+			colorDetector.detectColor();
+			//Button.waitForAnyPress();
+			for (int i = 0; i < 7; i++) {
+				Delay.msDelay(200);
+				move.rotateTable(45);
+				if (i % 2 == 1) {
+					move.moveSensorToEdge();
+				} else {
+					move.moveSensorToCorner();
+				}
+				colorDetector.detectColor();
+			}
+			Delay.msDelay(200);
+			move.rotateTable(45);
+			move.moveSensorToEdge();
+			Delay.msDelay(200);
+			move.removeSensor();
+			
+			//Tilt cube
+			move.holdCube();
+			Delay.msDelay(1000);
+			move.tiltCube();
+			Delay.msDelay(1000);
+			move.releaseCube();
+			Delay.msDelay(1000);
+			
+			
+		}
+		// ***********************************
+
+		/* Connection between NXT and PC */
+		// Connection connect_NXT = new Connection();
+		// connect_NXT.connectToPC();
+		// connect_NXT.sendDatatoPC(connect_NXT.getSendInt());
+		// connect_NXT.recieveDatafromPC();
+		// connect_NXT.closeStreams();
 	}
 
-	public void closeStreams() {
-		try {
-			dis.close();
-			dos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }
