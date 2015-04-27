@@ -25,9 +25,9 @@ public class Main {
 //		colorDetector.calibrate();
 		// ***********************************
 		// "Runtime loop"
+		Button.waitForAnyPress();
 		while (true) {
 			// After pressing a button...
-			Button.waitForAnyPress();
 
 			// Exit loop when escape button was pressed
 			if (Button.ESCAPE.isDown()) {
@@ -63,15 +63,23 @@ public class Main {
 			move.releaseCube();
 			*/
 			
+			//Scan center and side
 			move.moveSensorToCenter();
-			Delay.msDelay(1000);
+			Delay.msDelay(200);
 			colorDetector.detectColor();
-			Button.waitForAnyPress();
+			//Button.waitForAnyPress();
 			move.moveSensorToEdge();
-			Delay.msDelay(1000);
+			Delay.msDelay(200);
 			colorDetector.detectColor();
-			Button.waitForAnyPress();
+			//Button.waitForAnyPress();
 			move.removeSensor();
+			
+			//Tilt cube
+			move.holdCube();
+			Delay.msDelay(400);
+			move.tiltCube();
+			Delay.msDelay(400);
+			move.releaseCube();
 			
 			
 		}
