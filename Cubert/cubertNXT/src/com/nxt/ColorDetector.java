@@ -1,6 +1,5 @@
 package com.nxt;
 
-import com.nxt.ColorState.CUBIECOLOR;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
@@ -28,7 +27,6 @@ public class ColorDetector {
 	private int blueValue;
 	private int sumColorValue;
 		
-	ColorState st = new ColorState(true);
 	ColorHTSensor colorSensor;
 	final static int INTERVAL = 200; // milliseconds
 
