@@ -57,19 +57,20 @@ public class ColorDetector {
 		String g = "G";
 		String b = "B";
 		LCD.clear();
+
+		redValue = this.calculateAverageRgbVector(5, 500)[0];
+		greenValue = this.calculateAverageRgbVector(5, 500)[1];
+		blueValue = this.calculateAverageRgbVector(5, 500)[2];
 		
 		LCD.drawString(r, 0, 5);
-		LCD.drawInt(colorSensor.getRGBNormalized(Color.RED), 1, 5);
+		LCD.drawInt(redValue, 1, 5);
 		
 		LCD.drawString(g, 5, 5);
-		LCD.drawInt(colorSensor.getRGBNormalized(Color.GREEN), 6, 5);
+		LCD.drawInt(greenValue, 6, 5);
 		
 		LCD.drawString(b, 10, 5);
-		LCD.drawInt(colorSensor.getRGBNormalized(Color.BLUE), 11, 5);
+		LCD.drawInt(blueValue, 11, 5);
 
-		redValue = colorSensor.getRGBNormalized(Color.RED);
-		greenValue = colorSensor.getRGBNormalized(Color.GREEN);
-		blueValue = colorSensor.getRGBNormalized(Color.BLUE);
 
 		int[] comparison = { redValue, greenValue, blueValue };
 		// old distance
@@ -165,5 +166,27 @@ public class ColorDetector {
 			throw new IllegalArgumentException();
 		}
 		return Math.sqrt(distance);
+	}
+	
+	private int[] calculateAverageRgbVector(int iterations, long duration) {
+		
+		int r = 0;
+		int g = 0;
+		int b = 0;
+		
+		int[] rgb_vector = {r, g, b};
+		
+		for (int i = 0; i < iterations; i++) {
+			r += colorSensor.getRGBNormalized(Color.RED);
+			g += colorSensor.getRGBNormalized(Color.GREEN);
+			b += colorSensor.getRGBNormalized(Color.BLUE);
+			Delay.msDelay(duration/iterations);
+		}
+		
+		rgb_vector[0] = r/iterations;
+		rgb_vector[1] = g/iterations;
+		rgb_vector[2] = b/iterations;
+		
+		return rgb_vector;
 	}
 }

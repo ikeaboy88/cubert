@@ -65,27 +65,11 @@ public class Main {
 			
 			move.moveSensorToCenter();
 			Delay.msDelay(1000);
-			while (true) {
-				// After pressing a button...
-				Delay.msDelay(300);
-				colorDetector.detectColor();
-				// Exit loop when escape button was pressed
-				if (Button.ESCAPE.isDown()) {
-					break;
-				}
-			}
+			colorDetector.detectColor();
 			Button.waitForAnyPress();
 			move.moveSensorToEdge();
 			Delay.msDelay(1000);
-			while (true) {
-				// After pressing a button...
-				Delay.msDelay(300);
-				colorDetector.detectColor();
-				// Exit loop when escape button was pressed
-				if (Button.ESCAPE.isDown()) {
-					break;
-				}
-			}
+			colorDetector.detectColor();
 			Button.waitForAnyPress();
 			move.removeSensor();
 			
