@@ -20,9 +20,13 @@ public class Movement {
 	private NXTUnregulatedStateMotor mc;
 
 	public Movement() {
-		ma = new NXTRegulatedStateMotor(MotorPort.A, true);
-		mb = new NXTRegulatedStateMotor(MotorPort.B, true);
-		mc = new NXTUnregulatedStateMotor(MotorPort.C, true);
+		ma = new NXTRegulatedStateMotor(MotorPort.A, false);
+		mb = new NXTRegulatedStateMotor(MotorPort.B, false);
+		mc = new NXTUnregulatedStateMotor(MotorPort.C, false);
+	}
+
+	public NXTRegulatedStateMotor getMb() {
+		return mb;
 	}
 
 	/**
@@ -65,7 +69,7 @@ public class Movement {
 				mc.resetTachoCount();
 	
 				// move 90 degrees
-				while (Math.abs(mc.getTachoCount()) < 95) {
+				while (Math.abs(mc.getTachoCount()) < 75) {
 					// first move: pull cube
 					if (i == 1) {
 						mc.backward();
@@ -77,7 +81,7 @@ public class Movement {
 					}
 				}
 				mc.stop();
-				Delay.msDelay(200);
+				Delay.msDelay(300);
 			}
 			mc.setArmState(Arm.HOLDING);
 		}
@@ -141,7 +145,7 @@ public class Movement {
 				
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(-135);
+			mb.rotateTo(-130);
 			mb.stop();
 			mb.setSensorState(Sensor.REMOVED);
 		}
@@ -177,9 +181,36 @@ public class Movement {
 
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(-60);
+			mb.rotateTo(-65);
 			mb.stop();
 			mb.setSensorState(Sensor.EDGE);
+		}
+		// only when in corner state
+		if (mb.getSensorState() == Sensor.CORNER) {
+			
+			mb.setSensorState(Sensor.MOVING);
+			mb.resetTachoCount();
+			mb.rotateTo(15);
+			mb.stop();
+			mb.setSensorState(Sensor.EDGE);
+		}
+		return mb.getSensorState();
+	}
+
+	/**
+	 * Move the color sensor above the corner of the cube after scanning the edge
+	 * 
+	 * @return Enum<Sensor> Current state of the sensor
+	 */
+	public Enum<Sensor> moveSensorToCorner() {
+		// only when in edge state
+		if (mb.getSensorState() == Sensor.EDGE) {
+			
+			mb.setSensorState(Sensor.MOVING);
+			mb.resetTachoCount();
+			mb.rotateTo(-15);
+			mb.stop();
+			mb.setSensorState(Sensor.CORNER);
 		}
 		return mb.getSensorState();
 	}

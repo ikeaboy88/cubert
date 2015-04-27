@@ -20,18 +20,21 @@ public class Main {
 	public static void main(String[] args) {
 		// Create object to execute movements on Cubert
 		Movement move = new Movement();
+		ColorDetector colorDetector = new ColorDetector();
 
+//		colorDetector.calibrate();
 		// ***********************************
 		// "Runtime loop"
+		Button.waitForAnyPress();
 		while (true) {
 			// After pressing a button...
-			Button.waitForAnyPress();
 
 			// Exit loop when escape button was pressed
 			if (Button.ESCAPE.isDown()) {
 				break;
 			}
 			// ...execute code below
+			/*
 			Button.waitForAnyPress();
 			move.moveSensorToCenter();
 			Delay.msDelay(2000);
@@ -58,6 +61,44 @@ public class Main {
 			move.tiltCube();
 			Delay.msDelay(1000);
 			move.releaseCube();
+			*/
+			
+
+			//Scan center
+			move.moveSensorToCenter();
+			Delay.msDelay(200);
+			colorDetector.detectColor();
+			//Button.waitForAnyPress();
+			
+			//Scan edges
+			move.moveSensorToEdge();
+			Delay.msDelay(200);
+			colorDetector.detectColor();
+			//Button.waitForAnyPress();
+			for (int i = 0; i < 7; i++) {
+				Delay.msDelay(200);
+				move.rotateTable(45);
+				if (i % 2 == 1) {
+					move.moveSensorToEdge();
+				} else {
+					move.moveSensorToCorner();
+				}
+				colorDetector.detectColor();
+			}
+			Delay.msDelay(200);
+			move.rotateTable(45);
+			move.moveSensorToEdge();
+			Delay.msDelay(200);
+			move.removeSensor();
+			
+			//Tilt cube
+			move.holdCube();
+			Delay.msDelay(1000);
+			move.tiltCube();
+			Delay.msDelay(1000);
+			move.releaseCube();
+			Delay.msDelay(1000);
+			
 			
 		}
 		// ***********************************
