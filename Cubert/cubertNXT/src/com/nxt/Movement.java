@@ -20,9 +20,9 @@ public class Movement {
 	private NXTUnregulatedStateMotor mc;
 
 	public Movement() {
-		ma = new NXTRegulatedStateMotor(MotorPort.A, true);
-		mb = new NXTRegulatedStateMotor(MotorPort.B, true);
-		mc = new NXTUnregulatedStateMotor(MotorPort.C, true);
+		ma = new NXTRegulatedStateMotor(MotorPort.A, false);
+		mb = new NXTRegulatedStateMotor(MotorPort.B, false);
+		mc = new NXTUnregulatedStateMotor(MotorPort.C, false);
 	}
 
 	public NXTRegulatedStateMotor getMb() {
