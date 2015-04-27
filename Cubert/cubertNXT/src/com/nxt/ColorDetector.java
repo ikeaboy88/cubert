@@ -75,7 +75,7 @@ public class ColorDetector {
 		for (int i = 1; i <= rgb_ref.length; i++) {
 
 			// get distance to actual color value
-			distance = calculateEuklidianDistance(rgb_ref[i], comparison);
+			distance = calculateEuklidianDistance(rgb_ref[i-1], comparison);
 			// when the calculated distance to new color is shorter than to
 			// further measured distances: keep it!
 			if (distance < oldDistance) {
