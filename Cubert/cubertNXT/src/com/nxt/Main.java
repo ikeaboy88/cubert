@@ -7,19 +7,108 @@ import java.io.IOException;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
+import lejos.nxt.Motor;
+import lejos.nxt.MotorPort;
+import lejos.nxt.TachoMotorPort;
 import lejos.nxt.comm.NXTConnection;
 import lejos.nxt.comm.USB;
 import lejos.nxt.comm.USBConnection;
+import lejos.util.Delay;
 
 public class Main {
 
 	public static void main(String[] args) {
-		Connection connect_NXT = new Connection();
-		connect_NXT.connectToPC();
-		connect_NXT.sendDatatoPC(connect_NXT.getSendInt());
-		connect_NXT.recieveDatafromPC();
-		connect_NXT.closeStreams();
+		// Create object to execute movements on Cubert
+		Movement move = new Movement();
+		ColorDetector colorDetector = new ColorDetector();
+
+//		colorDetector.calibrate();
+		// ***********************************
+		// "Runtime loop"
+		Button.waitForAnyPress();
+		while (true) {
+			// After pressing a button...
+
+			// Exit loop when escape button was pressed
+			if (Button.ESCAPE.isDown()) {
+				break;
+			}
+			// ...execute code below
+			/*
+			Button.waitForAnyPress();
+			move.moveSensorToCenter();
+			Delay.msDelay(2000);
+			move.moveSensorToEdge();
+			Delay.msDelay(2000);
+			move.removeSensor();
+			Delay.msDelay(2000);
+			move.holdCube();
+			Delay.msDelay(1000);
+			move.tiltCube();
+			Delay.msDelay(1000);
+			move.releaseCube();
+			Delay.msDelay(2000);
+			move.moveSensorToCenter();
+			Delay.msDelay(2000);
+			move.moveSensorToEdge();
+			Delay.msDelay(2000);
+			move.removeSensor();
+			Delay.msDelay(2000);
+			move.rotateTable(90);
+			Delay.msDelay(2000);
+			move.holdCube();
+			Delay.msDelay(1000);
+			move.tiltCube();
+			Delay.msDelay(1000);
+			move.releaseCube();
+			*/
+			
+
+			//Scan center
+			move.moveSensorToCenter();
+			Delay.msDelay(200);
+			colorDetector.detectColor();
+			//Button.waitForAnyPress();
+			
+			//Scan edges
+			move.moveSensorToEdge();
+			Delay.msDelay(200);
+			colorDetector.detectColor();
+			//Button.waitForAnyPress();
+			for (int i = 0; i < 7; i++) {
+				Delay.msDelay(200);
+				move.rotateTable(45);
+				if (i % 2 == 1) {
+					move.moveSensorToEdge();
+				} else {
+					move.moveSensorToCorner();
+				}
+				colorDetector.detectColor();
+			}
+			Delay.msDelay(200);
+			move.rotateTable(45);
+			move.moveSensorToEdge();
+			Delay.msDelay(200);
+			move.removeSensor();
+			
+			//Tilt cube
+			move.holdCube();
+			Delay.msDelay(1000);
+			move.tiltCube();
+			Delay.msDelay(1000);
+			move.releaseCube();
+			Delay.msDelay(1000);
+			
+			
+		}
+		// ***********************************
+
+		/* Connection between NXT and PC */
+		// Connection connect_NXT = new Connection();
+		// connect_NXT.connectToPC();
+		// connect_NXT.sendDatatoPC(connect_NXT.getSendInt());
+		// connect_NXT.recieveDatafromPC();
+		// connect_NXT.closeStreams();
 	}
 
-	
 }
