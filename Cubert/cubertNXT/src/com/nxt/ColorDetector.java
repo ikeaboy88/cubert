@@ -106,6 +106,9 @@ public class ColorDetector {
 			sumColorValue = redValue + greenValue + blueValue;
 			Delay.msDelay(1000);
 			
+			int[] reference = {redValue, greenValue, blueValue};
+			int[] comparison = {redValue, greenValue, blueValue};
+			calculateEuklidianDistance(reference, comparison);
 		}
 	}
 	
@@ -135,5 +138,23 @@ public class ColorDetector {
 	colorSensor.initBlackLevel();
 	LCD.clear();
 	//colorsensor.calibrateLow();
+	}
+	
+	/**
+	 * Calculates the euklidian distance of two input vectors
+	 * @param reference Vector with integer values of a reference point
+	 * @param comparison A second vector with integer values of the same length
+	 * @return Euklidian distance between both vectors / 0 If vectors don't have the same length
+	 */
+	private static double calculateEuklidianDistance(int[] reference, int[] comparison) {
+		double distance = 0;
+		if (reference.length == comparison.length) {
+			for (int i : reference) {
+				distance += Math.pow(reference[i] - comparison[i], 2); 
+			}
+			return Math.sqrt(distance);
+		} else {
+			return 0;
+		}
 	}
 }
