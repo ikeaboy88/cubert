@@ -63,23 +63,41 @@ public class Main {
 			move.releaseCube();
 			*/
 			
-			//Scan center and side
+
+			//Scan center
 			move.moveSensorToCenter();
 			Delay.msDelay(200);
 			colorDetector.detectColor();
 			//Button.waitForAnyPress();
+			
+			//Scan edges
 			move.moveSensorToEdge();
 			Delay.msDelay(200);
 			colorDetector.detectColor();
 			//Button.waitForAnyPress();
+			for (int i = 0; i < 7; i++) {
+				Delay.msDelay(200);
+				move.rotateTable(45);
+				if (i % 2 == 1) {
+					move.moveSensorToEdge();
+				} else {
+					move.moveSensorToCorner();
+				}
+				colorDetector.detectColor();
+			}
+			Delay.msDelay(200);
+			move.rotateTable(45);
+			move.moveSensorToEdge();
+			Delay.msDelay(200);
 			move.removeSensor();
 			
 			//Tilt cube
 			move.holdCube();
-			Delay.msDelay(400);
+			Delay.msDelay(1000);
 			move.tiltCube();
-			Delay.msDelay(400);
+			Delay.msDelay(1000);
 			move.releaseCube();
+			Delay.msDelay(1000);
 			
 			
 		}
