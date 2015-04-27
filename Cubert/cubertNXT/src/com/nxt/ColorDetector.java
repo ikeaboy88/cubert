@@ -21,22 +21,18 @@ public class ColorDetector {
 	private CUBIECOLOR color_state;
 	// Display the current state
 	private boolean debug;
-	private int redValue;
-	private int greenValue;
-	private int blueValue;
 
-	private int[] red_rgb_ref = { 33, 0, 0 };
-	private int[] green_rgb_ref = { 1, 0, 10 };
-	private int[] blue_rgb_ref = { 0, 0, 17 };
-	private int[] white_rgb_ref = { 53, 44, 54 };
-	private int[] yellow_rgb_ref = { 56, 73, 0 };
-	private int[] orange_rgb_ref = { 53, 13, 0 };
+	private int[] red_rgb_ref = { 255, 0, 0 };
+	private int[] green_rgb_ref = { 110, 190, 255 };
+	private int[] blue_rgb_ref = { 40, 15, 255 };
+	private int[] white_rgb_ref = { 255, 255, 255 };
+	private int[] yellow_rgb_ref = { 160, 255, 0 };
+	private int[] orange_rgb_ref = { 255, 135, 0 };
 
 	private int[][] rgb_ref = { red_rgb_ref, green_rgb_ref, blue_rgb_ref,
 			white_rgb_ref, yellow_rgb_ref, orange_rgb_ref };
 
 	ColorHTSensor colorSensor;
-	final static int INTERVAL = 200; // milliseconds
 
 	public ColorDetector() {
 		// set initial colorstate
@@ -52,32 +48,27 @@ public class ColorDetector {
 		this.debug = debug;
 	}
 
-	public void detectColor() {
-		String r = "R";
-		String g = "G";
-		String b = "B";
+	public int detectColor() {
 		LCD.clear();
 
-		redValue = this.calculateAverageRgbVector(5, 500)[0];
-		greenValue = this.calculateAverageRgbVector(5, 500)[1];
-		blueValue = this.calculateAverageRgbVector(5, 500)[2];
+		int[] rgb_vector = this.calculateAverageRgbVector(5, 200);
 		
-		LCD.drawString(r, 0, 5);
-		LCD.drawInt(redValue, 1, 5);
+		LCD.drawString("R", 0, 5);
+		LCD.drawInt(rgb_vector[0], 1, 5);
 		
-		LCD.drawString(g, 5, 5);
-		LCD.drawInt(greenValue, 6, 5);
+		LCD.drawString("G", 5, 5);
+		LCD.drawInt(rgb_vector[1], 6, 5);
 		
-		LCD.drawString(b, 10, 5);
-		LCD.drawInt(blueValue, 11, 5);
+		LCD.drawString("B", 10, 5);
+		LCD.drawInt(rgb_vector[2], 11, 5);
 
 
-		int[] comparison = { redValue, greenValue, blueValue };
+		int[] comparison = { rgb_vector[0], rgb_vector[1], rgb_vector[2] };
 		// old distance
 		double oldDistance = 1000;
 		// new distance
 		double distance = 0;
-		int index = 99;
+		int index = -1;
 		
 		
 		for (int i = 0; i < rgb_ref.length; i++) {
@@ -114,10 +105,9 @@ public class ColorDetector {
 			LCD.drawString("None", 3, 3);
 			break;
 		}
-
 		LCD.refresh();
-		Delay.msDelay(1000);
-
+		
+		return index;
 	}
 
 	// getter
