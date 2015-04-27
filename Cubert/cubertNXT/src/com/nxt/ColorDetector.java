@@ -71,7 +71,7 @@ public class ColorDetector {
 		int index = -1;
 		
 		
-		for (int i = 0; i < rgb_ref.length; i++) {
+		for (int i = 1; i <= rgb_ref.length; i++) {
 
 			// get distance to actual color value
 			distance = calculateEuklidianDistance(rgb_ref[i], comparison);
@@ -83,22 +83,22 @@ public class ColorDetector {
 			}
 		}
 		switch (index) {
-		case 0:
+		case 1:
 			LCD.drawString("Rot", 3, 3);
 			break;
-		case 1:
+		case 2:
 			LCD.drawString("Gruen", 3, 3);
 			break;
-		case 2:
+		case 3:
 			LCD.drawString("Blau", 3, 3);
 			break;
-		case 3:
+		case 4:
 			LCD.drawString("Weiß", 3, 3);
 			break;
-		case 4:
+		case 5:
 			LCD.drawString("Gelb", 3, 3);
 			break;
-		case 5:
+		case 6:
 			LCD.drawString("Orange", 3, 3);
 			break;
 		default:
