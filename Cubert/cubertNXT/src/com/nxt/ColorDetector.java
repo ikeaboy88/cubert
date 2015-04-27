@@ -48,7 +48,8 @@ public class ColorDetector {
 		this.debug = debug;
 	}
 
-	public int detectColor() {
+	public char detectColor() {
+		char detected_color = 'x';
 		LCD.clear();
 
 		int[] rgb_vector = this.calculateAverageRgbVector(5, 200);
@@ -85,29 +86,36 @@ public class ColorDetector {
 		switch (index) {
 		case 1:
 			LCD.drawString("Rot", 3, 3);
+			detected_color = 'r';
 			break;
 		case 2:
 			LCD.drawString("Gruen", 3, 3);
+			detected_color = 'g';
 			break;
 		case 3:
 			LCD.drawString("Blau", 3, 3);
+			detected_color = 'b';
 			break;
 		case 4:
 			LCD.drawString("Weiﬂ", 3, 3);
+			detected_color = 'w';
 			break;
 		case 5:
 			LCD.drawString("Gelb", 3, 3);
+			detected_color = 'y';
 			break;
 		case 6:
 			LCD.drawString("Orange", 3, 3);
+			detected_color = 'o';
 			break;
 		default:
 			LCD.drawString("None", 3, 3);
+			detected_color = 'x';
 			break;
 		}
 		LCD.refresh();
 		
-		return index;
+		return detected_color;
 	}
 
 	// getter
