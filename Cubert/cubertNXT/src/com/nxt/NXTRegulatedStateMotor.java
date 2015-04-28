@@ -1,5 +1,6 @@
 package com.nxt;
 
+import lejos.nxt.LCD;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.TachoMotorPort;
 
@@ -43,13 +44,17 @@ public class NXTRegulatedStateMotor extends NXTRegulatedMotor {
 	// Setter
 	public Enum<Sensor> setSensorState(Sensor s) {
 		if (debug) {
-			System.out.println("Sensor: " + s);
+			LCD.drawString("Sensor:        ", 0, 2);
+			LCD.drawString("Sensor: " + s, 0, 2);
+			LCD.refresh();
 		}
 		return this.sensor_state = s;
 	}
 	public Enum<Table> setTableState(Table t) {
 		if (debug) {
-			System.out.println("Table: " + t);
+			LCD.drawString("Table:        ", 0, 3);
+			LCD.drawString("Table: " + t, 0, 3);
+			LCD.refresh();
 		}
 		return this.table_state = t;
 	}
