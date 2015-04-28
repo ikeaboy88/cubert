@@ -19,8 +19,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		// Create object to execute movements on Cubert
-		Movement move = new Movement();
-		ColorDetector colorDetector = new ColorDetector();
+		Movement move = new Movement(true);
+		ColorDetector colorDetector = new ColorDetector(true);
 
 //		colorDetector.calibrate();
 		// ***********************************
