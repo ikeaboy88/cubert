@@ -9,8 +9,8 @@ public class Cube {
 	ColorDetector detect;
 	
 	public Cube() {
-		move = new Movement();
-		detect = new ColorDetector(SensorPort.S3);
+		move = new Movement(true);
+		detect = new ColorDetector(SensorPort.S3, true);
 	}
 	
 	public void executeCompleteScan() {
