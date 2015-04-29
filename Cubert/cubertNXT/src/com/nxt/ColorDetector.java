@@ -8,139 +8,160 @@ import lejos.robotics.Color;
 import lejos.util.Delay;
 
 /**
- * For testing the HiTechnic color sensor (see lejos.nxt.addon.ColorHTSensor).
- * 
- * @author BB
+ * Detection of the cube's 6 different colors with the HiTechnic Color Sensor V1
  */
-public class ColorDetector {
+public class ColorDetector extends ColorHTSensor {
 
-	public enum CUBIECOLOR {
-		NONE, RED, ORANGE, YELLOW, WHITE, GREEN, BLUE, BLACK;
+	// colors of the cube surface
+	public enum Colors {
+		RED, GREEN, BLUE, WHITE, YELLOW, ORANGE, NONE;
 	}
-	// Initial state for the sensor
-	private CUBIECOLOR color_state;
-	// Display the current state
+	
+	// state for the color
+	private Enum<Colors> color_state;
+	
+	// show or hide output on the NXT display
 	private boolean debug;
 
-	private int[] red_rgb_ref = { 255, 0, 0 };
-	private int[] green_rgb_ref = { 110, 190, 255 };
-	private int[] blue_rgb_ref = { 40, 15, 255 };
-	private int[] white_rgb_ref = { 255, 255, 255 };
-	private int[] yellow_rgb_ref = { 160, 255, 0 };
-	private int[] orange_rgb_ref = { 255, 135, 0 };
-
-	private int[][] rgb_ref = { red_rgb_ref, green_rgb_ref, blue_rgb_ref,
+	// reference values for each color (with light from top, Dayan II Guhong speed cube)
+	private final int[] red_rgb_ref = { 255, 0, 0 };
+	private final int[] green_rgb_ref = { 110, 190, 255 };
+	private final int[] blue_rgb_ref = { 40, 15, 255 };
+	private final int[] white_rgb_ref = { 255, 255, 255 };
+	private final int[] yellow_rgb_ref = { 160, 255, 0 };
+	private final int[] orange_rgb_ref = { 255, 135, 0 };
+	
+	// nested array with all reference array from above
+	private final int[][] rgb_ref = { red_rgb_ref, green_rgb_ref, blue_rgb_ref,
 			white_rgb_ref, yellow_rgb_ref, orange_rgb_ref };
 
-	ColorHTSensor colorSensor;
 
-	public ColorDetector() {
-		// set initial colorstate
-		colorSensor = new ColorHTSensor(SensorPort.S3);
-		this.color_state = CUBIECOLOR.NONE;
+	/**
+	 * Default constructor without debug
+	 */
+	public ColorDetector(SensorPort port) {
+		super(port);
+		this.color_state = Colors.NONE;
 		this.debug = false;
 	}
 
-	public ColorDetector(Boolean debug) {
-		// set initial colorstate
-		colorSensor = new ColorHTSensor(SensorPort.S3);
-		this.color_state = CUBIECOLOR.NONE;
+	/**
+	 * Constructor with debug (output on NXT display) option
+	 * @param debug If true debug is activated
+	 */
+	public ColorDetector(SensorPort port, Boolean debug) {
+		super(port);
+		this.color_state = Colors.NONE;
 		this.debug = debug;
 	}
 
-	public char detectColor() {
+	/**
+	 * Detects the color of the surface the color sensor is currently above.
+	 * Uses the average of multiple readings and then returns the reference color with the shortest euklidian distance.
+	 * @param duration How long the the complete measuring process should take
+	 * @param iterations How many measurements will be executed within that duration
+	 * @return Detected color as char (r, g, b, w, y, o, x)
+	 */
+	public char detectColor(long duration, int iterations) {
+		
+		// initialize detected color with no color
 		char detected_color = 'x';
-		LCD.clear();
+		// initialize RGB array with 0 values
+		int[] rgb_vector =  {0, 0, 0};
+		// fill vector with averaged RGB values from a measurement
+		rgb_vector = this.getAverageRgbVector(duration, iterations);
 
-		int[] rgb_vector = this.calculateAverageRgbVector(5, 200);
-		
-		LCD.drawString("R", 0, 5);
-		LCD.drawInt(rgb_vector[0], 1, 5);
-		
-		LCD.drawString("G", 5, 5);
-		LCD.drawInt(rgb_vector[1], 6, 5);
-		
-		LCD.drawString("B", 10, 5);
-		LCD.drawInt(rgb_vector[2], 11, 5);
-
-
-		int[] comparison = { rgb_vector[0], rgb_vector[1], rgb_vector[2] };
-		// old distance
-		double oldDistance = 1000;
-		// new distance
+		// initialize high value for the previous euklidian distance
+		double previous_distance = 1000;
+		// initialize low value for the current euklidian distance
 		double distance = 0;
-		int index = -1;
+		int color_index = -1;
 		
-		
+		// calculate euklidian distance between the measured RGB vector and all the reference RGB vectors
 		for (int i = 1; i <= rgb_ref.length; i++) {
 
-			// get distance to actual color value
-			distance = calculateEuklidianDistance(rgb_ref[i-1], comparison);
-			// when the calculated distance to new color is shorter than to
-			// further measured distances: keep it!
-			if (distance < oldDistance) {
-				oldDistance = distance;
-				index = i;
+			// get euklidian distance for the current two RGB vectors
+			distance = calculateEuklidianDistance(rgb_ref[i-1], rgb_vector);
+			// when new distance is shorter than the previous one..
+			if (distance < previous_distance) {
+				// cache distance and index
+				previous_distance = distance;
+				color_index = i;
 			}
 		}
-		switch (index) {
+		
+		// return detected color and set the color state
+		switch (color_index) {
 		case 1:
-			LCD.drawString("Rot", 3, 3);
+			this.setColorState(Colors.RED);
 			detected_color = 'r';
 			break;
 		case 2:
-			LCD.drawString("Gruen", 3, 3);
+			this.setColorState(Colors.GREEN);
 			detected_color = 'g';
 			break;
 		case 3:
-			LCD.drawString("Blau", 3, 3);
+			this.setColorState(Colors.BLUE);
 			detected_color = 'b';
 			break;
 		case 4:
-			LCD.drawString("Weiﬂ", 3, 3);
+			this.setColorState(Colors.WHITE);
 			detected_color = 'w';
 			break;
 		case 5:
-			LCD.drawString("Gelb", 3, 3);
+			this.setColorState(Colors.YELLOW);
 			detected_color = 'y';
 			break;
 		case 6:
-			LCD.drawString("Orange", 3, 3);
+			this.setColorState(Colors.ORANGE);
 			detected_color = 'o';
 			break;
 		default:
-			LCD.drawString("None", 3, 3);
+			this.setColorState(Colors.NONE);
 			detected_color = 'x';
 			break;
 		}
-		LCD.refresh();
 		
+		// show detected colors and RGB values on NXT display
+		if (this.debug) {
+			try {
+				LCD.drawString("----------------", 0, 5);
+				LCD.drawString("Color:", 0, 6);
+				LCD.drawString("      ", 7, 6);
+				LCD.drawString(this.getColorState().toString(), 7, 6);
+				LCD.drawString("r", 0, 7);
+				LCD.drawString("   ", 1, 7);
+				LCD.drawInt(rgb_vector[0], 1, 7);
+				LCD.drawString("g", 5, 7);
+				LCD.drawString("   ", 6, 7);
+				LCD.drawInt(rgb_vector[1], 6, 7);
+				LCD.drawString("b", 10, 7);
+				LCD.drawString("   ", 11, 7);
+				LCD.drawInt(rgb_vector[2], 11, 7);
+				LCD.refresh();
+			} catch (ArrayIndexOutOfBoundsException e) {
+				System.out.println("BAD ARRAY INDEX - " + e.getMessage());
+			}
+		}
 		return detected_color;
 	}
 
-	// getter
-	public Enum<CUBIECOLOR> getColor_state() {
-		return color_state;
-	}
-
-	// setter
-	public Enum<CUBIECOLOR> setColor_state(CUBIECOLOR color_state) {
-		if (debug) {
-			LCD.drawString("Color: " + color_state, 1, 1);
-		}
-		return this.color_state = color_state;
-	}
-
+	/**
+	 * Calibrates the white and black values of the color sensor and stores it on the sensor persistently.
+	 */
 	public void calibrate() {
+
 		LCD.drawString("calibrate colorsensor", 0, 1);
+		// Calibrate white value
 		LCD.drawString("white", 0, 2);
 		Button.waitForAnyPress();
+		this.initWhiteBalance();
 		LCD.clear();
-		// weiﬂ
-		colorSensor.initWhiteBalance();
+		
+		// Calibrate black value
 		LCD.drawString("black", 0, 3);
 		Button.waitForAnyPress();
-		colorSensor.initBlackLevel();
+		this.initBlackLevel();
 		LCD.clear();
 	}
 
@@ -166,25 +187,46 @@ public class ColorDetector {
 		return Math.sqrt(distance);
 	}
 	
-	private int[] calculateAverageRgbVector(int iterations, long duration) {
+	/**
+	 * Executes a row of normalized RGB measurements and returns an array with the averaged RGB values
+	 * @param duration How long the the complete measuring process should take
+	 * @param iterations How many measurements will be executed within that duration
+	 * @return 3-dimensional array of the averaged integer RGB values (0 - 255)
+	 */
+	private int[] getAverageRgbVector(long duration, int iterations) {
 		
-		int r = 0;
-		int g = 0;
-		int b = 0;
+		// initialize RGB array with 0 values
+		int[] rgb_vector = {0, 0, 0};
 		
-		int[] rgb_vector = {r, g, b};
-		
-		for (int i = 0; i < iterations; i++) {
-			r += colorSensor.getRGBNormalized(Color.RED);
-			g += colorSensor.getRGBNormalized(Color.GREEN);
-			b += colorSensor.getRGBNormalized(Color.BLUE);
-			Delay.msDelay(duration/iterations);
+		// only if parameters are positive
+		if (duration > 0 && iterations > 0) {
+
+			for (int i = 0; i < iterations; i++) {
+
+				// read normalized RGB values and cumulate them in the vector slots
+				rgb_vector[0] += this.getRGBNormalized(Color.RED);
+				rgb_vector[1] += this.getRGBNormalized(Color.GREEN);
+				rgb_vector[2] += this.getRGBNormalized(Color.BLUE);
+				
+				// wait until next reading
+				Delay.msDelay(duration/iterations);
+			}
+			
+			// calculate average in every vector slot
+			rgb_vector[0] = rgb_vector[0]/iterations;
+			rgb_vector[1] = rgb_vector[1]/iterations;
+			rgb_vector[2] = rgb_vector[2]/iterations;
 		}
-		
-		rgb_vector[0] = r/iterations;
-		rgb_vector[1] = g/iterations;
-		rgb_vector[2] = b/iterations;
-		
 		return rgb_vector;
+	}
+	
+	// Setter
+	public void setColorState(Colors c) {
+		this.color_state = c;
+	}
+	
+	// Getter
+	public Enum<Colors> getColorState() {
+		return this.color_state;
 	}
 }

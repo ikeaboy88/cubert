@@ -1,5 +1,6 @@
 package com.nxt;
 
+import lejos.nxt.LCD;
 import lejos.nxt.NXTMotor;
 import lejos.nxt.TachoMotorPort;
 
@@ -29,13 +30,15 @@ public class NXTUnregulatedStateMotor extends NXTMotor {
 		super(port);
 		// set initial state
 		this.arm_state = Arm.RELEASED;
-		this.debug = true;
+		this.debug = debug;
 	}
 
 	// Setter
 	public Enum<Arm> setArmState(Arm a) {
 		if (debug) {
-			System.out.println("Arm: " + a);
+			LCD.drawString("Arm:         ", 0, 4);
+			LCD.drawString("Arm: " + a, 0, 4);
+			LCD.refresh();
 		}
 		return this.arm_state = a;
 	}

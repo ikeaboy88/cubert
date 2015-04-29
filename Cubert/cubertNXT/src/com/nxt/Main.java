@@ -9,6 +9,7 @@ import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.MotorPort;
+import lejos.nxt.SensorPort;
 import lejos.nxt.TachoMotorPort;
 import lejos.nxt.comm.NXTConnection;
 import lejos.nxt.comm.USB;
@@ -19,13 +20,17 @@ public class Main {
 
 	public static void main(String[] args) {
 		// Create object to execute movements on Cubert
-		Movement move = new Movement();
-		ColorDetector colorDetector = new ColorDetector();
+		Movement move = new Movement(true);
+		ColorDetector colorDetector = new ColorDetector(SensorPort.S3, true);
 
 //		colorDetector.calibrate();
 		// ***********************************
 		// "Runtime loop"
+		LCD.drawString("Press button", 0, 0);
+		LCD.drawString("to start", 0, 1);
 		Button.waitForAnyPress();
+		LCD.clear();
+		
 		while (true) {
 			// After pressing a button...
 
@@ -34,46 +39,17 @@ public class Main {
 				break;
 			}
 			// ...execute code below
-			/*
-			Button.waitForAnyPress();
-			move.moveSensorToCenter();
-			Delay.msDelay(2000);
-			move.moveSensorToEdge();
-			Delay.msDelay(2000);
-			move.removeSensor();
-			Delay.msDelay(2000);
-			move.holdCube();
-			Delay.msDelay(1000);
-			move.tiltCube();
-			Delay.msDelay(1000);
-			move.releaseCube();
-			Delay.msDelay(2000);
-			move.moveSensorToCenter();
-			Delay.msDelay(2000);
-			move.moveSensorToEdge();
-			Delay.msDelay(2000);
-			move.removeSensor();
-			Delay.msDelay(2000);
-			move.rotateTable(90);
-			Delay.msDelay(2000);
-			move.holdCube();
-			Delay.msDelay(1000);
-			move.tiltCube();
-			Delay.msDelay(1000);
-			move.releaseCube();
-			*/
 			
-
 			//Scan center
 			move.moveSensorToCenter();
 			Delay.msDelay(200);
-			colorDetector.detectColor();
+			colorDetector.detectColor(200, 5);
 			//Button.waitForAnyPress();
 			
 			//Scan edges
 			move.moveSensorToEdge();
 			Delay.msDelay(200);
-			colorDetector.detectColor();
+			colorDetector.detectColor(200, 5);
 			//Button.waitForAnyPress();
 			for (int i = 0; i < 7; i++) {
 				Delay.msDelay(200);
@@ -83,7 +59,7 @@ public class Main {
 				} else {
 					move.moveSensorToCorner();
 				}
-				colorDetector.detectColor();
+				colorDetector.detectColor(200, 5);
 			}
 			Delay.msDelay(200);
 			move.rotateTable(45);
@@ -98,8 +74,6 @@ public class Main {
 			Delay.msDelay(1000);
 			move.releaseCube();
 			Delay.msDelay(1000);
-			
-			
 		}
 		// ***********************************
 

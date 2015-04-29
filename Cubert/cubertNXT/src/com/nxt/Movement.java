@@ -24,9 +24,11 @@ public class Movement {
 		mb = new NXTRegulatedStateMotor(MotorPort.B, false);
 		mc = new NXTUnregulatedStateMotor(MotorPort.C, false);
 	}
-
-	public NXTRegulatedStateMotor getMb() {
-		return mb;
+	
+	public Movement(boolean debug) {
+		ma = new NXTRegulatedStateMotor(MotorPort.A, debug);
+		mb = new NXTRegulatedStateMotor(MotorPort.B, debug);
+		mc = new NXTUnregulatedStateMotor(MotorPort.C, debug);
 	}
 
 	/**
