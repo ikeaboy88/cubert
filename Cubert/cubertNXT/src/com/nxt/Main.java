@@ -9,6 +9,7 @@ import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.MotorPort;
+import lejos.nxt.SensorPort;
 import lejos.nxt.TachoMotorPort;
 import lejos.nxt.comm.NXTConnection;
 import lejos.nxt.comm.USB;
@@ -20,7 +21,7 @@ public class Main {
 	public static void main(String[] args) {
 		// Create object to execute movements on Cubert
 		Movement move = new Movement(true);
-		ColorDetector colorDetector = new ColorDetector(true);
+		ColorDetector colorDetector = new ColorDetector(SensorPort.S3, true);
 
 //		colorDetector.calibrate();
 		// ***********************************
