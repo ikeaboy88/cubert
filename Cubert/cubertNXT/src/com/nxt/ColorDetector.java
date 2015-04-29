@@ -10,7 +10,7 @@ import lejos.util.Delay;
 /**
  * Detection of the cube's 6 different colors with the HiTechnic Color Sensor V1
  */
-public class ColorDetector {
+public class ColorDetector extends ColorHTSensor {
 
 	// colors of the cube surface
 	public enum Colors {
@@ -35,14 +35,12 @@ public class ColorDetector {
 	private final int[][] rgb_ref = { red_rgb_ref, green_rgb_ref, blue_rgb_ref,
 			white_rgb_ref, yellow_rgb_ref, orange_rgb_ref };
 
-	// declaration of the color sensor class we are using (Thought for the HiTechnic Color Sensor V2)
-	ColorHTSensor colorSensor;
 
 	/**
 	 * Default constructor without debug
 	 */
-	public ColorDetector() {
-		colorSensor = new ColorHTSensor(SensorPort.S3);
+	public ColorDetector(SensorPort port) {
+		super(port);
 		this.color_state = Colors.NONE;
 		this.debug = false;
 	}
@@ -51,8 +49,8 @@ public class ColorDetector {
 	 * Constructor with debug (output on NXT display) option
 	 * @param debug If true debug is activated
 	 */
-	public ColorDetector(Boolean debug) {
-		colorSensor = new ColorHTSensor(SensorPort.S3);
+	public ColorDetector(SensorPort port, Boolean debug) {
+		super(port);
 		this.color_state = Colors.NONE;
 		this.debug = debug;
 	}
@@ -157,13 +155,13 @@ public class ColorDetector {
 		// Calibrate white value
 		LCD.drawString("white", 0, 2);
 		Button.waitForAnyPress();
-		colorSensor.initWhiteBalance();
+		this.initWhiteBalance();
 		LCD.clear();
 		
 		// Calibrate black value
 		LCD.drawString("black", 0, 3);
 		Button.waitForAnyPress();
-		colorSensor.initBlackLevel();
+		this.initBlackLevel();
 		LCD.clear();
 	}
 
@@ -206,9 +204,9 @@ public class ColorDetector {
 			for (int i = 0; i < iterations; i++) {
 
 				// read normalized RGB values and cumulate them in the vector slots
-				rgb_vector[0] += colorSensor.getRGBNormalized(Color.RED);
-				rgb_vector[1] += colorSensor.getRGBNormalized(Color.GREEN);
-				rgb_vector[2] += colorSensor.getRGBNormalized(Color.BLUE);
+				rgb_vector[0] += this.getRGBNormalized(Color.RED);
+				rgb_vector[1] += this.getRGBNormalized(Color.GREEN);
+				rgb_vector[2] += this.getRGBNormalized(Color.BLUE);
 				
 				// wait until next reading
 				Delay.msDelay(duration/iterations);
