@@ -1,5 +1,6 @@
 package com.nxt;
 
+import lejos.nxt.Button;
 import lejos.nxt.SensorPort;
 import lejos.util.Delay;
 
@@ -127,6 +128,11 @@ public class Cube {
 			Delay.msDelay(1000);
 			move.releaseCube();
 			Delay.msDelay(1000);
+			 
+			//Cancel scan by holding down orange button on NXT
+			if (Button.ESCAPE.isDown()) {
+				return null;
+			}
 		}
 		move.rotateTable(-90);
 		Delay.msDelay(1000);
