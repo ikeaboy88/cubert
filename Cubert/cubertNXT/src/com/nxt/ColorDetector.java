@@ -24,16 +24,23 @@ public class ColorDetector extends ColorHTSensor {
 	private boolean debug;
 
 	// reference values for each color (with light from top, Dayan II Guhong speed cube)
-	private final int[] red_rgb_ref = { 255, 0, 0 };
-	private final int[] green_rgb_ref = { 110, 190, 255 };
-	private final int[] blue_rgb_ref = { 40, 15, 255 };
-	private final int[] white_rgb_ref = { 255, 255, 255 };
-	private final int[] yellow_rgb_ref = { 160, 255, 0 };
-	private final int[] orange_rgb_ref = { 255, 135, 0 };
+//	private final int[] red_rgb_ref = { 255, 0, 0 };
+//	private final int[] green_rgb_ref = { 110, 190, 255 };
+//	private final int[] blue_rgb_ref = { 40, 15, 255 };
+//	private final int[] white_rgb_ref = { 255, 255, 255 };
+//	private final int[] yellow_rgb_ref = { 160, 255, 0 };
+//	private final int[] orange_rgb_ref = { 255, 135, 0 };
+	
+	public int[] white_rgb_ref = { 0, 0, 0 };
+	public int[] green_rgb_ref = { 0, 0, 0 };
+	public int[] yellow_rgb_ref = { 0, 0, 0 };
+	public int[] blue_rgb_ref = { 0, 0, 0 };
+	public int[] orange_rgb_ref = { 0, 0, 0 };
+	public int[] red_rgb_ref = { 0, 0, 0 };
 	
 	// nested array with all reference array from above
-	private final int[][] rgb_ref = { red_rgb_ref, green_rgb_ref, blue_rgb_ref,
-			white_rgb_ref, yellow_rgb_ref, orange_rgb_ref };
+	public int[][] rgb_ref = { white_rgb_ref, green_rgb_ref, yellow_rgb_ref, blue_rgb_ref,
+								orange_rgb_ref, red_rgb_ref };
 
 
 	/**
@@ -93,32 +100,32 @@ public class ColorDetector extends ColorHTSensor {
 		// return detected color and set the color state
 		switch (color_index) {
 		case 1:
-			this.setColorState(Colors.RED);
-			detected_color = 'R';
+			this.setColorState(Colors.WHITE);
+			detected_color = 'W';
 			break;
 		case 2:
 			this.setColorState(Colors.GREEN);
 			detected_color = 'G';
 			break;
 		case 3:
-			this.setColorState(Colors.BLUE);
-			detected_color = 'B';
-			break;
-		case 4:
-			this.setColorState(Colors.WHITE);
-			detected_color = 'W';
-			break;
-		case 5:
 			this.setColorState(Colors.YELLOW);
 			detected_color = 'Y';
 			break;
-		case 6:
+		case 4:
+			this.setColorState(Colors.BLUE);
+			detected_color = 'B';
+			break;
+		case 5:
 			this.setColorState(Colors.ORANGE);
 			detected_color = 'O';
 			break;
+		case 6:
+			this.setColorState(Colors.RED);
+			detected_color = 'R';
+			break;
 		default:
 			this.setColorState(Colors.NONE);
-			detected_color = 'X';
+			detected_color = 'x';
 			break;
 		}
 		
@@ -194,7 +201,7 @@ public class ColorDetector extends ColorHTSensor {
 	 * @param iterations How many measurements will be executed within that duration
 	 * @return 3-dimensional array of the averaged integer RGB values (0 - 255)
 	 */
-	private int[] getAverageRgbVector(long duration, int iterations) {
+	public int[] getAverageRgbVector(long duration, int iterations) {
 		
 		// initialize RGB array with 0 values
 		int[] rgb_vector = {0, 0, 0};
