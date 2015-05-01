@@ -48,7 +48,7 @@ public class Cube {
 		// overall faces count: 54
 		// center at 0, 9, 18, 27, 36, 45
 		// corner at 2, 4, 6, 8, 11, 13, 15, 17, 20, 22, 24, 26, 29, 31, 33, 35, 38, 40, 42, 44, 47, 49, 51, 53
-		// edge at (1+14),(10+23),(19+32),(28+41), ...? 37, 50, 46, 5, 3, 16, 12, 25, 21, 34, 30, 43, 39, 52, 7, 48
+		// edge at 1+14, 3+43, 5+28, 7+52, 10+23, 12+37, 16+50, 19+32, 21+39, 25+48, 30+41, 34+46 
 		//TODO: Group all corners and edges into actual cubies
 		//TODO: Put cubies into the right cube index (according to the centers)
 		cube_scrambled[0][0] = 'b'; //actually put complete cubie signature into cube_scrambled array
