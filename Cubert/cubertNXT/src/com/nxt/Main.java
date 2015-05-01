@@ -13,6 +13,16 @@ public class Main {
 		// ***********************************
 		LCD.drawString("Press button", 0, 0);
 		LCD.drawString("to start", 0, 1);
+		LCD.drawString("calibration", 0, 2);
+		Button.waitForAnyPress();
+		LCD.clear();
+		LCD.drawString("Calibration", 0, 0);
+		LCD.drawString("running", 0, 1);
+		cube.executeCompleteScan(true);
+		LCD.clear();
+		LCD.drawString("Press button", 0, 0);
+		LCD.drawString("to start", 0, 1);
+		LCD.drawString("recognition", 0, 2);
 		Button.waitForAnyPress();
 		LCD.clear();
 		
@@ -23,7 +33,8 @@ public class Main {
 				break;
 			}
 			// ...execute code below
-			cube.executeCompleteScan(); break;
+			cube.executeCompleteScan();
+			Button.waitForAnyPress();
 		}
 		// ***********************************
 
