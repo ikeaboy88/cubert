@@ -117,20 +117,26 @@ public class Cube {
 			move.removeSensor();
 			
 			//Tilt cube (2x after scanning the 5th side, not after scanning last side)
-			if (j < 5) {
-				for (int k = 0; k < 2; k++) {
-					move.holdCube();
-					Delay.msDelay(1000);
-					move.tiltCube();
-					Delay.msDelay(1000);
-					move.releaseCube();
-					Delay.msDelay(1000);
-					if (j != 4) {
-						break;
-					}
-				}
+			move.holdCube();
+			Delay.msDelay(1000);
+			move.tiltCube();
+			if (j == 4) {
+				Delay.msDelay(300);
+				move.tiltCube();
 			}
+			Delay.msDelay(1000);
+			move.releaseCube();
+			Delay.msDelay(1000);
 		}
+		move.rotateTable(-90);
+		Delay.msDelay(1000);
+		move.holdCube();
+		Delay.msDelay(1000);
+		move.tiltCube();
+		Delay.msDelay(1000);
+		move.releaseCube();
+		Delay.msDelay(1000);
+
 		return scan_result_vector;
 	}
 	
