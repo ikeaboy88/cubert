@@ -147,7 +147,7 @@ public class Movement {
 				
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(-130);
+			mb.rotateTo(-150);
 			mb.stop();
 			mb.setSensorState(Sensor.REMOVED);
 		}
@@ -165,7 +165,7 @@ public class Movement {
 	
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(195);
+			mb.rotateTo(215);
 			mb.stop();
 			mb.setSensorState(Sensor.CENTER);
 		}
