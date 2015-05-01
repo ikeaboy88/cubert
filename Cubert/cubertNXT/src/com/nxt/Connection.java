@@ -28,6 +28,7 @@ public class Connection {
 		LCD.drawString("connected", 0, 0);
 	}
 
+	/** send an array of String character by character to the PC*/
 	public void sendDatatoPC() {
 		LCD.clear();
 		String [] scanResult = {"A","B","C","D"};
@@ -35,9 +36,9 @@ public class Connection {
 		try {
 			dos = connection.openDataOutputStream();
 			for (int i = 0; i < scanResult.length; i++){
-				dos.writeChars(scanResult[i]);
-				dos.flush();
+			dos.writeBytes(scanResult[i]);
 			}
+			dos.flush();
 		} catch (IOException e) {
 			LCD.drawString("Can't send data to PC", 1, 4);
 			e.printStackTrace();

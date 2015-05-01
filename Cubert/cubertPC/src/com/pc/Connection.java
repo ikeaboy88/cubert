@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.CharBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 import lejos.pc.comm.NXTCommLogListener;
@@ -60,16 +61,26 @@ public class Connection {
 	public void recieveDataFromNXT() 
 	{
 		String recievedString = null;
+		char recievedChar; 
+		List <Character> states = new ArrayList<Character>();
+
 		try 
 		{
 			dis = new DataInputStream(nxt_Comm.getInputStream());
-//			dis.read();
 			bufferedReader = new BufferedReader(new InputStreamReader(dis));
-//			if(bufferedReader.ready())
-//			{
-				recievedString = bufferedReader.readLine();
-//				bufferedReader.read(recievedString);
-				System.out.println("Recieved Data: "+recievedString);
+	
+			recievedString = bufferedReader.readLine();
+			System.out.println("Recieved String: " +recievedString);
+			recievedString.toCharArray();
+			
+			for(int i = 0; i < recievedString.length(); i++)
+			{
+					recievedChar = recievedString.charAt(i);
+					states.add(recievedChar);
+					
+					System.out.println("Recieved Data: " +states.get(i));
+//				System.out.println("Recieved toCharArray: " +recievedString.toCharArray()[i]);
+			}
 			
 		} catch (IOException e) {
 			System.out.println("Can't communicate to NXT");
