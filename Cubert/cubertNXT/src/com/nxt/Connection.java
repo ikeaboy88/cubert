@@ -1,8 +1,11 @@
 package com.nxt;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
@@ -27,11 +30,14 @@ public class Connection {
 
 	public void sendDatatoPC() {
 		LCD.clear();
+		String [] scanResult = {"A","B","C","D"};
 		LCD.drawString("sending data to pc...", 1, 3);
 		try {
 			dos = connection.openDataOutputStream();
-			dos.writeChars("A");
-			dos.flush();
+			for (int i = 0; i < scanResult.length; i++){
+				dos.writeChars(scanResult[i]);
+				dos.flush();
+			}
 		} catch (IOException e) {
 			LCD.drawString("Can't send data to PC", 1, 4);
 			e.printStackTrace();

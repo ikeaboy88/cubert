@@ -1,10 +1,14 @@
 package com.pc;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.CharBuffer;
+import java.util.List;
 
 import lejos.pc.comm.NXTCommLogListener;
 import lejos.pc.comm.NXTConnector;
@@ -16,6 +20,8 @@ public class Connection {
 	public NXTInfo[] nxt_Info = null;
 	DataOutputStream dos = null;
 	DataInputStream dis = null;
+	BufferedReader bufferedReader = null;
+//	CharBuffer charBuffer;
 
 	public void connectToNXT() 
 	{
@@ -53,12 +59,18 @@ public class Connection {
 	//return type should be int, void only for testing
 	public void recieveDataFromNXT() 
 	{
-		char recievedString;
+		String recievedString = null;
 		try 
 		{
 			dis = new DataInputStream(nxt_Comm.getInputStream());
-			recievedString = dis.readChar();
+//			dis.read();
+			bufferedReader = new BufferedReader(new InputStreamReader(dis));
+//			if(bufferedReader.ready())
+//			{
+				recievedString = bufferedReader.readLine();
+//				bufferedReader.read(recievedString);
 				System.out.println("Recieved Data: "+recievedString);
+			
 		} catch (IOException e) {
 			System.out.println("Can't communicate to NXT");
 			e.printStackTrace();
