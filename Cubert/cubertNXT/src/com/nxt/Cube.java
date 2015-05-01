@@ -74,7 +74,7 @@ public class Cube {
 	}
 	
 	public char[] executeCompleteScan() {
-		char[] scan_result_vector = new char[0];
+		char[] scan_result_vector = new char[54];
 		int index = 0;
 		
 		// Scan all 6 sides of the cube
@@ -109,7 +109,7 @@ public class Cube {
 			Delay.msDelay(200);
 			move.rotateTable(45);
 			//After 4 sides do an additional quarter turn
-			if (j == 4) {
+			if (j == 3) {
 				move.rotateTable(90);
 			}
 			move.moveSensorToEdge();

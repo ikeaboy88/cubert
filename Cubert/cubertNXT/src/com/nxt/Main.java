@@ -23,7 +23,7 @@ public class Main {
 				break;
 			}
 			// ...execute code below
-			cube.executeCompleteScan();
+			cube.executeCompleteScan(); break;
 		}
 		// ***********************************
 
