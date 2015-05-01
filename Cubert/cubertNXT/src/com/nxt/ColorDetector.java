@@ -94,37 +94,38 @@ public class ColorDetector extends ColorHTSensor {
 		switch (color_index) {
 		case 1:
 			this.setColorState(Colors.RED);
-			detected_color = 'r';
+			detected_color = 'R';
 			break;
 		case 2:
 			this.setColorState(Colors.GREEN);
-			detected_color = 'g';
+			detected_color = 'G';
 			break;
 		case 3:
 			this.setColorState(Colors.BLUE);
-			detected_color = 'b';
+			detected_color = 'B';
 			break;
 		case 4:
 			this.setColorState(Colors.WHITE);
-			detected_color = 'w';
+			detected_color = 'W';
 			break;
 		case 5:
 			this.setColorState(Colors.YELLOW);
-			detected_color = 'y';
+			detected_color = 'Y';
 			break;
 		case 6:
 			this.setColorState(Colors.ORANGE);
-			detected_color = 'o';
+			detected_color = 'O';
 			break;
 		default:
 			this.setColorState(Colors.NONE);
-			detected_color = 'x';
+			detected_color = 'X';
 			break;
 		}
 		
 		// show detected colors and RGB values on NXT display
 		if (this.debug) {
 			try {
+				LCD.drawString("return: " + detected_color, 0, 0);
 				LCD.drawString("----------------", 0, 5);
 				LCD.drawString("Color:", 0, 6);
 				LCD.drawString("      ", 7, 6);
