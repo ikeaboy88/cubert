@@ -1,6 +1,7 @@
 package com.nxt;
 
 import lejos.nxt.Button;
+import lejos.nxt.LCD;
 import lejos.nxt.SensorPort;
 import lejos.util.Delay;
 
@@ -68,14 +69,13 @@ public class Cube {
 		return cube_scrambled;
 	}
 	
-	//TODO: Serialized representation of the scrambled cube that is used for transmission to PC
-	private char[] serializeOrderedScanResult(char[][] cube_scrambled) {
-		
-		return cube_scrambled[0];
+	public char[] executeCompleteScan() {
+		return executeCompleteScan(false);
 	}
 	
-	public char[] executeCompleteScan() {
+	public char[] executeCompleteScan(boolean reference_scan) {
 		char[] scan_result_vector = new char[54];
+		int[] current_rgb_vector = { 0, 0, 0 };
 		int index = 0;
 		
 		// Scan all 6 sides of the cube
@@ -84,13 +84,27 @@ public class Cube {
 			// scan center
 			move.moveSensorToCenter();
 			Delay.msDelay(200);
-			scan_result_vector[index] = detect.detectColor(200, 5);
+			if (reference_scan) {
+				current_rgb_vector = detect.getAverageRgbVector(200, 5);
+				detect.rgb_ref[j][0] += current_rgb_vector[0];
+				detect.rgb_ref[j][1] += current_rgb_vector[1];
+				detect.rgb_ref[j][2] += current_rgb_vector[2];
+			} else {
+				scan_result_vector[index] = detect.detectColor(200, 5);
+			}
 			index += 1;
 			
 			//Scan edge
 			move.moveSensorToEdge();
 			Delay.msDelay(200);
-			scan_result_vector[index] = detect.detectColor(200, 5);
+			if (reference_scan) {
+				current_rgb_vector = detect.getAverageRgbVector(200, 5);
+				detect.rgb_ref[j][0] += current_rgb_vector[0];
+				detect.rgb_ref[j][1] += current_rgb_vector[1];
+				detect.rgb_ref[j][2] += current_rgb_vector[2];
+			} else {
+				scan_result_vector[index] = detect.detectColor(200, 5);
+			}
 			index += 1;
 	
 			//Scan remaining 7 cubie-surfaces clockwise on the current upper side
@@ -102,7 +116,14 @@ public class Cube {
 				} else {
 					move.moveSensorToCorner();
 				}
-				scan_result_vector[index] = detect.detectColor(200, 5);
+				if (reference_scan) {
+					current_rgb_vector = detect.getAverageRgbVector(200, 5);
+					detect.rgb_ref[j][0] += current_rgb_vector[0];
+					detect.rgb_ref[j][1] += current_rgb_vector[1];
+					detect.rgb_ref[j][2] += current_rgb_vector[2];
+				} else {
+					scan_result_vector[index] = detect.detectColor(200, 5);
+				}
 				index += 1;
 			}
 			
@@ -142,7 +163,15 @@ public class Cube {
 		Delay.msDelay(1000);
 		move.releaseCube();
 		Delay.msDelay(1000);
-
+		
+		if (reference_scan) {
+			for (int k = 0; k < 6; k++) {
+				detect.rgb_ref[k][0] = detect.rgb_ref[k][0] / 9;
+				detect.rgb_ref[k][1] = detect.rgb_ref[k][1] / 9;
+				detect.rgb_ref[k][2] = detect.rgb_ref[k][2] / 9;
+			}
+		}
+		
 		return scan_result_vector;
 	}
 	
