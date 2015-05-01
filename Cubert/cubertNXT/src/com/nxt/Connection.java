@@ -13,7 +13,6 @@ public class Connection {
 	USBConnection connection = null;
 	DataOutputStream dos = null;
 	DataInputStream dis = null;
-	private int send_Int = 5678;
 
 	public void connectToPC() {
 		LCD.drawString("Right BT->USB Verbindung", 0, 0);
@@ -26,13 +25,12 @@ public class Connection {
 		LCD.drawString("connected", 0, 0);
 	}
 
-	public void sendDatatoPC(int sendInt) {
+	public void sendDatatoPC() {
 		LCD.clear();
-		LCD.drawInt(sendInt, 1, 2);
 		LCD.drawString("sending data to pc...", 1, 3);
 		try {
 			dos = connection.openDataOutputStream();
-			dos.writeInt(sendInt);
+			dos.writeChars("A");
 			dos.flush();
 		} catch (IOException e) {
 			LCD.drawString("Can't send data to PC", 1, 4);
@@ -44,15 +42,16 @@ public class Connection {
 
 	// return type should be int ,void only for testing
 	public void recieveDatafromPC() {
-		int recievedInt = 0;
+		char recievedString;
 		try {
 			dis = connection.openDataInputStream();
 			// check whether data is available to read
 			if (connection.available() > 0) {
 				LCD.clear();
-				recievedInt = dis.readInt();
+				recievedString = dis.readChar();
+//				recievedString = reader.readLine();
 				LCD.drawString("Recieved Data:", 0, 0);
-				LCD.drawInt(recievedInt, 0, 1);
+				LCD.drawChar(recievedString, 0, 1);
 				LCD.drawString("Press to End", 0, 2);
 				Button.waitForAnyPress();
 			} else {
@@ -78,13 +77,5 @@ public class Connection {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	public int getSendInt() {
-		return send_Int;
-	}
-
-	public void setSendInt(int sendInt) {
-		this.send_Int = sendInt;
 	}
 }

@@ -16,7 +16,6 @@ public class Connection {
 	public NXTInfo[] nxt_Info = null;
 	DataOutputStream dos = null;
 	DataInputStream dis = null;
-	int send_Int = 1234;
 
 	public void connectToNXT() 
 	{
@@ -38,12 +37,12 @@ public class Connection {
 		}
 	}
 
-	public void sendDataToNXT(int sendInt) 
+	public void sendDataToNXT() 
 	{
 		try 
 		{
 			dos = new DataOutputStream(nxt_Comm.getOutputStream());
-			dos.writeInt(sendInt);
+			dos.writeChars("B");			
 			// send data through stream
 			dos.flush();
 		} catch (IOException e) {
@@ -54,12 +53,12 @@ public class Connection {
 	//return type should be int, void only for testing
 	public void recieveDataFromNXT() 
 	{
-		int recievedInt = 0;
+		char recievedString;
 		try 
 		{
 			dis = new DataInputStream(nxt_Comm.getInputStream());
-				recievedInt = dis.readInt();
-				System.out.println("Recieved Data: "+recievedInt);
+			recievedString = dis.readChar();
+				System.out.println("Recieved Data: "+recievedString);
 		} catch (IOException e) {
 			System.out.println("Can't communicate to NXT");
 			e.printStackTrace();
