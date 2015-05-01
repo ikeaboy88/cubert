@@ -16,14 +16,13 @@ import lejos.pc.comm.NXTConnector;
 import lejos.pc.comm.NXTInfo;
 
 public class Connection {
+	private DataOutputStream dos = null;
+	private DataInputStream dis = null;
 	//use this connector for opening multi in-/ outputstreams
-	NXTConnector nxt_Comm = new NXTConnector();
+	private final NXTConnector nxt_Comm = new NXTConnector();
 	public NXTInfo[] nxt_Info = null;
-	DataOutputStream dos = null;
-	DataInputStream dis = null;
-	BufferedReader bufferedReader = null;
-//	CharBuffer charBuffer;
-
+	private BufferedReader bufferedReader = null;
+	
 	public void connectToNXT() 
 	{
 		System.out.println("Trying to connect...");
@@ -43,7 +42,7 @@ public class Connection {
 			System.exit(1);
 		}
 	}
-
+	
 	public void sendDataToNXT() 
 	{
 		try 
@@ -52,17 +51,18 @@ public class Connection {
 			dos.writeChars("B");			
 			// send data through stream
 			dos.flush();
+			dos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	//return type should be int, void only for testing
-	public void recieveDataFromNXT() 
+	/**Returns an array with the scanned colors */
+	public List<Character> recieveScannedCubeState() 
 	{
 		String recievedString = null;
 		char recievedChar; 
-		List <Character> states = new ArrayList<Character>();
+		List <Character> scannedCubeState = new ArrayList<Character>();
 
 		try 
 		{
@@ -76,28 +76,17 @@ public class Connection {
 			for(int i = 0; i < recievedString.length(); i++)
 			{
 					recievedChar = recievedString.charAt(i);
-					states.add(recievedChar);
+					scannedCubeState.add(recievedChar);
 					
-					System.out.println("Recieved Data: " +states.get(i));
-//				System.out.println("Recieved toCharArray: " +recievedString.toCharArray()[i]);
+					System.out.println("Recieved Data: " +scannedCubeState.get(i));
 			}
-			
+			dis.close();
 		} catch (IOException e) {
 			System.out.println("Can't communicate to NXT");
 			e.printStackTrace();
 		}
-	}
-
-	public void closeStreams() 
-	{
-		try 
-		{
-			dis.close();
-			dos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		return scannedCubeState;
 	}
 
 	public void sendPressedCharToNXT() 

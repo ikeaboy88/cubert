@@ -13,9 +13,9 @@ import lejos.nxt.comm.USB;
 import lejos.nxt.comm.USBConnection;
 
 public class Connection {
-	USBConnection connection = null;
-	DataOutputStream dos = null;
-	DataInputStream dis = null;
+	private USBConnection connection = null;
+	private DataOutputStream dos = null;
+	private DataInputStream dis = null;
 
 	public void connectToPC() {
 		LCD.drawString("Right BT->USB Verbindung", 0, 0);
@@ -27,18 +27,21 @@ public class Connection {
 		LCD.clear();
 		LCD.drawString("connected", 0, 0);
 	}
-
-	/** send an array of String character by character to the PC*/
+	
+	/** send an String array character by character to the PC*/
 	public void sendDatatoPC() {
 		LCD.clear();
-		String [] scanResult = {"A","B","C","D"};
+		char[]scan_result_vector = {'A','B','C','D'};
 		LCD.drawString("sending data to pc...", 1, 3);
+		String[] scanResult = new String[54];
 		try {
 			dos = connection.openDataOutputStream();
-			for (int i = 0; i < scanResult.length; i++){
+			for (int i = 0; i < scan_result_vector.length; i++){
+			scanResult[i] = Character.toString(scan_result_vector[i]);
 			dos.writeBytes(scanResult[i]);
 			}
 			dos.flush();
+			dos.close();
 		} catch (IOException e) {
 			LCD.drawString("Can't send data to PC", 1, 4);
 			e.printStackTrace();
@@ -64,25 +67,16 @@ public class Connection {
 			} else {
 				System.out.println("nothing to read");
 			}
+			dis.close();
 		} catch (IOException e1) {
 			System.out.println("Can't communicate");
 			e1.printStackTrace();
 		}
-
-		/*
-		 * recieve keyboardinput just in time String recievedString = null;
-		 * recievedString = dis.readChar(); LCD.clear();
-		 * LCD.drawChar(recievedString, 1, 1); LCD.refresh();
-		 */
 	}
 
-	public void closeStreams() {
-		try {
-			dis.close();
-			dos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	/*
+	 * recieve keyboardinput just in time String recievedString = null;
+	 * recievedString = dis.readChar(); LCD.clear();
+	 * LCD.drawChar(recievedString, 1, 1); LCD.refresh();
+	 */
 }
