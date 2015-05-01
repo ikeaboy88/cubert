@@ -43,12 +43,18 @@ public class Connection {
 		}
 	}
 	
-	public void sendDataToNXT() 
+	public void sendSolvingSequence(char[] sequence) 
 	{
+		String[] solvingSequence = new String[54];
+	
 		try 
 		{
 			dos = new DataOutputStream(nxt_Comm.getOutputStream());
-			dos.writeChars("B");			
+			for (int i = 0; i < sequence.length; i++){
+			solvingSequence[i] = Character.toString(sequence[i]);
+			dos.writeBytes(solvingSequence[i]);			
+			System.out.println(solvingSequence[i]);
+			}
 			// send data through stream
 			dos.flush();
 			dos.close();
@@ -58,7 +64,7 @@ public class Connection {
 	}
 
 	/**Returns an array with the scanned colors */
-	public List<Character> recieveScannedCubeState() 
+	public List<Character> getColorSequence() 
 	{
 		String recievedString = null;
 		char recievedChar; 
