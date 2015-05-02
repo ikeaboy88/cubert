@@ -22,6 +22,7 @@ public class Connection {
 	private DataOutputStream dos = null;
 	private DataInputStream dis = null;
 	private BufferedReader bufferedReader = null; 
+	private InputStreamReader inputStreamReader = null;
 
 	public void connectToPC() {
 		LCD.drawString("Right BT->USB Verbindung", 0, 0);
@@ -70,19 +71,24 @@ public class Connection {
 	// return type should be int ,void only for testing
 	public void getSolvingSequence() {
 		LCD.clear();
+//		String s = "";
+		int s;
 		LCD.drawString("recieve..", 0, 0);
 		dis = getConnection().openDataInputStream();
-//		bufferedReader = new BufferedReader(new InputStreamReader(dis));
+		bufferedReader = new BufferedReader(new InputStreamReader(dis));
 
-		try {
-			int s = dis.readInt();
-			LCD.drawString("Data: "+s, 0, 2);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		while(true){
+			
+			try {
+				s = bufferedReader.read();
+				LCD.drawString("Data: "+s, 0, 2);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
-		LCD.drawString("Data??? ", 0, 1);
+//		LCD.drawString("Data??? ", 0, 1);
 	
 	}
 

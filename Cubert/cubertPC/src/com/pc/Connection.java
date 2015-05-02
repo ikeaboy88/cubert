@@ -45,16 +45,18 @@ public class Connection {
 	
 	public void sendSolvingSequence(char[] sequence) 
 	{
-		String[] solvingSequence = new String[54];
-	
+//		String[] solvingSequence = new String[3];
+		int i = 23;
 		try 
 		{
 			dos = new DataOutputStream(nxt_Comm.getOutputStream());
-			for (int i = 0; i < sequence.length; i++){
-			solvingSequence[i] = Character.toString(sequence[i]);
-			dos.writeBytes(solvingSequence[i]);			
-			System.out.println(solvingSequence[i]);
-			}
+			
+//			for (int i = 0; i < sequence.length; i++){
+//			solvingSequence[i] = Character.toString(sequence[i]);
+//			dos.writeBytes(solvingSequence[i]);			
+//			System.out.println(solvingSequence[i]);
+//			}
+			dos.writeInt(i);
 			// send data through stream
 			dos.flush();
 			dos.close();
