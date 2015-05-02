@@ -32,8 +32,13 @@ public class Connection {
 		}
 		LCD.clear();
 		LCD.drawString("connected", 0, 0);
+		Button.waitForAnyPress();
 	}
 	
+	public USBConnection getConnection() {
+		return connection;
+	}
+
 	/** send an String array character by character to the PC*/
 	public void sendColorSequence(char[] scan_result_vector) {
 		LCD.clear();
@@ -63,43 +68,22 @@ public class Connection {
 	}
 
 	// return type should be int ,void only for testing
-	public List<Character> getSolvingSequence() {
-		String recievedString = null;
-		char recievedChar;
-		List <Character> scannedCubeState = new ArrayList<Character>();
-		
+	public void getSolvingSequence() {
+		LCD.clear();
+		LCD.drawString("recieve..", 0, 0);
+		dis = getConnection().openDataInputStream();
+//		bufferedReader = new BufferedReader(new InputStreamReader(dis));
+
 		try {
-			dis = connection.openDataInputStream();
-			bufferedReader = new BufferedReader(new InputStreamReader(dis));
-			
-//			 check whether data is available to read
-			if (dis.available() > 0) {
-				LCD.clear();
-				recievedString = bufferedReader.readLine();
-//				recievedString = reader.readLine();
-				LCD.drawString("Recieved Data:", 0, 0);
-				LCD.drawString(recievedString, 0, 1);
-//				LCD.drawString("Press to End", 0, 2);
-//				Button.waitForAnyPress();
-				
-				for(int i = 0; i < recievedString.length(); i++)
-				{
-						recievedChar=recievedString.charAt(i);
-						scannedCubeState.add(recievedChar);
-						
-						System.out.println("Recieved Data: " +scannedCubeState.get(i));
-				}
-			} else {
-				System.out.println("nothing to read");
-			}
-				
-			Button.waitForAnyPress();
-			dis.close();
-		} catch (IOException e1) {
-			System.out.println("Can't communicate");
-			e1.printStackTrace();
+			int s = dis.readInt();
+			LCD.drawString("Data: "+s, 0, 2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return scannedCubeState;
+		
+		LCD.drawString("Data??? ", 0, 1);
+	
 	}
 
 	/*
