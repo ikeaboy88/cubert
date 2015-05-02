@@ -1,28 +1,20 @@
 package com.nxt;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.List;
-
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.comm.USB;
 import lejos.nxt.comm.USBConnection;
-import lejos.util.Delay;
 
 public class Connection {
 	private USBConnection connection = null;
 	private DataOutputStream dos = null;
 	private DataInputStream dis = null;
 	private BufferedReader bufferedReader = null; 
-	private InputStreamReader inputStreamReader = null;
 
 	public void connectToPC() {
 		LCD.drawString("Right BT->USB Verbindung", 0, 0);

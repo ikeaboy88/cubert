@@ -1,13 +1,10 @@
 package com.pc;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +15,7 @@ import lejos.pc.comm.NXTInfo;
 public class Connection {
 	private DataOutputStream dos = null;
 	private DataInputStream dis = null;
+	
 	//use this connector for opening multi in-/ outputstreams
 	private final NXTConnector nxt_Comm = new NXTConnector();
 	public NXTInfo[] nxt_Info = null;
