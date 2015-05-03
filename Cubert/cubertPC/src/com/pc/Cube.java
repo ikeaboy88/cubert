@@ -39,6 +39,9 @@ public class Cube {
 	
 	public char[][] cube_scrambled;
 	
+	// Orientation of the cube itself - which centers are facing in which direction
+	public char[] cube_orientation = {'x', 'x', 'x', 'x', 'x', 'x'};
+	
 	public Cube() {
 
 	}
@@ -49,7 +52,18 @@ public class Cube {
 		// center at 0, 9, 18, 27, 36, 45
 		// corner at 2+13+44, 4+29+42, 6+35+53, 8+15+51, 11+22+38, 17+24+49, 20+31+40, 26+33+47
 		// edge at 1+14, 3+43, 5+28, 7+52, 10+23, 12+37, 16+50, 19+32, 21+39, 25+48, 30+41, 34+46 
+
+		// Center faces
+		cube_orientation[0] = scan_result_vector[0]; // Top
+		cube_orientation[1] = scan_result_vector[18];// Bottom
+		cube_orientation[2] = scan_result_vector[36];// Left
+		cube_orientation[3] = scan_result_vector[45];// Right
+		cube_orientation[4] = scan_result_vector[9]; // Front
+		cube_orientation[5] = scan_result_vector[27];// Back
+		
 		//TODO: Group all corners and edges into actual cubies
+		
+		
 		//TODO: Put cubies into the right cube index (according to the centers)
 		cube_scrambled[0][0] = 'b'; //actually put complete cubie signature into cube_scrambled array
 		cube_scrambled[0][1] = 'l';
