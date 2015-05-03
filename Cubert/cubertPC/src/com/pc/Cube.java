@@ -47,7 +47,7 @@ public class Cube {
 	public char[][] orderScanResult(char[] scan_result_vector) {
 		// overall faces count: 54
 		// center at 0, 9, 18, 27, 36, 45
-		// corner at 2, 4, 6, 8, 11, 13, 15, 17, 20, 22, 24, 26, 29, 31, 33, 35, 38, 40, 42, 44, 47, 49, 51, 53
+		// corner at 2+13+44, 4+29+42, 6+35+53, 8+15+51, 11+22+38, 17+24+49, 20+31+40, 26+33+47
 		// edge at 1+14, 3+43, 5+28, 7+52, 10+23, 12+37, 16+50, 19+32, 21+39, 25+48, 30+41, 34+46 
 		//TODO: Group all corners and edges into actual cubies
 		//TODO: Put cubies into the right cube index (according to the centers)
