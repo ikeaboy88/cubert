@@ -62,7 +62,42 @@ public class Cube {
 		cube_orientation[5] = scan_result_vector[27];// Back
 		
 		//TODO: Group all corners and edges into actual cubies
-		
+		if (cube_orientation[0] == 'W' && cube_orientation[4] == 'G') {
+			cubie_00[0] = 'x';
+			cubie_00[1] = scan_result_vector[20];
+			cubie_00[2] = scan_result_vector[40];
+			cubie_00[3] = 'x';
+			cubie_00[4] = 'x';
+			cubie_00[5] = scan_result_vector[31];
+
+			cubie_01[0] = 'x';
+			cubie_01[1] = scan_result_vector[19];
+			cubie_01[2] = 'x';
+			cubie_01[3] = 'x';
+			cubie_01[4] = 'x';
+			cubie_01[5] = scan_result_vector[32];
+			
+			cubie_02[0] = 'x';
+			cubie_02[1] = scan_result_vector[26];
+			cubie_02[2] = 'x';
+			cubie_02[3] = scan_result_vector[47];
+			cubie_02[4] = 'x';
+			cubie_02[5] = scan_result_vector[33];
+
+			cubie_03[0] = 'x';
+			cubie_03[1] = 'x';
+			cubie_03[2] = scan_result_vector[41];
+			cubie_03[3] = 'x';
+			cubie_03[4] = 'x';
+			cubie_03[5] = scan_result_vector[30];
+
+			cubie_04[0] = 'x';
+			cubie_04[1] = 'x';
+			cubie_04[2] = 'x';
+			cubie_04[3] = scan_result_vector[46];
+			cubie_04[4] = 'x';
+			cubie_04[5] = scan_result_vector[34];
+		}
 		
 		//TODO: Put cubies into the right cube index (according to the centers)
 		cube_scrambled[0][0] = 'b'; //actually put complete cubie signature into cube_scrambled array
