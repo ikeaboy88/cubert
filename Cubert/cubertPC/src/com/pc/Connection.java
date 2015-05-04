@@ -5,9 +5,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
 import lejos.pc.comm.NXTCommLogListener;
 import lejos.pc.comm.NXTConnector;
 import lejos.pc.comm.NXTInfo;
@@ -64,11 +61,10 @@ public class Connection {
 	}
 
 	/**Returns an array with the scanned colors */
-	public List<Character> getColorSequence() 
+	public char[] getScanResultVector() 
 	{
 		String recievedString = null;
-		char recievedChar; 
-		List <Character> scannedCubeState = new ArrayList<Character>();
+		char[] scan_result_vector = new char[54];
 
 		try 
 		{
@@ -81,10 +77,9 @@ public class Connection {
 			
 			for(int i = 0; i < recievedString.length(); i++)
 			{
-					recievedChar = recievedString.charAt(i);
-					scannedCubeState.add(recievedChar);
+				scan_result_vector[i] = recievedString.charAt(i);
 					
-					System.out.println("Recieved Data: " +scannedCubeState.get(i));
+				System.out.println("Recieved Data: " +scan_result_vector[i]);
 			}
 			dis.close();
 		} catch (IOException e) {
@@ -92,7 +87,7 @@ public class Connection {
 			e.printStackTrace();
 		}
 		
-		return scannedCubeState;
+		return scan_result_vector;
 	}
 
 	public void sendPressedCharToNXT() 
