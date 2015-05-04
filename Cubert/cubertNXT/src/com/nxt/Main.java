@@ -33,17 +33,15 @@ public class Main {
 				break;
 			}
 			// ...execute code below
-			cube.executeCompleteScan();
+			
+			/* Connection between NXT and PC */
+			Connection connect_NXT = new Connection();
+			connect_NXT.connectToPC();
+			connect_NXT.sendScanResultVector(cube.executeCompleteScan());
 			Button.waitForAnyPress();
 		}
 		// ***********************************
 
-		/* Connection between NXT and PC */
-		// Connection connect_NXT = new Connection();
-		// connect_NXT.connectToPC();
-		// connect_NXT.sendDatatoPC(connect_NXT.getSendInt());
-		// connect_NXT.recieveDatafromPC();
-		// connect_NXT.closeStreams();
 	}
 
 }

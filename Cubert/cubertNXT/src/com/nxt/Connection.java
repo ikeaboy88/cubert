@@ -33,7 +33,7 @@ public class Connection {
 	}
 
 	/** send an String array character by character to the PC*/
-	public void sendColorSequence(char[] scan_result_vector) {
+	public void sendScanResultVector(char[] scan_result_vector) {
 		LCD.clear();
 //		char[]scan_result_vector = {'A','B','C','D'};
 		LCD.drawString("sending data to pc...", 1, 3);
