@@ -62,51 +62,166 @@ public class Cube {
 		cube_orientation[5] = scan_result_vector[27];// Back
 		
 		//TODO: Group all corners and edges into actual cubies
-		if (cube_orientation[0] == 'W' && cube_orientation[4] == 'G') {
-			cubie_00[0] = 'x';
-			cubie_00[1] = scan_result_vector[20];
-			cubie_00[2] = scan_result_vector[40];
-			cubie_00[3] = 'x';
-			cubie_00[4] = 'x';
-			cubie_00[5] = scan_result_vector[31];
+		// Corner
+		cubie_00[0] = 'x';						// Top
+		cubie_00[1] = scan_result_vector[20];	// Bottom
+		cubie_00[2] = scan_result_vector[40];	// Left
+		cubie_00[3] = 'x';						// Right
+		cubie_00[4] = 'x';						// Front
+		cubie_00[5] = scan_result_vector[31];	// Back
 
-			cubie_01[0] = 'x';
-			cubie_01[1] = scan_result_vector[19];
-			cubie_01[2] = 'x';
-			cubie_01[3] = 'x';
-			cubie_01[4] = 'x';
-			cubie_01[5] = scan_result_vector[32];
-			
-			cubie_02[0] = 'x';
-			cubie_02[1] = scan_result_vector[26];
-			cubie_02[2] = 'x';
-			cubie_02[3] = scan_result_vector[47];
-			cubie_02[4] = 'x';
-			cubie_02[5] = scan_result_vector[33];
-
-			cubie_03[0] = 'x';
-			cubie_03[1] = 'x';
-			cubie_03[2] = scan_result_vector[41];
-			cubie_03[3] = 'x';
-			cubie_03[4] = 'x';
-			cubie_03[5] = scan_result_vector[30];
-
-			cubie_04[0] = 'x';
-			cubie_04[1] = 'x';
-			cubie_04[2] = 'x';
-			cubie_04[3] = scan_result_vector[46];
-			cubie_04[4] = 'x';
-			cubie_04[5] = scan_result_vector[34];
-		}
+		// Edge
+		cubie_01[0] = 'x';						// Top
+		cubie_01[1] = scan_result_vector[19];	// Bottom
+		cubie_01[2] = 'x';						// Left
+		cubie_01[3] = 'x';						// Right
+		cubie_01[4] = 'x';						// Front
+		cubie_01[5] = scan_result_vector[32];	// Back
 		
-		//TODO: Put cubies into the right cube index (according to the centers)
-		cube_scrambled[0][0] = 'b'; //actually put complete cubie signature into cube_scrambled array
-		cube_scrambled[0][1] = 'l';
-		cube_scrambled[0][2] = 'u';
-		cube_scrambled[0][3] = 'b';
-		//...
+		// Corner
+		cubie_02[0] = 'x';						// Top
+		cubie_02[1] = scan_result_vector[26];	// Bottom
+		cubie_02[2] = 'x';						// Left
+		cubie_02[3] = scan_result_vector[47];	// Right
+		cubie_02[4] = 'x';						// Front
+		cubie_02[5] = scan_result_vector[33];	// Back
+		
+		// Edge
+		cubie_03[0] = 'x';						// Top
+		cubie_03[1] = 'x';						// Bottom
+		cubie_03[2] = scan_result_vector[41];	// Left
+		cubie_03[3] = 'x';						// Right
+		cubie_03[4] = 'x';						// Front
+		cubie_03[5] = scan_result_vector[30];	// Back
+
+		// Edge
+		cubie_04[0] = 'x';						// Top
+		cubie_04[1] = 'x';						// Bottom
+		cubie_04[2] = 'x';						// Left
+		cubie_04[3] = scan_result_vector[46];	// Right
+		cubie_04[4] = 'x';						// Front
+		cubie_04[5] = scan_result_vector[34];	// Back
+		
+		// Corner
+		cubie_05[0] = scan_result_vector[4];	// Top
+		cubie_05[1] = 'x';						// Bottom
+		cubie_05[2] = scan_result_vector[42];	// Left
+		cubie_05[3] = 'x';						// Right
+		cubie_05[4] = 'x';						// Front
+		cubie_05[5] = scan_result_vector[29];	// Back
+		
+		// Edge
+		cubie_06[0] = scan_result_vector[5];	// Top
+		cubie_06[1] = 'x';						// Bottom
+		cubie_06[2] = 'x';						// Left
+		cubie_06[3] = 'x';						// Right
+		cubie_06[4] = 'x';						// Front
+		cubie_06[5] = scan_result_vector[28];	// Back
+		
+		// Corner
+		cubie_07[0] = scan_result_vector[6];	// Top
+		cubie_07[1] = 'x';						// Bottom
+		cubie_07[2] = 'x';						// Left
+		cubie_07[3] = scan_result_vector[53];	// Right
+		cubie_07[4] = 'x';						// Front
+		cubie_07[5] = scan_result_vector[35];	// Back
+
+		// Edge
+		cubie_08[0] = 'x';						// Top
+		cubie_08[1] = scan_result_vector[21];	// Bottom
+		cubie_08[2] = scan_result_vector[39];	// Left
+		cubie_08[3] = 'x';						// Right
+		cubie_08[4] = 'x';						// Front
+		cubie_08[5] = 'x';						// Back
+		
+		// Edge
+		cubie_09[0] = 'x';						// Top
+		cubie_09[1] = scan_result_vector[25];	// Bottom
+		cubie_09[2] = 'x';						// Left
+		cubie_09[3] = scan_result_vector[48];	// Right
+		cubie_09[4] = 'x';						// Front
+		cubie_09[5] = 'x';						// Back
+		
+		// Edge
+		cubie_10[0] = scan_result_vector[3];	// Top
+		cubie_10[1] = 'x';						// Bottom
+		cubie_10[2] = scan_result_vector[43];	// Left
+		cubie_10[3] = 'x';						// Right
+		cubie_10[4] = 'x';						// Front
+		cubie_10[5] = 'x';						// Back
+		
+		// Edge
+		cubie_11[0] = scan_result_vector[7];	// Top
+		cubie_11[1] = 'x';						// Bottom
+		cubie_11[2] = 'x';						// Left
+		cubie_11[3] = scan_result_vector[52];	// Right
+		cubie_11[4] = 'x';						// Front
+		cubie_11[5] = 'x';						// Back
+		
+		// Corner
+		cubie_12[0] = 'x';						// Top
+		cubie_12[1] = scan_result_vector[22];	// Bottom
+		cubie_12[2] = scan_result_vector[38];	// Left
+		cubie_12[3] = 'x';						// Right
+		cubie_12[4] = scan_result_vector[11];	// Front
+		cubie_12[5] = 'x';						// Back
+		
+		// Edge
+		cubie_13[0] = 'x';						// Top
+		cubie_13[1] = scan_result_vector[23];	// Bottom
+		cubie_13[2] = 'x';						// Left
+		cubie_13[3] = 'x';						// Right
+		cubie_13[4] = scan_result_vector[10];	// Front
+		cubie_13[5] = 'x';						// Back
+		
+		// Corner
+		cubie_14[0] = 'x';						// Top
+		cubie_14[1] = scan_result_vector[24];	// Bottom
+		cubie_14[2] = 'x';						// Left
+		cubie_14[3] = scan_result_vector[49];	// Right
+		cubie_14[4] = scan_result_vector[17];	// Front
+		cubie_14[5] = 'x';						// Back
+
+		// Edge
+		cubie_15[0] = 'x';						// Top
+		cubie_15[1] = 'x';						// Bottom
+		cubie_15[2] = scan_result_vector[37];	// Left
+		cubie_15[3] = 'x';						// Right
+		cubie_15[4] = scan_result_vector[12];	// Front
+		cubie_15[5] = 'x';						// Back
+		
+		// Edge
+		cubie_16[0] = 'x';						// Top
+		cubie_16[1] = 'x';						// Bottom
+		cubie_16[2] = 'x';						// Left
+		cubie_16[3] = scan_result_vector[50];	// Right
+		cubie_16[4] = scan_result_vector[16];	// Front
+		cubie_16[5] = 'x';						// Back
+		
+		// Corner
+		cubie_17[0] = scan_result_vector[2];	// Top
+		cubie_17[1] = 'x';						// Bottom
+		cubie_17[2] = scan_result_vector[44];	// Left
+		cubie_17[3] = 'x';						// Right
+		cubie_17[4] = scan_result_vector[13];	// Front
+		cubie_17[5] = 'x';						// Back
+		
+		// Edge
+		cubie_18[0] = scan_result_vector[1];	// Top
+		cubie_18[1] = 'x';						// Bottom
+		cubie_18[2] = 'x';						// Left
+		cubie_18[3] = 'x';						// Right
+		cubie_18[4] = scan_result_vector[14];	// Front
+		cubie_19[5] = 'x';						// Back
+		
+		// Corner
+		cubie_19[0] = scan_result_vector[8];	// Top
+		cubie_19[1] = 'x';						// Bottom
+		cubie_19[2] = 'x';						// Left
+		cubie_19[3] = scan_result_vector[51];	// Right
+		cubie_19[4] = scan_result_vector[15];	// Front
+		cubie_19[5] = 'x';						// Back
 		
 		return cube_scrambled;
 	}
-	
 }
