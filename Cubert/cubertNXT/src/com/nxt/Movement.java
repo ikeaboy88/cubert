@@ -124,7 +124,7 @@ public class Movement {
 			
 			mc.setArmState(Arm.MOVING);
 			mc.resetTachoCount();
-			mc.setPower(80);
+			mc.setPower(60); // Full batteries 60 - half empty 80
 			
 			// move 110 degrees
 			while (Math.abs(mc.getTachoCount()) < 110) {
