@@ -38,6 +38,7 @@ public class Main {
 			Connection connect_NXT = new Connection();
 			connect_NXT.connectToPC();
 			connect_NXT.sendScanResultVector(cube.executeCompleteScan());
+			connect_NXT.disconnectFromPC();
 			Button.waitForAnyPress();
 		}
 		// ***********************************

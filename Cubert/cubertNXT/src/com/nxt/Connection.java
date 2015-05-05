@@ -31,6 +31,14 @@ public class Connection {
 	public USBConnection getConnection() {
 		return connection;
 	}
+	
+	public void disconnectFromPC() {
+		try {
+			connection.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	/** send an String array character by character to the PC*/
 	public void sendScanResultVector(char[] scan_result_vector) {
