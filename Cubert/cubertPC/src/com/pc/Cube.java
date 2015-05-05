@@ -1,7 +1,5 @@
 package com.pc;
 
-import java.util.Arrays;
-
 public class Cube {
 
 	// Orientation of the cube itself - which centers are facing in which direction
