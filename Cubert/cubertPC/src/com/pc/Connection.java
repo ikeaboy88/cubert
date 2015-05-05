@@ -72,14 +72,14 @@ public class Connection {
 			bufferedReader = new BufferedReader(new InputStreamReader(dis));
 	
 			recievedString = bufferedReader.readLine();
-			System.out.println("Recieved String: " +recievedString);
+//			System.out.println("Recieved String: " +recievedString);
 			recievedString.toCharArray();
 			
 			for(int i = 0; i < recievedString.length(); i++)
 			{
 				scan_result_vector[i] = recievedString.charAt(i);
 					
-				System.out.println("Recieved Data: " +scan_result_vector[i]);
+//				System.out.println("Recieved Data: " +scan_result_vector[i]);
 			}
 			dis.close();
 		} catch (IOException e) {

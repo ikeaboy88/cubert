@@ -56,8 +56,8 @@ public class Connection {
 			LCD.drawString("Can't send data to PC", 1, 4);
 			e.printStackTrace();
 		}
-		LCD.drawString("press BT", 1, 4);
-		Button.waitForAnyPress();
+//		LCD.drawString("press BT", 1, 4);
+//		Button.waitForAnyPress();
 	}
 
 	// return type should be int ,void only for testing
