@@ -84,6 +84,30 @@ public class Connection {
 	
 	}
 
+	public void sendRGBCalibration(String reference) {
+		// TODO Auto-generated method stub
+		LCD.clear();
+//		char[]scan_result_vector = {'A','B','C','D'};
+		LCD.drawString("sending data to pc...", 1, 3);
+		try {
+			dos = connection.openDataOutputStream();
+			dos.writeBytes(reference);
+			
+			dos.flush();
+			dos.close();
+		} catch (IOException e) {
+			try {
+				dos.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			LCD.drawString("Can't send data to PC", 1, 4);
+			e.printStackTrace();
+		}
+		
+	}
+
 	/*
 	 * recieve keyboardinput just in time String recievedString = null;
 	 * recievedString = dis.readChar(); LCD.clear();

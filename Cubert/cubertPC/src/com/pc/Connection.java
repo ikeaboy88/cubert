@@ -90,6 +90,26 @@ public class Connection {
 		return scan_result_vector;
 	}
 
+	/**Returns an array with the scanned colors */
+	public String getReferenceRgbValues() 
+	{
+		String recieved_rgb_value = null;
+		try 
+		{
+			dis = new DataInputStream(nxt_Comm.getInputStream());
+			bufferedReader = new BufferedReader(new InputStreamReader(dis));
+	
+			recieved_rgb_value = bufferedReader.readLine();
+
+			dis.close();
+		} catch (IOException e) {
+			System.out.println("Can't communicate to NXT");
+			e.printStackTrace();
+		}
+		
+		return recieved_rgb_value;
+	}
+	
 	public void sendPressedCharToNXT() 
 	{
 		// type on keyboard an send data char by char to NXT ;-)
