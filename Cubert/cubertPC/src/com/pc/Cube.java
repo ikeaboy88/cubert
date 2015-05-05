@@ -1,5 +1,7 @@
 package com.pc;
 
+import java.util.Arrays;
+
 public class Cube {
 
 	// Orientation of the cube itself - which centers are facing in which direction
@@ -14,6 +16,433 @@ public class Cube {
 				cube_solved = createSolvedState(cube_orientation);
 				cube_scrambled = createScrambledState(scan_result_vector);
 			}
+		}
+	}
+	
+	// Quarter turn clockwise (when look at the face directly)
+	public void permuteCube(char face) {
+		
+		char new_top, new_bottom, new_left, new_right, new_front, new_back;
+		char[] 	cubie_00_temp, cubie_01_temp, cubie_02_temp, cubie_03_temp, cubie_04_temp, cubie_05_temp, 
+				cubie_06_temp, cubie_07_temp, cubie_08_temp, cubie_09_temp, cubie_11_temp, cubie_12_temp,
+				cubie_13_temp, cubie_14_temp, cubie_15_temp, cubie_17_temp;    
+		
+		// Rotate down/bottom face
+		if (face == 'd') {
+		
+			// Cubie 0
+			new_front = cube_scrambled[0][2];
+			new_left = cube_scrambled[0][5];
+			cube_scrambled[0][2] = 'x';
+			cube_scrambled[0][5] = 'x';
+			cube_scrambled[0][4] = new_front;
+			cube_scrambled[0][2] = new_left;
+	
+			// Cubie 1
+			new_left = cube_scrambled[1][5];
+			cube_scrambled[1][5] = 'x';
+			cube_scrambled[1][2] = new_left;
+	
+			// Cubie 2
+			new_left = cube_scrambled[2][5];
+			new_back = cube_scrambled[2][3];
+			cube_scrambled[2][5] = 'x';
+			cube_scrambled[2][3] = 'x';
+			cube_scrambled[2][2] = new_left;
+			cube_scrambled[2][5] = new_back;
+			
+			// Cubie 8
+			new_front = cube_scrambled[8][2];
+			cube_scrambled[8][2] = 'x';
+			cube_scrambled[8][4] = new_front;
+			
+			// Cubie 9
+			new_back = cube_scrambled[9][3];
+			cube_scrambled[9][3] = 'x';
+			cube_scrambled[9][5] = new_back;
+			
+			// Cubie 12
+			new_front = cube_scrambled[12][2];
+			new_right = cube_scrambled[12][4];
+			cube_scrambled[12][2] = 'x';
+			cube_scrambled[12][4] = 'x';
+			cube_scrambled[12][4] = new_front;
+			cube_scrambled[12][3] = new_right;
+			
+			// Cubie 13
+			new_right = cube_scrambled[13][4];
+			cube_scrambled[13][4] = 'x';
+			cube_scrambled[13][3] = new_right;
+			
+			// Cubie 14
+			new_right = cube_scrambled[14][4];
+			new_back = cube_scrambled[14][3];
+			cube_scrambled[14][4] = 'x';
+			cube_scrambled[14][3] = 'x';
+			cube_scrambled[14][3] = new_right;
+			cube_scrambled[14][5] = new_back;
+			
+			// Cubie 00 is replaced by Cubie 02 
+			cubie_00_temp = cube_scrambled[0];
+			cube_scrambled[0] = cube_scrambled[2];
+			
+			// Cubie 01 is replaced by Cubie 09 
+			cubie_01_temp = cube_scrambled[1];
+			cube_scrambled[1] = cube_scrambled[9];
+			
+			// Cubie 02 is replaced by Cubie 14 
+			cube_scrambled[2] = cube_scrambled[14];
+			
+			// Cubie 08 is replaced by Cubie 01 
+			cubie_08_temp = cube_scrambled[8];
+			cube_scrambled[8] = cubie_01_temp;
+			
+			// Cubie 09 is replaced by Cubie 13 
+			cube_scrambled[9] = cube_scrambled[13];
+			
+			// Cubie 12 is replaced by Cubie 00 
+			cubie_12_temp = cube_scrambled[12];
+			cube_scrambled[12] = cubie_00_temp;
+			
+			// Cubie 13 is replaced by Cubie 08 
+			cube_scrambled[13] = cubie_08_temp;
+			
+			// Cubie 14 is replaced by Cubie 12 
+			cube_scrambled[14] = cubie_12_temp;
+		}
+		// Rotate right face
+		if (face == 'r') {
+		
+			// Cubie 2
+			new_bottom = cube_scrambled[2][5];
+			new_front = cube_scrambled[2][1];
+			cube_scrambled[2][5] = 'x';
+			cube_scrambled[2][1] = 'x';
+			cube_scrambled[2][1] = new_bottom;
+			cube_scrambled[2][4] = new_front;
+	
+			// Cubie 4
+			new_bottom = cube_scrambled[4][5];
+			cube_scrambled[4][5] = 'x';
+			cube_scrambled[4][1] = new_bottom;
+	
+			// Cubie 7
+			new_bottom = cube_scrambled[7][5];
+			new_back = cube_scrambled[7][0];
+			cube_scrambled[7][5] = 'x';
+			cube_scrambled[7][0] = 'x';
+			cube_scrambled[7][1] = new_bottom;
+			cube_scrambled[7][5] = new_back;
+			
+			// Cubie 9
+			new_front = cube_scrambled[9][1];
+			cube_scrambled[9][1] = 'x';
+			cube_scrambled[9][4] = new_front;
+			
+			// Cubie 11
+			new_back = cube_scrambled[11][0];
+			cube_scrambled[11][0] = 'x';
+			cube_scrambled[11][5] = new_back;
+			
+			// Cubie 14
+			new_top = cube_scrambled[14][4];
+			new_front = cube_scrambled[14][1];
+			cube_scrambled[14][4] = 'x';
+			cube_scrambled[14][1] = 'x';
+			cube_scrambled[14][0] = new_top;
+			cube_scrambled[14][4] = new_front;
+			
+			// Cubie 16
+			new_top = cube_scrambled[16][4];
+			cube_scrambled[16][4] = 'x';
+			cube_scrambled[16][0] = new_top;
+			
+			// Cubie 19
+			new_top = cube_scrambled[19][4];
+			new_back = cube_scrambled[19][0];
+			cube_scrambled[19][4] = 'x';
+			cube_scrambled[19][0] = 'x';
+			cube_scrambled[19][0] = new_top;
+			cube_scrambled[19][5] = new_back;
+			
+			// Cubie 02 is replaced by Cubie 7 
+			cubie_02_temp = cube_scrambled[2];
+			cube_scrambled[2] = cube_scrambled[7];
+			
+			// Cubie 04 is replaced by Cubie 11
+			cubie_04_temp = cube_scrambled[4];
+			cube_scrambled[4] = cube_scrambled[11];
+			
+			// Cubie 07 is replaced by Cubie 19
+			cubie_07_temp = cube_scrambled[7];
+			cube_scrambled[7] = cube_scrambled[19];
+			
+			// Cubie 09 is replaced by Cubie 4 
+			cubie_09_temp = cube_scrambled[9];
+			cube_scrambled[9] = cubie_04_temp;
+			
+			// Cubie 11 is replaced by Cubie 16 
+			cubie_11_temp = cube_scrambled[11];
+			cube_scrambled[11] = cube_scrambled[16];
+			
+			// Cubie 14 is replaced by Cubie 2 
+			cubie_14_temp = cube_scrambled[14];
+			cube_scrambled[14] = cubie_02_temp;
+			
+			// Cubie 16 is replaced by Cubie 9 
+			cube_scrambled[16] = cubie_09_temp;
+			
+			// Cubie 19 is replaced by Cubie 14 
+			cube_scrambled[19] = cubie_14_temp;
+		}
+		// Rotate top face
+		if (face == 't') {
+		
+			// Cubie 5
+			new_right = cube_scrambled[5][5];
+			new_back = cube_scrambled[5][2];
+			cube_scrambled[5][5] = 'x';
+			cube_scrambled[5][2] = 'x';
+			cube_scrambled[5][3] = new_right;
+			cube_scrambled[5][5] = new_back;
+	
+			// Cubie 6
+			new_right = cube_scrambled[6][5];
+			cube_scrambled[6][5] = 'x';
+			cube_scrambled[6][3] = new_right;
+	
+			// Cubie 7
+			new_right = cube_scrambled[7][5];
+			new_front = cube_scrambled[7][3];
+			cube_scrambled[7][5] = 'x';
+			cube_scrambled[7][3] = 'x';
+			cube_scrambled[7][3] = new_right;
+			cube_scrambled[7][4] = new_front;
+			
+			// Cubie 10
+			new_back = cube_scrambled[10][2];
+			cube_scrambled[10][2] = 'x';
+			cube_scrambled[10][5] = new_back;
+			
+			// Cubie 11
+			new_front = cube_scrambled[11][3];
+			cube_scrambled[11][3] = 'x';
+			cube_scrambled[11][4] = new_front;
+			
+			// Cubie 17
+			new_left = cube_scrambled[17][4];
+			new_back = cube_scrambled[17][2];
+			cube_scrambled[17][4] = 'x';
+			cube_scrambled[17][2] = 'x';
+			cube_scrambled[17][2] = new_left;
+			cube_scrambled[17][5] = new_back;
+			
+			// Cubie 18
+			new_left = cube_scrambled[18][4];
+			cube_scrambled[18][4] = 'x';
+			cube_scrambled[18][2] = new_left;
+			
+			// Cubie 19
+			new_left = cube_scrambled[19][4];
+			new_front = cube_scrambled[19][3];
+			cube_scrambled[19][4] = 'x';
+			cube_scrambled[19][3] = 'x';
+			cube_scrambled[19][2] = new_left;
+			cube_scrambled[19][4] = new_front;
+			
+			// Cubie 05 is replaced by Cubie 17 
+			cubie_05_temp = cube_scrambled[5];
+			cube_scrambled[5] = cube_scrambled[17];
+			
+			// Cubie 06 is replaced by Cubie 10
+			cubie_06_temp = cube_scrambled[6];
+			cube_scrambled[6] = cube_scrambled[10];
+			
+			// Cubie 07 is replaced by Cubie 5
+			cubie_07_temp = cube_scrambled[7];
+			cube_scrambled[7] = cubie_05_temp;
+			
+			// Cubie 10 is replaced by Cubie 18 
+			cube_scrambled[10] = cube_scrambled[18];
+			
+			// Cubie 11 is replaced by Cubie 6 
+			cubie_11_temp = cube_scrambled[11];
+			cube_scrambled[11] = cubie_06_temp;
+			
+			// Cubie 17 is replaced by Cubie 19 
+			cube_scrambled[17] = cube_scrambled[19];
+			
+			// Cubie 18 is replaced by Cubie 11 
+			cube_scrambled[18] = cubie_11_temp;
+			
+			// Cubie 19 is replaced by Cubie 7 
+			cube_scrambled[19] = cubie_07_temp;
+		}
+		// Rotate front face
+		if (face == 'f') {
+		
+			// Cubie 12
+			new_top = cube_scrambled[12][2];
+			new_left = cube_scrambled[12][1];
+			cube_scrambled[12][2] = 'x';
+			cube_scrambled[12][1] = 'x';
+			cube_scrambled[12][0] = new_top;
+			cube_scrambled[12][2] = new_left;
+	
+			// Cubie 13
+			new_left = cube_scrambled[13][1];
+			cube_scrambled[13][1] = 'x';
+			cube_scrambled[13][2] = new_left;
+	
+			// Cubie 14
+			new_bottom = cube_scrambled[14][3];
+			new_left = cube_scrambled[14][1];
+			cube_scrambled[14][3] = 'x';
+			cube_scrambled[14][1] = 'x';
+			cube_scrambled[14][1] = new_bottom;
+			cube_scrambled[14][2] = new_left;
+			
+			// Cubie 15
+			new_top = cube_scrambled[15][2];
+			cube_scrambled[15][2] = 'x';
+			cube_scrambled[15][0] = new_top;
+			
+			// Cubie 16
+			new_bottom = cube_scrambled[16][3];
+			cube_scrambled[16][3] = 'x';
+			cube_scrambled[16][1] = new_bottom;
+			
+			// Cubie 17
+			new_top = cube_scrambled[17][2];
+			new_right = cube_scrambled[17][0];
+			cube_scrambled[17][2] = 'x';
+			cube_scrambled[17][0] = 'x';
+			cube_scrambled[17][0] = new_top;
+			cube_scrambled[17][3] = new_right;
+			
+			// Cubie 18
+			new_right = cube_scrambled[18][0];
+			cube_scrambled[18][0] = 'x';
+			cube_scrambled[18][3] = new_right;
+			
+			// Cubie 19
+			new_bottom = cube_scrambled[19][3];
+			new_right = cube_scrambled[19][0];
+			cube_scrambled[19][3] = 'x';
+			cube_scrambled[19][0] = 'x';
+			cube_scrambled[19][1] = new_bottom;
+			cube_scrambled[19][3] = new_right;
+			
+			// Cubie 12 is replaced by Cubie 14 
+			cubie_12_temp = cube_scrambled[12];
+			cube_scrambled[12] = cube_scrambled[14];
+			
+			// Cubie 13 is replaced by Cubie 16
+			cubie_13_temp = cube_scrambled[13];
+			cube_scrambled[13] = cube_scrambled[16];
+			
+			// Cubie 14 is replaced by Cubie 19
+			cube_scrambled[14] = cube_scrambled[19];
+			
+			// Cubie 15 is replaced by Cubie 13 
+			cubie_15_temp = cube_scrambled[15];
+			cube_scrambled[15] = cubie_13_temp;
+			
+			// Cubie 16 is replaced by Cubie 18 
+			cube_scrambled[16] = cube_scrambled[18];
+			
+			// Cubie 17 is replaced by Cubie 12 
+			cubie_17_temp = cube_scrambled[17];
+			cube_scrambled[17] = cubie_12_temp;
+			
+			// Cubie 18 is replaced by Cubie 15 
+			cube_scrambled[18] = cubie_15_temp;
+			
+			// Cubie 19 is replaced by Cubie 17 
+			cube_scrambled[19] = cubie_17_temp;
+		}
+		// Rotate back face
+		if (face == 'b') {
+			
+			// Cubie 0
+			new_top = cube_scrambled[0][2];
+			new_left = cube_scrambled[0][1];
+			cube_scrambled[0][2] = 'x';
+			cube_scrambled[0][1] = 'x';
+			cube_scrambled[0][0] = new_top;
+			cube_scrambled[0][2] = new_left;
+	
+			// Cubie 1
+			new_left = cube_scrambled[1][1];
+			cube_scrambled[1][1] = 'x';
+			cube_scrambled[1][2] = new_left;
+	
+			// Cubie 2
+			new_bottom = cube_scrambled[2][3];
+			new_left = cube_scrambled[2][1];
+			cube_scrambled[2][3] = 'x';
+			cube_scrambled[2][1] = 'x';
+			cube_scrambled[2][1] = new_bottom;
+			cube_scrambled[2][2] = new_left;
+			
+			// Cubie 3
+			new_top = cube_scrambled[3][2];
+			cube_scrambled[3][2] = 'x';
+			cube_scrambled[3][0] = new_top;
+			
+			// Cubie 4
+			new_bottom = cube_scrambled[4][3];
+			cube_scrambled[4][3] = 'x';
+			cube_scrambled[4][1] = new_bottom;
+			
+			// Cubie 5
+			new_top = cube_scrambled[5][2];
+			new_right = cube_scrambled[5][0];
+			cube_scrambled[5][2] = 'x';
+			cube_scrambled[5][0] = 'x';
+			cube_scrambled[5][0] = new_top;
+			cube_scrambled[5][3] = new_right;
+			
+			// Cubie 6
+			new_right = cube_scrambled[6][0];
+			cube_scrambled[6][0] = 'x';
+			cube_scrambled[6][3] = new_right;
+			
+			// Cubie 7
+			new_bottom = cube_scrambled[7][3];
+			new_right = cube_scrambled[7][0];
+			cube_scrambled[7][3] = 'x';
+			cube_scrambled[7][0] = 'x';
+			cube_scrambled[7][1] = new_bottom;
+			cube_scrambled[7][3] = new_right;
+			
+			// Cubie 00 is replaced by Cubie 02 
+			cubie_00_temp = cube_scrambled[0];
+			cube_scrambled[0] = cube_scrambled[2];
+			
+			// Cubie 01 is replaced by Cubie 04 
+			cubie_01_temp = cube_scrambled[1];
+			cube_scrambled[1] = cube_scrambled[4];
+			
+			// Cubie 02 is replaced by Cubie 07 
+			cube_scrambled[2] = cube_scrambled[7];
+			
+			// Cubie 03 is replaced by Cubie 01 
+			cubie_03_temp = cube_scrambled[3];
+			cube_scrambled[3] = cubie_01_temp;
+			
+			// Cubie 04 is replaced by Cubie 06 
+			cube_scrambled[4] = cube_scrambled[6];
+			
+			// Cubie 05 is replaced by Cubie 00 
+			cubie_05_temp = cube_scrambled[5];
+			cube_scrambled[5] = cubie_00_temp;
+			
+			// Cubie 06 is replaced by Cubie 03 
+			cube_scrambled[6] = cubie_03_temp;
+			
+			// Cubie 07 is replaced by Cubie 05 
+			cube_scrambled[7] = cubie_05_temp;
 		}
 	}
 	

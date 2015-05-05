@@ -13,6 +13,13 @@ public class Main {
 			System.out.println("SCAN ERROR");
 		}
 		
+		cube.permuteCube('b');
+//		cube.permuteCube('f');
+//		cube.permuteCube('t');
+//		cube.permuteCube('r');
+//		cube.permuteCube('d');
+//		cube.permuteCube('l');
+		
 		int count = 0;
 		for (char[] cube_solved_cubie: cube.cube_solved) {
 			System.out.println();
