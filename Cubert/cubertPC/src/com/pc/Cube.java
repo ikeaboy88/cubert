@@ -3,15 +3,17 @@ package com.pc;
 public class Cube {
 
 	// Orientation of the cube itself - which centers are facing in which direction
-	public char[] cube_orientation;
-	public char[][] cube_scrambled;
-	public char[][] cube_solved;
+	public char[] cube_orientation = new char[6];
+	public char[][] cube_scrambled = null;
+	public char[][] cube_solved = null;
 	
 	public Cube(char[] scan_result_vector) {
 		if (scan_result_vector != null) {
 			cube_orientation = getCubeOrientation(scan_result_vector);
-			cube_solved = createSolvedState(cube_orientation);
-			cube_scrambled = createScrambledState(scan_result_vector);
+			if (cube_orientation != null) {
+				cube_solved = createSolvedState(cube_orientation);
+				cube_scrambled = createScrambledState(scan_result_vector);
+			}
 		}
 	}
 	
@@ -26,7 +28,444 @@ public class Cube {
 		cube_orientation[4] = scan_result_vector[9]; 	// Front
 		cube_orientation[5] = scan_result_vector[27];	// Back
 		
+		cube_orientation = validateCenters(cube_orientation);
+		
 		return cube_orientation;
+	}
+	
+	public char[] validateCenters(char[] cube_orientation) {
+		
+		char[][] valid_pairs = {{'W', 'Y'}, {'G', 'B'}, {'R', 'O'}};
+		int valid_count = 0;
+		char[] test_pair = new char[2];
+		char[] new_cube_orientation = {'x', 'x', 'x', 'x', 'x', 'x'};
+		
+		for (int i = 0; i < 6; i += 2) {
+			boolean valid = false;
+		
+			test_pair[0] = cube_orientation[i];
+			test_pair[1] = cube_orientation[i+1];
+	
+			for (char[] valid_pair: valid_pairs) {
+				if ( (test_pair[0] == valid_pair[0] && test_pair[1] == valid_pair[1]) || (test_pair[0] == valid_pair[1] && test_pair[1] == valid_pair[0]) ) {
+					valid = true;
+					valid_count += 1;
+					new_cube_orientation[i] = test_pair[0];
+					new_cube_orientation[i+1] = test_pair[1];
+				}
+			}
+			System.out.println(test_pair[0] + " & " + test_pair[1] + " is valid pair: " + valid);
+		}
+
+		// One pair incorrect
+		if (valid_count == 2) {
+			
+			// Top-Bottom pair incorrect
+			if (new_cube_orientation[0] == 'x') {
+				// Check left
+				switch (new_cube_orientation[2]) {
+				
+				case 'W':
+					// Check front
+					switch (new_cube_orientation[4]) {
+						case 'O':
+							new_cube_orientation[0] = 'G';
+							new_cube_orientation[1] = 'B';
+							break;
+						case 'B':
+							new_cube_orientation[0] = 'O';
+							new_cube_orientation[1] = 'R';
+							break;
+						case 'R':
+							new_cube_orientation[0] = 'B';
+							new_cube_orientation[1] = 'G';
+							break;
+						case 'G':
+							new_cube_orientation[0] = 'R';
+							new_cube_orientation[1] = 'O';
+							break;
+					}
+					break;
+				
+				case 'Y':
+					switch (new_cube_orientation[4]) {
+						case 'O':
+							new_cube_orientation[0] = 'B';
+							new_cube_orientation[1] = 'G';
+							break;
+						case 'B':
+							new_cube_orientation[0] = 'R';
+							new_cube_orientation[1] = 'O';
+							break;
+						case 'R':
+							new_cube_orientation[0] = 'G';
+							new_cube_orientation[1] = 'B';
+							break;
+						case 'G':
+							new_cube_orientation[0] = 'O';
+							new_cube_orientation[1] = 'R';
+							break;
+					}	
+					break;
+					
+				case 'O':
+					switch (new_cube_orientation[4]) {
+						case 'W':
+							new_cube_orientation[0] = 'B';
+							new_cube_orientation[1] = 'G';
+							break;
+						case 'B':
+							new_cube_orientation[0] = 'Y';
+							new_cube_orientation[1] = 'W';
+							break;
+						case 'Y':
+							new_cube_orientation[0] = 'G';
+							new_cube_orientation[1] = 'B';
+							break;
+						case 'G':
+							new_cube_orientation[0] = 'W';
+							new_cube_orientation[1] = 'Y';
+							break;
+					}	
+					break;
+				
+				case 'R':
+					switch (new_cube_orientation[4]) {
+						case 'W':
+							new_cube_orientation[0] = 'G';
+							new_cube_orientation[1] = 'B';
+							break;
+						case 'B':
+							new_cube_orientation[0] = 'W';
+							new_cube_orientation[1] = 'Y';
+							break;
+						case 'Y':
+							new_cube_orientation[0] = 'B';
+							new_cube_orientation[1] = 'G';
+							break;
+						case 'G':
+							new_cube_orientation[0] = 'Y';
+							new_cube_orientation[1] = 'W';
+							break;
+					}	
+					break;
+				
+				case 'G':
+					switch (new_cube_orientation[4]) {
+						case 'W':
+							new_cube_orientation[0] = 'O';
+							new_cube_orientation[1] = 'R';
+							break;
+						case 'R':
+							new_cube_orientation[0] = 'W';
+							new_cube_orientation[1] = 'Y';
+							break;
+						case 'Y':
+							new_cube_orientation[0] = 'R';
+							new_cube_orientation[1] = 'O';
+							break;
+						case 'O':
+							new_cube_orientation[0] = 'Y';
+							new_cube_orientation[1] = 'W';
+							break;
+					}	
+					break;
+				
+				case 'B':
+					switch (new_cube_orientation[4]) {
+						case 'W':
+							new_cube_orientation[0] = 'R';
+							new_cube_orientation[1] = 'O';
+							break;
+						case 'O':
+							new_cube_orientation[0] = 'W';
+							new_cube_orientation[1] = 'Y';
+							break;
+						case 'Y':
+							new_cube_orientation[0] = 'O';
+							new_cube_orientation[1] = 'R';
+							break;
+						case 'R':
+							new_cube_orientation[0] = 'Y';
+							new_cube_orientation[1] = 'W';
+							break;
+					}	
+					break;
+				}
+			}
+			
+			// Left-Right pair incorrect
+			if (new_cube_orientation[2] == 'x') {
+				// Check top
+				switch (new_cube_orientation[0]) {
+				
+				case 'W':
+					// Check front
+					switch (new_cube_orientation[4]) {
+						case 'O':
+							new_cube_orientation[2] = 'B';
+							new_cube_orientation[3] = 'G';
+							break;
+						case 'B':
+							new_cube_orientation[2] = 'R';
+							new_cube_orientation[3] = 'O';
+							break;
+						case 'R':
+							new_cube_orientation[2] = 'G';
+							new_cube_orientation[3] = 'B';
+							break;
+						case 'G':
+							new_cube_orientation[2] = 'O';
+							new_cube_orientation[3] = 'R';
+							break;
+					}
+					break;
+				
+				case 'Y':
+					switch (new_cube_orientation[4]) {
+						case 'O':
+							new_cube_orientation[2] = 'G';
+							new_cube_orientation[3] = 'B';
+							break;
+						case 'B':
+							new_cube_orientation[2] = 'O';
+							new_cube_orientation[3] = 'R';
+							break;
+						case 'R':
+							new_cube_orientation[2] = 'B';
+							new_cube_orientation[3] = 'G';
+							break;
+						case 'G':
+							new_cube_orientation[2] = 'R';
+							new_cube_orientation[3] = 'O';
+							break;
+					}	
+					break;
+					
+				case 'O':
+					switch (new_cube_orientation[4]) {
+						case 'W':
+							new_cube_orientation[2] = 'G';
+							new_cube_orientation[3] = 'B';
+							break;
+						case 'B':
+							new_cube_orientation[2] = 'W';
+							new_cube_orientation[3] = 'Y';
+							break;
+						case 'Y':
+							new_cube_orientation[2] = 'B';
+							new_cube_orientation[3] = 'G';
+							break;
+						case 'G':
+							new_cube_orientation[2] = 'Y';
+							new_cube_orientation[3] = 'W';
+							break;
+					}	
+					break;
+				
+				case 'R':
+					switch (new_cube_orientation[4]) {
+						case 'W':
+							new_cube_orientation[2] = 'B';
+							new_cube_orientation[3] = 'G';
+							break;
+						case 'B':
+							new_cube_orientation[2] = 'Y';
+							new_cube_orientation[3] = 'W';
+							break;
+						case 'Y':
+							new_cube_orientation[2] = 'G';
+							new_cube_orientation[3] = 'B';
+							break;
+						case 'G':
+							new_cube_orientation[2] = 'W';
+							new_cube_orientation[3] = 'Y';
+							break;
+					}	
+					break;
+				
+				case 'G':
+					switch (new_cube_orientation[4]) {
+						case 'W':
+							new_cube_orientation[2] = 'R';
+							new_cube_orientation[3] = 'O';
+							break;
+						case 'R':
+							new_cube_orientation[2] = 'Y';
+							new_cube_orientation[3] = 'W';
+							break;
+						case 'Y':
+							new_cube_orientation[2] = 'O';
+							new_cube_orientation[3] = 'R';
+							break;
+						case 'O':
+							new_cube_orientation[2] = 'W';
+							new_cube_orientation[3] = 'Y';
+							break;
+					}	
+					break;
+				
+				case 'B':
+					switch (new_cube_orientation[4]) {
+						case 'W':
+							new_cube_orientation[2] = 'O';
+							new_cube_orientation[3] = 'R';
+							break;
+						case 'O':
+							new_cube_orientation[2] = 'Y';
+							new_cube_orientation[3] = 'W';
+							break;
+						case 'Y':
+							new_cube_orientation[2] = 'R';
+							new_cube_orientation[3] = 'O';
+							break;
+						case 'R':
+							new_cube_orientation[2] = 'W';
+							new_cube_orientation[3] = 'Y';
+							break;
+					}	
+					break;
+				}
+			}
+			
+			// Front-Back pair incorrect
+			if (new_cube_orientation[4] == 'x') {
+				// Check top
+				switch (new_cube_orientation[0]) {
+				
+				case 'W':
+					// Check left
+					switch (new_cube_orientation[2]) {
+						case 'O':
+							new_cube_orientation[4] = 'G';
+							new_cube_orientation[5] = 'B';
+							break;
+						case 'B':
+							new_cube_orientation[4] = 'O';
+							new_cube_orientation[5] = 'R';
+							break;
+						case 'R':
+							new_cube_orientation[4] = 'B';
+							new_cube_orientation[5] = 'G';
+							break;
+						case 'G':
+							new_cube_orientation[4] = 'R';
+							new_cube_orientation[5] = 'O';
+							break;
+					}
+					break;
+				
+				case 'Y':
+					switch (new_cube_orientation[2]) {
+						case 'O':
+							new_cube_orientation[4] = 'B';
+							new_cube_orientation[5] = 'G';
+							break;
+						case 'B':
+							new_cube_orientation[4] = 'R';
+							new_cube_orientation[5] = 'O';
+							break;
+						case 'R':
+							new_cube_orientation[4] = 'G';
+							new_cube_orientation[5] = 'B';
+							break;
+						case 'G':
+							new_cube_orientation[4] = 'O';
+							new_cube_orientation[5] = 'R';
+							break;
+					}	
+					break;
+					
+				case 'O':
+					switch (new_cube_orientation[2]) {
+						case 'W':
+							new_cube_orientation[4] = 'B';
+							new_cube_orientation[5] = 'G';
+							break;
+						case 'B':
+							new_cube_orientation[4] = 'Y';
+							new_cube_orientation[5] = 'W';
+							break;
+						case 'Y':
+							new_cube_orientation[4] = 'G';
+							new_cube_orientation[5] = 'B';
+							break;
+						case 'G':
+							new_cube_orientation[4] = 'W';
+							new_cube_orientation[5] = 'Y';
+							break;
+					}	
+					break;
+				
+				case 'R':
+					switch (new_cube_orientation[2]) {
+						case 'W':
+							new_cube_orientation[4] = 'G';
+							new_cube_orientation[5] = 'B';
+							break;
+						case 'B':
+							new_cube_orientation[4] = 'W';
+							new_cube_orientation[5] = 'Y';
+							break;
+						case 'Y':
+							new_cube_orientation[4] = 'B';
+							new_cube_orientation[5] = 'G';
+							break;
+						case 'G':
+							new_cube_orientation[4] = 'Y';
+							new_cube_orientation[5] = 'W';
+							break;
+					}	
+					break;
+				
+				case 'G':
+					switch (new_cube_orientation[2]) {
+						case 'W':
+							new_cube_orientation[4] = 'O';
+							new_cube_orientation[5] = 'R';
+							break;
+						case 'R':
+							new_cube_orientation[4] = 'W';
+							new_cube_orientation[5] = 'Y';
+							break;
+						case 'Y':
+							new_cube_orientation[4] = 'R';
+							new_cube_orientation[5] = 'O';
+							break;
+						case 'O':
+							new_cube_orientation[4] = 'Y';
+							new_cube_orientation[5] = 'W';
+							break;
+					}	
+					break;
+				
+				case 'B':
+					switch (new_cube_orientation[2]) {
+						case 'W':
+							new_cube_orientation[4] = 'R';
+							new_cube_orientation[5] = 'O';
+							break;
+						case 'O':
+							new_cube_orientation[4] = 'W';
+							new_cube_orientation[5] = 'Y';
+							break;
+						case 'Y':
+							new_cube_orientation[4] = 'O';
+							new_cube_orientation[5] = 'R';
+							break;
+						case 'R':
+							new_cube_orientation[4] = 'Y';
+							new_cube_orientation[5] = 'W';
+							break;
+					}	
+					break;
+				}
+			}
+		}
+		if (valid_count < 2) {
+			return null;
+		}
+		return new_cube_orientation;
 	}
 	
 	private char[][] createSolvedState(char[] cube_orientation) {
