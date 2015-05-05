@@ -124,7 +124,7 @@ public class Movement {
 			
 			mc.setArmState(Arm.MOVING);
 			mc.resetTachoCount();
-			mc.setPower(60);
+			mc.setPower(80);
 			
 			// move 110 degrees
 			while (Math.abs(mc.getTachoCount()) < 110) {
@@ -147,7 +147,7 @@ public class Movement {
 				
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(-130);
+			mb.rotateTo(-150);
 			mb.stop();
 			mb.setSensorState(Sensor.REMOVED);
 		}
@@ -165,7 +165,7 @@ public class Movement {
 	
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(195);
+			mb.rotateTo(215);
 			mb.stop();
 			mb.setSensorState(Sensor.CENTER);
 		}

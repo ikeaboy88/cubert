@@ -5,19 +5,19 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import lejos.pc.comm.NXTCommLogListener;
 import lejos.pc.comm.NXTConnector;
 import lejos.pc.comm.NXTInfo;
 
 public class Connection {
+	private DataOutputStream dos = null;
+	private DataInputStream dis = null;
+	
 	//use this connector for opening multi in-/ outputstreams
-	NXTConnector nxt_Comm = new NXTConnector();
+	private final NXTConnector nxt_Comm = new NXTConnector();
 	public NXTInfo[] nxt_Info = null;
-	DataOutputStream dos = null;
-	DataInputStream dis = null;
-	int send_Int = 1234;
-
+	private BufferedReader bufferedReader = null;
+	
 	public void connectToNXT() 
 	{
 		System.out.println("Trying to connect...");
@@ -37,45 +37,57 @@ public class Connection {
 			System.exit(1);
 		}
 	}
-
-	public void sendDataToNXT(int sendInt) 
+	
+	public void sendSolvingSequence(char[] sequence) 
 	{
+//		String[] solvingSequence = new String[3];
+		int i = 23;
 		try 
 		{
 			dos = new DataOutputStream(nxt_Comm.getOutputStream());
-			dos.writeInt(sendInt);
+			
+//			for (int i = 0; i < sequence.length; i++){
+//			solvingSequence[i] = Character.toString(sequence[i]);
+//			dos.writeBytes(solvingSequence[i]);			
+//			System.out.println(solvingSequence[i]);
+//			}
+			dos.writeInt(i);
 			// send data through stream
 			dos.flush();
+			dos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	//return type should be int, void only for testing
-	public void recieveDataFromNXT() 
+	/**Returns an array with the scanned colors */
+	public char[] getScanResultVector() 
 	{
-		int recievedInt = 0;
+		String recievedString = null;
+		char[] scan_result_vector = new char[54];
+
 		try 
 		{
 			dis = new DataInputStream(nxt_Comm.getInputStream());
-				recievedInt = dis.readInt();
-				System.out.println("Recieved Data: "+recievedInt);
+			bufferedReader = new BufferedReader(new InputStreamReader(dis));
+	
+			recievedString = bufferedReader.readLine();
+//			System.out.println("Recieved String: " +recievedString);
+			recievedString.toCharArray();
+			
+			for(int i = 0; i < recievedString.length(); i++)
+			{
+				scan_result_vector[i] = recievedString.charAt(i);
+					
+//				System.out.println("Recieved Data: " +scan_result_vector[i]);
+			}
+			dis.close();
 		} catch (IOException e) {
 			System.out.println("Can't communicate to NXT");
 			e.printStackTrace();
 		}
-	}
-
-	public void closeStreams() 
-	{
-		try 
-		{
-			dis.close();
-			dos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		return scan_result_vector;
 	}
 
 	public void sendPressedCharToNXT() 
