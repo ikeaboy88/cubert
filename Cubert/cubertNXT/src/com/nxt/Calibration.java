@@ -32,6 +32,7 @@ public class Calibration {
 		for(int i = 0; i<rgb_values.size(); i++){
 			rgb_string += rgb_values.get(i)+",";
 		}
+		rgb_string = rgb_string.substring(0, rgb_string.length()-1);
 		
 		LCD.clear();
 		/* Connection between NXT and PC */
