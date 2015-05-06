@@ -28,7 +28,7 @@ public class Calibration {
 		
 		//when file already exist, write in file 
 		try {
-			Writer file_writer = new FileWriter(calibration, true);
+			Writer file_writer = new FileWriter(calibration);
 //			for (int i = 0 ; i < reference_rgb.length ; i++ ){
 				file_writer.write(reference_rgb);
 				file_writer.close();

@@ -30,7 +30,7 @@ public class Calibration {
 		
 		String rgb_string = "";
 		for(int i = 0; i<rgb_values.size(); i++){
-			rgb_string += rgb_values.get(i);
+			rgb_string += rgb_values.get(i)+",";
 		}
 		
 		LCD.clear();
