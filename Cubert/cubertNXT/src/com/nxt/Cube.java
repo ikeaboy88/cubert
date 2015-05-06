@@ -4,14 +4,81 @@ import lejos.nxt.Button;
 import lejos.nxt.SensorPort;
 import lejos.util.Delay;
 
+
 public class Cube {
 
+	// Current orientation - updated after every move
+	public char[] initial_orientation = new char[6];
+	private char[] current_orientation = new char[6];
 	public Movement move;
 	public ColorDetector detect;
 	
 	public Cube() {
 		move = new Movement(true);
 		detect = new ColorDetector(SensorPort.S3, true);
+	}
+	
+	// TODO
+	public char[] permuteCube(char face) {
+		
+		int initial_face_index = 0;
+		
+		if (initial_orientation[0] != 0) {
+			
+			// Set the initial orientation as current if not set yet
+			if (current_orientation[0] == 0) {
+				current_orientation = initial_orientation;
+			}
+			
+			switch (face) {
+				case 't':
+					initial_face_index = 0;
+					break;
+				case 'd':
+					initial_face_index = 1;
+					break;
+				case 'l':
+					initial_face_index = 2;
+					break;
+				case 'r':
+					initial_face_index = 3;
+					break;
+				case 'f':
+					initial_face_index = 4;
+					break;
+				case 'b':
+					initial_face_index = 5;
+					break;
+				default:
+					// no valid parameter
+					break;
+			}
+			
+			while (current_orientation[1] != initial_orientation[initial_face_index]) {
+				//change orientation until bottom value of current orientation is equal to the initial index value
+				//TODO: Maybe another litte A* for the shortest way to orientate the cube correct
+				
+				// 5.
+				move.rotateTable(90);
+				// 1-5
+				move.holdCube();
+				move.tiltCube();
+				move.releaseCube();
+				// 6.
+				move.holdCube();
+				move.tiltCube();
+				move.releaseCube();
+				
+			}
+			//permute current bottom face -90 degrees
+			move.holdCube();
+			move.rotateTable(-90);
+			move.releaseCube();
+			
+			// Update orientation
+		}
+		
+		return null;
 	}
 	
 	public char[] executeCompleteScan() {

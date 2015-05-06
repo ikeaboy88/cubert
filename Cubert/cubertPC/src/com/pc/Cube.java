@@ -2,13 +2,14 @@ package com.pc;
 
 public class Cube {
 
-	// Orientation of the cube itself - which centers are facing in which direction
+	// Initial orientation of the cube itself - which centers are facing in which direction
 	public char[] cube_orientation = new char[6];
 	public char[][] cube_scrambled = null;
 	public char[][] cube_solved = null;
 	
 	public Cube(char[] scan_result_vector) {
 		if (scan_result_vector != null) {
+			// Initial orientation - validated - should not be changed
 			cube_orientation = getCubeOrientation(scan_result_vector);
 			if (cube_orientation != null) {
 				cube_solved = createSolvedState(cube_orientation);

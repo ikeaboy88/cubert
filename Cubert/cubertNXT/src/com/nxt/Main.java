@@ -38,11 +38,11 @@ public class Main {
 			Connection connect_NXT = new Connection();
 			connect_NXT.connectToPC();
 			connect_NXT.sendScanResultVector(cube.executeCompleteScan());
+			//TODO: save validated cube orientation from pc cube class in nxt cube class
 			connect_NXT.disconnectFromPC();
 			Button.waitForAnyPress();
 		}
 		// ***********************************
-
 	}
 
 }
