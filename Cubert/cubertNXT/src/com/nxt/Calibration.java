@@ -7,11 +7,11 @@ import lejos.nxt.Button;
 import lejos.nxt.LCD;
 
 public class Calibration {
-	
-	public static void main(String[] args) {
-		
+
+	public void calibrate() {
+
 		Cube cube = new Cube();
-		
+
 		LCD.drawString("Press RIGHT button", 0, 0);
 		LCD.drawString("to start", 0, 1);
 		LCD.drawString("calibration", 0, 2);
@@ -20,20 +20,19 @@ public class Calibration {
 			cube.executeCompleteScan(true);
 		}
 		int[][] ref = cube.detect.rgb_ref;
-		List<Integer>rgb_values = new ArrayList<Integer>();
-		for(int [] reference_rgb : ref){
-			for (int i = 0; i <reference_rgb.length; i++)
-			{
+		List<Integer> rgb_values = new ArrayList<Integer>();
+		for (int[] reference_rgb : ref) {
+			for (int i = 0; i < reference_rgb.length; i++) {
 				rgb_values.add(reference_rgb[i]);
 			}
 		}
-		
+
 		String rgb_string = "";
-		for(int i = 0; i<rgb_values.size(); i++){
-			rgb_string += rgb_values.get(i)+",";
+		for (int i = 0; i < rgb_values.size(); i++) {
+			rgb_string += rgb_values.get(i) + ",";
 		}
-		rgb_string = rgb_string.substring(0, rgb_string.length()-1);
-		
+		rgb_string = rgb_string.substring(0, rgb_string.length() - 1);
+
 		LCD.clear();
 		/* Connection between NXT and PC */
 		Connection connect_NXT = new Connection();
