@@ -97,10 +97,9 @@ public class Connection {
 		try 
 		{
 			dis = new DataInputStream(nxt_Comm.getInputStream());
-			bufferedReader = new BufferedReader(new InputStreamReader(dis));
-	
-			recieved_rgb_value = bufferedReader.readLine();
-
+				
+				bufferedReader = new BufferedReader(new InputStreamReader(dis));
+				recieved_rgb_value = bufferedReader.readLine();
 			dis.close();
 		} catch (IOException e) {
 			System.out.println("Can't communicate to NXT");
@@ -127,6 +126,22 @@ public class Connection {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public int getMode(){
+		//mode 0 = scanning; mode 1 = solving
+		int mode = 0;
+		
+		dis = new DataInputStream(nxt_Comm.getInputStream());
+		try {
+			mode = dis.read();
+			//read fully method ??
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return mode;
 	}
 }
 

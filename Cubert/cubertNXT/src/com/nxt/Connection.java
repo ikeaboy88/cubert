@@ -107,6 +107,18 @@ public class Connection {
 		}
 		
 	}
+	
+	public void sendMode(int mode){
+		dos = connection.openDataOutputStream();
+		try {
+			dos.write(mode);
+			dos.flush();
+			dos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/*
 	 * recieve keyboardinput just in time String recievedString = null;
