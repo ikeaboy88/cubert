@@ -9,10 +9,12 @@ import java.util.ArrayList;
 
 public class Calibration {
 
-	public static void main(String[] args) {
+	Connection con;
+	public Calibration(Connection con){
+		this.con = con;
+	}
+	public void calibrate() {
 
-		Connection con = new Connection();
-		con.connectToNXT();
 
 		String reference_rgb = con.getReferenceRgbValues();
 		File calibration = new File("src/calibration/reference_RGB_values.txt");
