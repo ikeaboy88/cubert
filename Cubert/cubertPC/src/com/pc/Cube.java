@@ -26,6 +26,10 @@ public class Cube {
 				cubie_06_temp, cubie_07_temp, cubie_08_temp, cubie_09_temp, cubie_11_temp, cubie_12_temp,
 				cubie_13_temp, cubie_14_temp, cubie_15_temp, cubie_17_temp;    
 		
+		// Explanation: For a given face..
+		//	.. change the orientations ONLY of all the involved cubies like they will be after the turn,
+		//  .. then switch the newly oriented cubies' positions like they will be after the turn
+		
 		// Rotate top face
 		if (face == 't') {
 		
@@ -196,7 +200,85 @@ public class Cube {
 		
 		// Rotate left face
 		if (face == 'l') {
-			// TODO:
+			
+			// Cubie 0
+			new_top = cube_scrambled[0][5];
+			new_back = cube_scrambled[0][1];
+			cube_scrambled[0][5] = 'x';
+			cube_scrambled[0][1] = 'x';
+			cube_scrambled[0][0] = new_top;
+			cube_scrambled[0][5] = new_back;
+			
+			// Cubie 3
+			new_top = cube_scrambled[3][5];
+			cube_scrambled[3][5] = 'x';
+			cube_scrambled[3][0] = new_top;
+	
+			// Cubie 5
+			new_top = cube_scrambled[5][5];
+			new_front = cube_scrambled[5][0];
+			cube_scrambled[5][5] = 'x';
+			cube_scrambled[5][0] = 'x';
+			cube_scrambled[5][0] = new_top;
+			cube_scrambled[5][4] = new_front;
+			
+			// Cubie 8
+			new_back = cube_scrambled[8][1];
+			cube_scrambled[8][1] = 'x';
+			cube_scrambled[8][5] = new_back;
+			
+			// Cubie 10
+			new_front = cube_scrambled[10][0];
+			cube_scrambled[10][0] = 'x';
+			cube_scrambled[10][4] = new_front;
+			
+			// Cubie 12
+			new_bottom = cube_scrambled[12][4];
+			new_back = cube_scrambled[12][1];
+			cube_scrambled[12][4] = 'x';
+			cube_scrambled[12][1] = 'x';
+			cube_scrambled[12][1] = new_bottom;
+			cube_scrambled[12][5] = new_back;
+			
+			// Cubie 15
+			new_bottom = cube_scrambled[15][4];
+			cube_scrambled[15][4] = 'x';
+			cube_scrambled[15][1] = new_bottom;
+			
+			// Cubie 17
+			new_bottom = cube_scrambled[17][4];
+			new_front = cube_scrambled[17][0];
+			cube_scrambled[17][4] = 'x';
+			cube_scrambled[17][0] = 'x';
+			cube_scrambled[17][1] = new_bottom;
+			cube_scrambled[17][4] = new_front;
+			
+			// Cubie 0 is replaced by Cubie 12 
+			cubie_00_temp = cube_scrambled[0];
+			cube_scrambled[0] = cube_scrambled[12];
+			
+			// Cubie 3 is replaced by Cubie 8
+			cubie_03_temp = cube_scrambled[3];
+			cube_scrambled[3] = cube_scrambled[8];
+			
+			// Cubie 5 is replaced by Cubie 0
+			cubie_05_temp = cube_scrambled[5];
+			cube_scrambled[5] = cubie_00_temp;
+			
+			// Cubie 8 is replaced by Cubie 15 
+			cube_scrambled[8] = cube_scrambled[15];
+
+			// Cubie 10 is replaced by Cubie 3 
+			cube_scrambled[10] = cubie_03_temp;
+			
+			// Cubie 12 is replaced by Cubie 17 
+			cube_scrambled[12] = cube_scrambled[17];
+			
+			// Cubie 15 is replaced by Cubie 10 
+			cube_scrambled[15] = cube_scrambled[10];
+			
+			// Cubie 17 is replaced by Cubie 5 
+			cube_scrambled[17] = cubie_05_temp;
 		}
 		
 		// Rotate right face
