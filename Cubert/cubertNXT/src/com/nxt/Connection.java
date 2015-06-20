@@ -1,19 +1,20 @@
 package com.nxt;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
+import java.io.InputStreamReader;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.comm.USB;
 import lejos.nxt.comm.USBConnection;
 
 public class Connection {
-	USBConnection connection = null;
-	DataOutputStream dos = null;
-	DataInputStream dis = null;
-	private int send_Int = 5678;
+	private USBConnection connection = null;
+	private DataOutputStream dos = null;
+	private DataInputStream dis = null;
+	private BufferedReader bufferedReader = null; 
 
 	public void connectToPC() {
 		LCD.drawString("Right BT->USB Verbindung", 0, 0);
@@ -24,67 +25,76 @@ public class Connection {
 		}
 		LCD.clear();
 		LCD.drawString("connected", 0, 0);
+		Button.waitForAnyPress();
+	}
+	
+	public USBConnection getConnection() {
+		return connection;
+	}
+	
+	public void disconnectFromPC() {
+		try {
+			connection.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
-	public void sendDatatoPC(int sendInt) {
+	/** send an String array character by character to the PC*/
+	public void sendScanResultVector(char[] scan_result_vector) {
 		LCD.clear();
-		LCD.drawInt(sendInt, 1, 2);
+//		char[]scan_result_vector = {'A','B','C','D'};
 		LCD.drawString("sending data to pc...", 1, 3);
+		String[] scanResult = new String[54];
 		try {
 			dos = connection.openDataOutputStream();
-			dos.writeInt(sendInt);
+			for (int i = 0; i < scan_result_vector.length; i++){
+			scanResult[i] = Character.toString(scan_result_vector[i]);
+			dos.writeBytes(scanResult[i]);
+			}
 			dos.flush();
+			dos.close();
 		} catch (IOException e) {
+			try {
+				dos.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			LCD.drawString("Can't send data to PC", 1, 4);
 			e.printStackTrace();
 		}
-		LCD.drawString("press BT", 1, 4);
-		Button.waitForAnyPress();
+//		LCD.drawString("press BT", 1, 4);
+//		Button.waitForAnyPress();
 	}
 
 	// return type should be int ,void only for testing
-	public void recieveDatafromPC() {
-		int recievedInt = 0;
-		try {
-			dis = connection.openDataInputStream();
-			// check whether data is available to read
-			if (connection.available() > 0) {
-				LCD.clear();
-				recievedInt = dis.readInt();
-				LCD.drawString("Recieved Data:", 0, 0);
-				LCD.drawInt(recievedInt, 0, 1);
-				LCD.drawString("Press to End", 0, 2);
-				Button.waitForAnyPress();
-			} else {
-				System.out.println("nothing to read");
+	public void getSolvingSequence() {
+		LCD.clear();
+//		String s = "";
+		int s;
+		LCD.drawString("recieve..", 0, 0);
+		dis = getConnection().openDataInputStream();
+		bufferedReader = new BufferedReader(new InputStreamReader(dis));
+
+		while(true){
+			
+			try {
+				s = bufferedReader.read();
+				LCD.drawString("Data: "+s, 0, 2);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (IOException e1) {
-			System.out.println("Can't communicate");
-			e1.printStackTrace();
 		}
-
-		/*
-		 * recieve keyboardinput just in time String recievedString = null;
-		 * recievedString = dis.readChar(); LCD.clear();
-		 * LCD.drawChar(recievedString, 1, 1); LCD.refresh();
-		 */
+		
+//		LCD.drawString("Data??? ", 0, 1);
+	
 	}
 
-	public void closeStreams() {
-		try {
-			dis.close();
-			dos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public int getSendInt() {
-		return send_Int;
-	}
-
-	public void setSendInt(int sendInt) {
-		this.send_Int = sendInt;
-	}
+	/*
+	 * recieve keyboardinput just in time String recievedString = null;
+	 * recievedString = dis.readChar(); LCD.clear();
+	 * LCD.drawChar(recievedString, 1, 1); LCD.refresh();
+	 */
 }
