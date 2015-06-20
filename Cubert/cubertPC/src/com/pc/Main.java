@@ -6,19 +6,24 @@ public class Main {
 
 	public static void main(String[] args) 
 	{
-		Connection connect_PC = new Connection();
-		connect_PC.connectToNXT();
-		Cube cube = new Cube(connect_PC.getScanResultVector());
+		//Regular code
+//		Connection connect_PC = new Connection();
+//		connect_PC.connectToNXT();
+//		Cube cube = new Cube(connect_PC.getScanResultVector());
+		
+		// Code for debugging the permutations
+		Cube cube = new Cube(null);
+		
 		if (cube.cube_orientation == null) {
 			System.out.println("SCAN ERROR");
 		}
-		
+
+		cube.permuteCube('t');
+		cube.permuteCube('l');
+		cube.permuteCube('d');
+		cube.permuteCube('r');
+		cube.permuteCube('f');
 		cube.permuteCube('b');
-//		cube.permuteCube('f');
-//		cube.permuteCube('t');
-//		cube.permuteCube('r');
-//		cube.permuteCube('d');
-//		cube.permuteCube('l');
 		
 		int count = 0;
 		for (char[] cube_solved_cubie: cube.cube_solved) {

@@ -15,6 +15,10 @@ public class Cube {
 				cube_solved = createSolvedState(cube_orientation);
 				cube_scrambled = createScrambledState(scan_result_vector);
 			}
+		} else {
+			// In DEBUG case if there is no scan result from the NXT
+			cube_solved = createSolvedState(new char [] {'W', 'Y', 'O', 'R', 'G', 'B'});
+			cube_scrambled = this.getDummySolvedState();
 		}
 	}
 	
@@ -23,7 +27,7 @@ public class Cube {
 		
 		char new_top, new_bottom, new_left, new_right, new_front, new_back;
 		char[] 	cubie_00_temp, cubie_01_temp, cubie_02_temp, cubie_03_temp, cubie_04_temp, cubie_05_temp, 
-				cubie_06_temp, cubie_07_temp, cubie_08_temp, cubie_09_temp, cubie_11_temp, cubie_12_temp,
+				cubie_06_temp, cubie_07_temp, cubie_08_temp, cubie_09_temp, cubie_10_temp, cubie_11_temp, cubie_12_temp,
 				cubie_13_temp, cubie_14_temp, cubie_15_temp, cubie_17_temp;    
 		
 		// Explanation: For a given face..
@@ -269,13 +273,14 @@ public class Cube {
 			cube_scrambled[8] = cube_scrambled[15];
 
 			// Cubie 10 is replaced by Cubie 3 
+			cubie_10_temp = cube_scrambled[10];
 			cube_scrambled[10] = cubie_03_temp;
 			
 			// Cubie 12 is replaced by Cubie 17 
 			cube_scrambled[12] = cube_scrambled[17];
 			
 			// Cubie 15 is replaced by Cubie 10 
-			cube_scrambled[15] = cube_scrambled[10];
+			cube_scrambled[15] = cubie_10_temp;
 			
 			// Cubie 17 is replaced by Cubie 5 
 			cube_scrambled[17] = cubie_05_temp;
@@ -455,84 +460,84 @@ public class Cube {
 		if (face == 'b') {
 			
 			// Cubie 0
-			new_top = cube_scrambled[0][2];
-			new_left = cube_scrambled[0][1];
+			new_bottom = cube_scrambled[0][2];
+			new_right = cube_scrambled[0][1];
 			cube_scrambled[0][2] = 'x';
 			cube_scrambled[0][1] = 'x';
-			cube_scrambled[0][0] = new_top;
-			cube_scrambled[0][2] = new_left;
+			cube_scrambled[0][1] = new_bottom;
+			cube_scrambled[0][3] = new_right;
 	
 			// Cubie 1
-			new_left = cube_scrambled[1][1];
+			new_right = cube_scrambled[1][1];
 			cube_scrambled[1][1] = 'x';
-			cube_scrambled[1][2] = new_left;
+			cube_scrambled[1][3] = new_right;
 	
 			// Cubie 2
-			new_bottom = cube_scrambled[2][3];
-			new_left = cube_scrambled[2][1];
+			new_top = cube_scrambled[2][3];
+			new_right = cube_scrambled[2][1];
 			cube_scrambled[2][3] = 'x';
 			cube_scrambled[2][1] = 'x';
-			cube_scrambled[2][1] = new_bottom;
-			cube_scrambled[2][2] = new_left;
+			cube_scrambled[2][0] = new_top;
+			cube_scrambled[2][3] = new_right;
 			
 			// Cubie 3
-			new_top = cube_scrambled[3][2];
+			new_bottom = cube_scrambled[3][2];
 			cube_scrambled[3][2] = 'x';
-			cube_scrambled[3][0] = new_top;
+			cube_scrambled[3][1] = new_bottom;
 			
 			// Cubie 4
-			new_bottom = cube_scrambled[4][3];
+			new_top = cube_scrambled[4][3];
 			cube_scrambled[4][3] = 'x';
-			cube_scrambled[4][1] = new_bottom;
+			cube_scrambled[4][0] = new_top;
 			
 			// Cubie 5
-			new_top = cube_scrambled[5][2];
-			new_right = cube_scrambled[5][0];
+			new_bottom = cube_scrambled[5][2];
+			new_left = cube_scrambled[5][0];
 			cube_scrambled[5][2] = 'x';
 			cube_scrambled[5][0] = 'x';
-			cube_scrambled[5][0] = new_top;
-			cube_scrambled[5][3] = new_right;
+			cube_scrambled[5][1] = new_bottom;
+			cube_scrambled[5][2] = new_left;
 			
 			// Cubie 6
-			new_right = cube_scrambled[6][0];
+			new_left = cube_scrambled[6][0];
 			cube_scrambled[6][0] = 'x';
-			cube_scrambled[6][3] = new_right;
+			cube_scrambled[6][2] = new_left;
 			
 			// Cubie 7
-			new_bottom = cube_scrambled[7][3];
-			new_right = cube_scrambled[7][0];
+			new_top = cube_scrambled[7][3];
+			new_left = cube_scrambled[7][0];
 			cube_scrambled[7][3] = 'x';
 			cube_scrambled[7][0] = 'x';
-			cube_scrambled[7][1] = new_bottom;
-			cube_scrambled[7][3] = new_right;
+			cube_scrambled[7][0] = new_top;
+			cube_scrambled[7][2] = new_left;
 			
-			// Cubie 00 is replaced by Cubie 02 
+			// Cubie 0 is replaced by Cubie 5 
 			cubie_00_temp = cube_scrambled[0];
-			cube_scrambled[0] = cube_scrambled[2];
+			cube_scrambled[0] = cube_scrambled[5];
 			
-			// Cubie 01 is replaced by Cubie 04 
+			// Cubie 1 is replaced by Cubie 3 
 			cubie_01_temp = cube_scrambled[1];
-			cube_scrambled[1] = cube_scrambled[4];
+			cube_scrambled[1] = cube_scrambled[3];
 			
-			// Cubie 02 is replaced by Cubie 07 
-			cube_scrambled[2] = cube_scrambled[7];
+			// Cubie 2 is replaced by Cubie 0 
+			cubie_02_temp = cube_scrambled[2];
+			cube_scrambled[2] = cubie_00_temp;
 			
-			// Cubie 03 is replaced by Cubie 01 
-			cubie_03_temp = cube_scrambled[3];
-			cube_scrambled[3] = cubie_01_temp;
+			// Cubie 3 is replaced by Cubie 6 
+			cube_scrambled[3] = cube_scrambled[6];
 			
-			// Cubie 04 is replaced by Cubie 06 
-			cube_scrambled[4] = cube_scrambled[6];
+			// Cubie 4 is replaced by Cubie 1 
+			cubie_04_temp = cube_scrambled[4];
+			cube_scrambled[4] = cubie_01_temp;
 			
-			// Cubie 05 is replaced by Cubie 00 
-			cubie_05_temp = cube_scrambled[5];
-			cube_scrambled[5] = cubie_00_temp;
+			// Cubie 5 is replaced by Cubie 7 
+			cube_scrambled[5] = cube_scrambled[7];
 			
-			// Cubie 06 is replaced by Cubie 03 
-			cube_scrambled[6] = cubie_03_temp;
+			// Cubie 6 is replaced by Cubie 4 
+			cube_scrambled[6] = cubie_04_temp;
 			
-			// Cubie 07 is replaced by Cubie 05 
-			cube_scrambled[7] = cubie_05_temp;
+			// Cubie 7 is replaced by Cubie 2 
+			cube_scrambled[7] = cubie_02_temp;
 		}
 	}
 	
@@ -1059,5 +1064,42 @@ public class Cube {
 			return null;
 		}
 		return new_cube_orientation;
+	}
+	
+	public char[][] getDummySolvedState() {
+				
+		// FOR DEBUGGING ONLY
+		
+		// Solved state for each cubie (White side of the cube showing up, green side facing front)
+		// 		values in the array: x - no color (facing inside), r - red, g - green, b - blue, w - white, y - yellow, o - orange)
+		// 		positions in the array: Top, bottom, left, right, front, back)
+		char[] cubie_01 = {'x', 'Y', 'O', 'x', 'x', 'B'}; // Corner: 	Yellow	, orange, blue
+		char[] cubie_02 = {'x', 'Y', 'x', 'x', 'x', 'B'}; // Edge:		Yellow	, blue
+		char[] cubie_03 = {'x', 'Y', 'x', 'R', 'x', 'B'}; // Corner: 	Yellow	, red	, blue
+		char[] cubie_04 = {'x', 'x', 'O', 'x', 'x', 'B'}; // Edge:		Orange	, blue
+		char[] cubie_05 = {'x', 'x', 'x', 'R', 'x', 'B'}; // Edge:		Red		, blue
+		char[] cubie_06 = {'W', 'x', 'O', 'x', 'x', 'B'}; // Corner: 	White	, orange, blue
+		char[] cubie_07 = {'W', 'x', 'x', 'x', 'x', 'B'}; // Edge:		White	, blue
+		char[] cubie_08 = {'W', 'x', 'x', 'R', 'x', 'B'}; // Corner: 	White	, red	, blue
+		char[] cubie_09 = {'x', 'Y', 'O', 'x', 'x', 'x'}; // Edge:		Yellow	, orange
+		char[] cubie_10 = {'x', 'Y', 'x', 'R', 'x', 'x'}; // Edge:		Yellow	, red
+		char[] cubie_11 = {'W', 'x', 'O', 'x', 'x', 'x'}; // Edge:		White	, orange
+		char[] cubie_12 = {'W', 'x', 'x', 'R', 'x', 'x'}; // Edge:		White	, red
+		char[] cubie_13 = {'x', 'Y', 'O', 'x', 'G', 'x'}; // Corner: 	Yellow	, orange, green
+		char[] cubie_14 = {'x', 'Y', 'x', 'x', 'G', 'x'}; // Edge:		Yellow	, green
+		char[] cubie_15 = {'x', 'Y', 'x', 'R', 'G', 'x'}; // Corner: 	Yellow	, red	, green
+		char[] cubie_16 = {'x', 'x', 'O', 'x', 'G', 'x'}; // Edge:		Orange	, green
+		char[] cubie_17 = {'x', 'x', 'x', 'R', 'G', 'x'}; // Edge:		Red		, green
+		char[] cubie_18 = {'W', 'x', 'O', 'x', 'G', 'x'}; // Corner: 	White	, orange, green
+		char[] cubie_19 = {'W', 'x', 'x', 'x', 'G', 'x'}; // Edge:		White	, green
+		char[] cubie_20 = {'W', 'x', 'x', 'R', 'G', 'x'}; // Corner: 	White	, red	, green
+		
+		char[][] dummy_solved_state = { cubie_01, cubie_02, cubie_03, cubie_04,
+									cubie_05 ,cubie_06, cubie_07, cubie_08,	cubie_09,
+									cubie_10, cubie_11, cubie_12, cubie_13, cubie_14,
+									cubie_15, cubie_16, cubie_17, cubie_18, cubie_19, cubie_20
+								};
+		
+		return dummy_solved_state;
 	}
 }
