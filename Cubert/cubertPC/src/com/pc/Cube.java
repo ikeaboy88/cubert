@@ -26,6 +26,90 @@ public class Cube {
 				cubie_06_temp, cubie_07_temp, cubie_08_temp, cubie_09_temp, cubie_11_temp, cubie_12_temp,
 				cubie_13_temp, cubie_14_temp, cubie_15_temp, cubie_17_temp;    
 		
+		// Rotate top face
+		if (face == 't') {
+		
+			// Cubie 5
+			new_right = cube_scrambled[5][5];
+			new_back = cube_scrambled[5][2];
+			cube_scrambled[5][5] = 'x';
+			cube_scrambled[5][2] = 'x';
+			cube_scrambled[5][3] = new_right;
+			cube_scrambled[5][5] = new_back;
+	
+			// Cubie 6
+			new_right = cube_scrambled[6][5];
+			cube_scrambled[6][5] = 'x';
+			cube_scrambled[6][3] = new_right;
+	
+			// Cubie 7
+			new_right = cube_scrambled[7][5];
+			new_front = cube_scrambled[7][3];
+			cube_scrambled[7][5] = 'x';
+			cube_scrambled[7][3] = 'x';
+			cube_scrambled[7][3] = new_right;
+			cube_scrambled[7][4] = new_front;
+			
+			// Cubie 10
+			new_back = cube_scrambled[10][2];
+			cube_scrambled[10][2] = 'x';
+			cube_scrambled[10][5] = new_back;
+			
+			// Cubie 11
+			new_front = cube_scrambled[11][3];
+			cube_scrambled[11][3] = 'x';
+			cube_scrambled[11][4] = new_front;
+			
+			// Cubie 17
+			new_left = cube_scrambled[17][4];
+			new_back = cube_scrambled[17][2];
+			cube_scrambled[17][4] = 'x';
+			cube_scrambled[17][2] = 'x';
+			cube_scrambled[17][2] = new_left;
+			cube_scrambled[17][5] = new_back;
+			
+			// Cubie 18
+			new_left = cube_scrambled[18][4];
+			cube_scrambled[18][4] = 'x';
+			cube_scrambled[18][2] = new_left;
+			
+			// Cubie 19
+			new_left = cube_scrambled[19][4];
+			new_front = cube_scrambled[19][3];
+			cube_scrambled[19][4] = 'x';
+			cube_scrambled[19][3] = 'x';
+			cube_scrambled[19][2] = new_left;
+			cube_scrambled[19][4] = new_front;
+			
+			// Cubie 05 is replaced by Cubie 17 
+			cubie_05_temp = cube_scrambled[5];
+			cube_scrambled[5] = cube_scrambled[17];
+			
+			// Cubie 06 is replaced by Cubie 10
+			cubie_06_temp = cube_scrambled[6];
+			cube_scrambled[6] = cube_scrambled[10];
+			
+			// Cubie 07 is replaced by Cubie 5
+			cubie_07_temp = cube_scrambled[7];
+			cube_scrambled[7] = cubie_05_temp;
+			
+			// Cubie 10 is replaced by Cubie 18 
+			cube_scrambled[10] = cube_scrambled[18];
+			
+			// Cubie 11 is replaced by Cubie 6 
+			cubie_11_temp = cube_scrambled[11];
+			cube_scrambled[11] = cubie_06_temp;
+			
+			// Cubie 17 is replaced by Cubie 19 
+			cube_scrambled[17] = cube_scrambled[19];
+			
+			// Cubie 18 is replaced by Cubie 11 
+			cube_scrambled[18] = cubie_11_temp;
+			
+			// Cubie 19 is replaced by Cubie 7 
+			cube_scrambled[19] = cubie_07_temp;
+		}
+		
 		// Rotate down/bottom face
 		if (face == 'd') {
 		
@@ -109,6 +193,12 @@ public class Cube {
 			// Cubie 14 is replaced by Cubie 12 
 			cube_scrambled[14] = cubie_12_temp;
 		}
+		
+		// Rotate left face
+		if (face == 'l') {
+			// TODO:
+		}
+		
 		// Rotate right face
 		if (face == 'r') {
 		
@@ -194,89 +284,7 @@ public class Cube {
 			// Cubie 19 is replaced by Cubie 14 
 			cube_scrambled[19] = cubie_14_temp;
 		}
-		// Rotate top face
-		if (face == 't') {
 		
-			// Cubie 5
-			new_right = cube_scrambled[5][5];
-			new_back = cube_scrambled[5][2];
-			cube_scrambled[5][5] = 'x';
-			cube_scrambled[5][2] = 'x';
-			cube_scrambled[5][3] = new_right;
-			cube_scrambled[5][5] = new_back;
-	
-			// Cubie 6
-			new_right = cube_scrambled[6][5];
-			cube_scrambled[6][5] = 'x';
-			cube_scrambled[6][3] = new_right;
-	
-			// Cubie 7
-			new_right = cube_scrambled[7][5];
-			new_front = cube_scrambled[7][3];
-			cube_scrambled[7][5] = 'x';
-			cube_scrambled[7][3] = 'x';
-			cube_scrambled[7][3] = new_right;
-			cube_scrambled[7][4] = new_front;
-			
-			// Cubie 10
-			new_back = cube_scrambled[10][2];
-			cube_scrambled[10][2] = 'x';
-			cube_scrambled[10][5] = new_back;
-			
-			// Cubie 11
-			new_front = cube_scrambled[11][3];
-			cube_scrambled[11][3] = 'x';
-			cube_scrambled[11][4] = new_front;
-			
-			// Cubie 17
-			new_left = cube_scrambled[17][4];
-			new_back = cube_scrambled[17][2];
-			cube_scrambled[17][4] = 'x';
-			cube_scrambled[17][2] = 'x';
-			cube_scrambled[17][2] = new_left;
-			cube_scrambled[17][5] = new_back;
-			
-			// Cubie 18
-			new_left = cube_scrambled[18][4];
-			cube_scrambled[18][4] = 'x';
-			cube_scrambled[18][2] = new_left;
-			
-			// Cubie 19
-			new_left = cube_scrambled[19][4];
-			new_front = cube_scrambled[19][3];
-			cube_scrambled[19][4] = 'x';
-			cube_scrambled[19][3] = 'x';
-			cube_scrambled[19][2] = new_left;
-			cube_scrambled[19][4] = new_front;
-			
-			// Cubie 05 is replaced by Cubie 17 
-			cubie_05_temp = cube_scrambled[5];
-			cube_scrambled[5] = cube_scrambled[17];
-			
-			// Cubie 06 is replaced by Cubie 10
-			cubie_06_temp = cube_scrambled[6];
-			cube_scrambled[6] = cube_scrambled[10];
-			
-			// Cubie 07 is replaced by Cubie 5
-			cubie_07_temp = cube_scrambled[7];
-			cube_scrambled[7] = cubie_05_temp;
-			
-			// Cubie 10 is replaced by Cubie 18 
-			cube_scrambled[10] = cube_scrambled[18];
-			
-			// Cubie 11 is replaced by Cubie 6 
-			cubie_11_temp = cube_scrambled[11];
-			cube_scrambled[11] = cubie_06_temp;
-			
-			// Cubie 17 is replaced by Cubie 19 
-			cube_scrambled[17] = cube_scrambled[19];
-			
-			// Cubie 18 is replaced by Cubie 11 
-			cube_scrambled[18] = cubie_11_temp;
-			
-			// Cubie 19 is replaced by Cubie 7 
-			cube_scrambled[19] = cubie_07_temp;
-		}
 		// Rotate front face
 		if (face == 'f') {
 		
@@ -360,6 +368,7 @@ public class Cube {
 			// Cubie 19 is replaced by Cubie 17 
 			cube_scrambled[19] = cubie_17_temp;
 		}
+		
 		// Rotate back face
 		if (face == 'b') {
 			
