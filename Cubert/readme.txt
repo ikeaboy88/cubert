@@ -12,6 +12,7 @@ Cubert - An intelligent Rubik's Cube solving robot
 
 	- Complete scan will be executed
 
+	- Data will be transferred and displayed to/on the pc after NXT program exit (or error)
 
 To SHUTDOWN during execution in a reasonable state (Arm and sensor released)
 -> Hold small grey button until Cubert stops
