@@ -18,6 +18,8 @@ public class Connection {
 	private DataInputStream dis = null;
 	private BufferedReader bufferedReader = null; 
 	
+	static int[][]ref_rgb = new int[6][3];
+	
 	public void connectToPC() {
 		LCD.drawString("Right BT->USB Verbindung", 0, 0);
 
@@ -94,8 +96,8 @@ public class Connection {
 //		char[]scan_result_vector = {'A','B','C','D'};
 		LCD.drawString("sending data to pc...", 1, 3);
 		try {
-			byte[]rgb_calibration_value = new byte[reference.size()];
-			for(int i = 0; i <= reference.size(); i++){
+			byte[]rgb_calibration_value = new byte[18];
+			for(int i = 0; i < reference.size(); i++){
 				int ref = reference.get(i);
 				rgb_calibration_value[i] = (byte) ref;
 			}
@@ -120,6 +122,66 @@ public class Connection {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public int[][] safeReferenceRGBValues() {
+		// TODO Auto-generated method stub
+		LCD.clear();
+		
+		byte[] recieved_rgb_value = new byte[18];
+		int[][]rgb_reference = new int[6][3];
+		try {
+
+			// read 18 characters in byte array
+			//int recieved_byte = dis.read(recieved_rgb_value, 0, 18);
+			LCD.drawString("reading...", 0, 0);
+			dis.read(recieved_rgb_value, 0, 18);
+			//format values
+			int rgb;
+			int index = 0;
+//			if(recieved_rgb_value[0]!=0){
+				for (int i = 0; i < 6; i++){
+					
+					for(int j = i*3; j < 3+(i*3); j++){
+						index = j;
+						//is there is a byte overflow, convert the byte into int
+						if(recieved_rgb_value[j]<0){
+							//get positive value of overflow
+							int temp_rgb = -recieved_rgb_value[j];
+							//bring overflow value into range of 32bit Integer
+							rgb = 255-temp_rgb;
+						}
+						else{					
+							rgb = recieved_rgb_value[j];
+						}
+						
+						// writing values in two dimensional array range: [6][3]
+						// therefore modulo operation on j, so that range is between 0 and 2
+						if(j>=3){
+							index %= 3;
+						}
+						rgb_reference[i][index] = rgb;
+//						ref_rgb[i][index]=rgb;
+						LCD.drawString("ref: "+rgb_reference[i][index], 0, 3);
+						LCD.drawString("i: "+i, 0, 4);
+						LCD.drawString("j: "+j, 0, 5);
+						LCD.drawString("index: "+index, 0, 6);
+					
+						
+					}
+					LCD.drawString("1 for", 0, 2);
+				}
+//			}
+//			ref_rgb = rgb_reference;
+			LCD.drawString("ref: "+ref_rgb[0][1], 0, 3);
+		} catch (IOException e) {
+			LCD.clear();
+			LCD.drawString("ERROR while safing reference values!", 0, 1);
+			System.out.println("Can't communicate to NXT");
+			e.printStackTrace();
+		}
+		return rgb_reference;
+
 	}
 
 	/*

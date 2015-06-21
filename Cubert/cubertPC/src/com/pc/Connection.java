@@ -94,7 +94,6 @@ public class Connection {
 			// read 18 characters
 			// recieved_rgb_value += bufferedReader.readLine();
 			int recieved_byte = dis.read(recieved_rgb_value, 0, 18);
-			System.out.println("recieved rgb bytes: " + recieved_byte);
 		} catch (IOException e) {
 			System.out.println("Can't communicate to NXT");
 			e.printStackTrace();
@@ -139,5 +138,22 @@ public class Connection {
 		}
 
 		return b;
+	}
+
+	public void sendRGBCalibration(int[] ref_RGB_calibration) {
+		// TODO Auto-generated method stub
+		try {
+		byte[]b = new byte[18];
+		for(int i = 0; i < ref_RGB_calibration.length; i++){
+			b[i] = (byte)ref_RGB_calibration[i];
+		}
+		//write 18 bytes from byte array
+			dos.write(b, 0, b.length);
+			dos.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }
