@@ -90,6 +90,28 @@ public class Cube {
 		return manhattan_distance;
 	}
 	
+	/**
+	 * Calculates the number of incorrect oriented colors of a given cubie compared to it's solved orientation
+	 * @param cubie_index Index of the cubie to check
+	 * @return Color distance of cubie to it's solved orientation
+	 */
+	public int calculateColorDistance(int cubie_index) {
+		
+		int color_distance = 0;
+		
+		for (int i = 0; i < 6; i++) {
+
+			if ( cube_scrambled[cubie_index][i] != cube_solved[this.findCubieSolvedIndex(cube_scrambled[cubie_index])][i] ) {
+
+				if ( cube_scrambled[cubie_index][i] != 'x' ) {
+					
+					color_distance++;
+				}
+			}
+		}
+		return color_distance;
+	}
+	
 	private int[][] getCubieCoordinates() {
 		
 		// 3D coordinates of each cubie by it's index
