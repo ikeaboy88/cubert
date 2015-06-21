@@ -26,6 +26,23 @@ public class Cube {
 		cubie_coordinates = this.getCubieCoordinates();
 	}
 	
+	/**
+	 * Calculates the 3D-Manhattan-Distance between two cubies
+	 * @param cubie_index_current 	Index of a cubie
+	 * @param cubie_index_target	Index of another cubie to compare
+	 * @return 3D-Manhattan distance of both cubies as integer
+	 */
+	public int calculateManhattanDistance(int cubie_index_current, int cubie_index_target) {
+		
+		int manhattan_distance = 0;
+		
+		for (int i = 0; i < 3; i++) {
+			manhattan_distance += Math.abs(cubie_coordinates[cubie_index_current][i] - cubie_coordinates[cubie_index_target][i]);
+		}
+		
+		return manhattan_distance;
+	}
+	
 	private int[][] getCubieCoordinates() {
 		
 		// 3D coordinates of each cubie by it's index
