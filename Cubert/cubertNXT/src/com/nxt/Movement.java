@@ -64,7 +64,7 @@ public class Movement {
 		if (mc.getArmState() == Arm.HOLDING) {
 			
 			mc.setArmState(Arm.MOVING);
-			mc.setPower(100);
+			mc.setPower(80);
 	
 			// tilt consists of 2 moves: pull and push
 			for (int i = 1; i <= 2; i++) {
@@ -101,7 +101,7 @@ public class Movement {
 			
 			mc.setArmState(Arm.MOVING);
 			mc.resetTachoCount();
-			mc.setPower(60);
+			mc.setPower(50);
 			
 			// move 110 degrees
 			while (Math.abs(mc.getTachoCount()) < 110) {
@@ -124,7 +124,7 @@ public class Movement {
 			
 			mc.setArmState(Arm.MOVING);
 			mc.resetTachoCount();
-			mc.setPower(80);
+			mc.setPower(50); // Full batteries 60 - half empty 80
 			
 			// move 110 degrees
 			while (Math.abs(mc.getTachoCount()) < 110) {
