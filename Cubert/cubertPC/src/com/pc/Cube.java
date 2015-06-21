@@ -27,6 +27,43 @@ public class Cube {
 	}
 	
 	/**
+	 * Finds the solved index/position of a given cubie signature
+	 * @param cubie as char[] of its signature
+	 * @return index of the solved position of the passed cubie
+	 */
+	public int findCubieSolvedIndex(char[] cubie) {
+		
+		boolean match = true;
+		
+		// Compare signature of cubie with all solved cubie signatures
+		for (int i = 0; i < cube_solved.length; i++) {
+
+			// Go through cubie's signature
+			for (int j = 0; j < cubie.length; j++) {
+				
+				// skip entries with x
+				if (cubie[j] != 'x') {
+					
+					// Skip current cubie if one color is not contained in the current checked solved cubie
+					if (! (new String(cube_solved[i]).contains("" + cubie[j]))) {
+						match = false;
+						break;
+					}
+				}
+			}
+
+			// Return the solved index of the matching cubie
+			if (match) {
+				return i;
+			} else {
+				match = true;
+			}
+		}
+		// No match found
+		return -1;
+	}
+	
+	/**
 	 * Calculates the 3D-Manhattan-Distance between two cubies
 	 * @param cubie_index_current 	Index of a cubie
 	 * @param cubie_index_target	Index of another cubie to compare
