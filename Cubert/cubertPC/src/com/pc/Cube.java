@@ -2,6 +2,9 @@ package com.pc;
 
 public class Cube {
 
+	// 3D-Coordinates for every cubie (to calculate Manhattan distance)
+	private int[][] cubie_coordinates = null;
+	
 	// Initial orientation of the cube itself - which centers are facing in which direction
 	public char[] cube_orientation = new char[6];
 	public char[][] cube_scrambled = null;
@@ -20,6 +23,185 @@ public class Cube {
 			cube_solved = createSolvedState(new char [] {'W', 'Y', 'O', 'R', 'G', 'B'});
 			cube_scrambled = this.getDummySolvedState();
 		}
+		cubie_coordinates = this.getCubieCoordinates();
+	}
+	
+	/**
+	 * Finds the solved index/position of a given cubie signature
+	 * @param cubie as char[] of its signature
+	 * @return index of the solved position of the passed cubie
+	 */
+	private int findCubieSolvedIndex(char[] cubie) {
+		
+		boolean match = true;
+		
+		// Compare signature of cubie with all solved cubie signatures
+		for (int i = 0; i < cube_solved.length; i++) {
+
+			int x_count = 0;
+			int x_count_solved = 0;
+			
+			// Go through cubie's signature
+			for (int j = 0; j < cubie.length; j++) {
+				
+				// skip entries with x
+				if (cubie[j] != 'x') {
+					
+					// Skip current cubie if one color is not contained in the current checked solved cubie
+					if (! (new String(cube_solved[i]).contains("" + cubie[j]))) {
+						match = false;
+						break;
+					}
+				} else {
+					x_count++;
+				}
+				
+				if (cube_solved[i][j] == 'x') {
+					x_count_solved++;
+				}
+			}
+
+			// Return the solved index of the matching cubie
+			if (match) {
+				if (x_count_solved == x_count) {
+					return i;
+				}
+			} else {
+				match = true;
+			}
+		}
+		// No match found
+		return -1;
+	}
+	
+	/**
+	 * Get the average distance (3D-MHD & Color-Distance) over all cubies of a turned face
+	 * @param face that has been turned (t, d, l, r, f, b)
+	 * @return distance of the face to it's solved state
+	 */
+	public double calculateFaceDistance(char face) {
+		
+		double distance = 0.0;
+		
+		int[] moved_cubies = getAllCubiesByFace(face);
+		
+		for (int i = 0; i < moved_cubies.length; i++) {
+			distance += calculateManhattanDistance(moved_cubies[i]) + calculateColorDistance(moved_cubies[i]);
+		}
+		return distance / 8.0;
+	}
+	
+	/**
+	 * Get indices of all cubies from a given face
+	 * @param face (t, d, l, r, f, b)
+	 * @return integer array with cubie indices of the given face
+	 */
+	private int[] getAllCubiesByFace(char face) {
+		
+		int[] cubies_of_face;
+		
+		switch (face) {
+			case 't':
+				cubies_of_face = new int[] {5, 6, 7, 10, 11, 17, 18, 19}; 
+				break;
+	
+			case 'd':
+				cubies_of_face = new int[] {0, 1, 2, 8, 9, 12, 13, 14}; 
+				break;
+			
+			case 'l':
+				cubies_of_face = new int[] {0, 3, 5, 8, 10, 12, 15, 17}; 
+				break;
+			
+			case 'r':
+				cubies_of_face = new int[] {2, 4, 7, 9, 11, 14, 16, 19}; 
+				break;
+			
+			case 'f':
+				cubies_of_face = new int[] {12, 13, 14, 15, 16, 17, 18, 19}; 
+				break;
+			
+			case 'b':
+				cubies_of_face = new int[] {0, 1, 2, 3, 4, 5, 6, 7}; 
+				break;
+			
+			default:
+				return null;
+		}
+		return cubies_of_face;
+	}
+	
+	/**
+	 * Calculates the 3D-Manhattan-Distance between a given cubie and it's solved position
+	 * @param cubie_index 	Index of cubie to check
+	 * @return 3D-Manhattan distance of both positions
+	 */
+	private int calculateManhattanDistance(int cubie_index) {
+		
+		int manhattan_distance = 0;
+		
+		for (int i = 0; i < 3; i++) {
+			manhattan_distance += Math.abs( cubie_coordinates[cubie_index][i] - cubie_coordinates[this.findCubieSolvedIndex(cube_scrambled[cubie_index])][i] );
+		}
+		
+		return manhattan_distance;
+	}
+	
+	/**
+	 * Calculates the number of incorrect oriented colors of a given cubie compared to it's solved orientation
+	 * @param cubie_index Index of the cubie to check
+	 * @return Color distance of cubie to it's solved orientation
+	 */
+	private int calculateColorDistance(int cubie_index) {
+		
+		int color_distance = 0;
+		
+		for (int i = 0; i < 6; i++) {
+
+			if ( cube_scrambled[cubie_index][i] != cube_solved[this.findCubieSolvedIndex(cube_scrambled[cubie_index])][i] ) {
+
+				if ( cube_scrambled[cubie_index][i] != 'x' ) {
+					
+					color_distance++;
+				}
+			}
+		}
+		return color_distance;
+	}
+	
+	private int[][] getCubieCoordinates() {
+		
+		// 3D coordinates of each cubie by it's index
+		// (see presentation)		  x, y, z
+		int[] cubie_00_coordinates = {0, 0, 0};
+		int[] cubie_01_coordinates = {1, 0, 0};
+		int[] cubie_02_coordinates = {2, 0, 0};
+		int[] cubie_03_coordinates = {0, 1, 0};
+		int[] cubie_04_coordinates = {2, 1, 0};
+		int[] cubie_05_coordinates = {0, 2, 0};
+		int[] cubie_06_coordinates = {1, 2, 0};
+		int[] cubie_07_coordinates = {2, 2, 0};
+		int[] cubie_08_coordinates = {0, 0, 1};
+		int[] cubie_09_coordinates = {2, 0, 1};
+		int[] cubie_10_coordinates = {0, 2, 1};
+		int[] cubie_11_coordinates = {2, 2, 1};
+		int[] cubie_12_coordinates = {0, 0, 2};
+		int[] cubie_13_coordinates = {1, 0, 2};
+		int[] cubie_14_coordinates = {2, 0, 2};
+		int[] cubie_15_coordinates = {0, 1, 2};
+		int[] cubie_16_coordinates = {2, 1, 2};
+		int[] cubie_17_coordinates = {0, 2, 2};
+		int[] cubie_18_coordinates = {1, 2, 2};
+		int[] cubie_19_coordinates = {2, 2, 2};
+		
+		int[][] cubie_coordinates = {
+							cubie_00_coordinates, cubie_01_coordinates, cubie_02_coordinates, cubie_03_coordinates, cubie_04_coordinates,
+							cubie_05_coordinates, cubie_06_coordinates, cubie_07_coordinates, cubie_08_coordinates, cubie_09_coordinates,
+							cubie_10_coordinates, cubie_11_coordinates, cubie_12_coordinates, cubie_13_coordinates, cubie_14_coordinates,
+							cubie_15_coordinates, cubie_16_coordinates, cubie_17_coordinates, cubie_18_coordinates, cubie_19_coordinates
+						};
+		
+		return cubie_coordinates;
 	}
 	
 	// Quarter turn clockwise (when look at the face directly)
