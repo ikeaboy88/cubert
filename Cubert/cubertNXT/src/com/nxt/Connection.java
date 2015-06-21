@@ -5,6 +5,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
+
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.comm.USB;
@@ -15,7 +17,7 @@ public class Connection {
 	private DataOutputStream dos = null;
 	private DataInputStream dis = null;
 	private BufferedReader bufferedReader = null; 
-
+	
 	public void connectToPC() {
 		LCD.drawString("Right BT->USB Verbindung", 0, 0);
 
@@ -26,6 +28,9 @@ public class Connection {
 		LCD.clear();
 		LCD.drawString("connected", 0, 0);
 		Button.waitForAnyPress();
+		dos = connection.openDataOutputStream();
+		dis = getConnection().openDataInputStream();
+		bufferedReader = new BufferedReader(new InputStreamReader(dis));
 	}
 	
 	public USBConnection getConnection() {
@@ -39,20 +44,13 @@ public class Connection {
 		LCD.drawString("sending data to pc...", 1, 3);
 		String[] scanResult = new String[54];
 		try {
-			dos = connection.openDataOutputStream();
 			for (int i = 0; i < scan_result_vector.length; i++){
 			scanResult[i] = Character.toString(scan_result_vector[i]);
 			dos.writeBytes(scanResult[i]);
 			}
 			dos.flush();
-			dos.close();
+//			dos.close();
 		} catch (IOException e) {
-			try {
-				dos.close();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			LCD.drawString("Can't send data to PC", 1, 4);
 			e.printStackTrace();
 		}
@@ -66,8 +64,6 @@ public class Connection {
 //		String s = "";
 		int s;
 		LCD.drawString("recieve..", 0, 0);
-		dis = getConnection().openDataInputStream();
-		bufferedReader = new BufferedReader(new InputStreamReader(dis));
 
 		while(true){
 			
@@ -84,24 +80,22 @@ public class Connection {
 	
 	}
 
-	public void sendRGBCalibration(String reference) {
+	public void sendRGBCalibration(List<Integer> reference) {
 		// TODO Auto-generated method stub
 		LCD.clear();
 //		char[]scan_result_vector = {'A','B','C','D'};
 		LCD.drawString("sending data to pc...", 1, 3);
 		try {
-			dos = connection.openDataOutputStream();
-			dos.writeBytes(reference);
+			byte[]rgb_calibration_value = new byte[reference.size()];
+			for(int i = 0; i <= reference.size(); i++){
+				int ref = reference.get(i);
+				rgb_calibration_value[i] = (byte) ref;
+			}
+			dos.write(rgb_calibration_value, 0, reference.size());
+			//dos.writeBytes(reference);
 			
 			dos.flush();
-			dos.close();
 		} catch (IOException e) {
-			try {
-				dos.close();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			LCD.drawString("Can't send data to PC", 1, 4);
 			e.printStackTrace();
 		}
@@ -109,11 +103,11 @@ public class Connection {
 	}
 	
 	public void sendMode(int mode){
-		dos = connection.openDataOutputStream();
 		try {
-			dos.write(mode);
+			byte[]b = new byte[1];
+			b[0] = (byte) mode;
+			dos.write(b, 0, 1);
 			dos.flush();
-			dos.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

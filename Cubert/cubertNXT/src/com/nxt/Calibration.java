@@ -37,6 +37,6 @@ public class Calibration {
 		/* Connection between NXT and PC */
 		Connection connect_NXT = new Connection();
 		connect_NXT.connectToPC();
-		connect_NXT.sendRGBCalibration(rgb_string);
+		connect_NXT.sendRGBCalibration(rgb_values);
 	}
 }

@@ -6,8 +6,11 @@ public class Main {
 		Connection connect_PC = new Connection();
 		connect_PC.connectToNXT();
 
-		int mode = connect_PC.getMode();
-		if (mode == 0) {
+		//safe recieved int value from datainputstream in byte buffer
+		byte[] mode = connect_PC.getMode();
+		//System.out.println(mode[0]);
+		
+		if (mode[0] == 0) {
 			System.out.println("calibration mode");
 			Calibration cal = new Calibration(connect_PC);
 			cal.calibrate();
@@ -34,5 +37,6 @@ public class Main {
 			}
 			count++;
 		}
+		
 	}
 }

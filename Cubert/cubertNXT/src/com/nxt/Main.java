@@ -24,24 +24,25 @@ public class Main {
 			connect_NXT.sendMode(0);
 			LCD.drawString("Calibrating", 0, 1);
 			cube.executeCompleteScan(true);
-		int[][] ref = cube.detect.rgb_ref;
-		List<Integer>rgb_values = new ArrayList<Integer>();
-		for(int [] reference_rgb : ref){
+			int[][] ref = cube.detect.rgb_ref;
+			List<Integer>rgb_values = new ArrayList<Integer>();
+			for(int [] reference_rgb : ref){
 			for (int i = 0; i <reference_rgb.length; i++)
 			{
 				rgb_values.add(reference_rgb[i]);
 			}
 		}
 		
-		String rgb_string = "";
-		for(int i = 0; i<rgb_values.size(); i++){
-			rgb_string += rgb_values.get(i)+",";
-		}
-		rgb_string = rgb_string.substring(0, rgb_string.length()-1);
+		//String rgb_string = "";
+	//	for(int i = 0; i<rgb_values.size(); i++){
+			//rgb_string += rgb_values.get(i)+",";
+		//}
+		//rgb_string = rgb_string.substring(0, rgb_string.length()-1);
 		
-		LCD.clear();
+		//LCD.clear();
+		
 		/* Connection between NXT and PC */
-		connect_NXT.sendRGBCalibration(rgb_string);
+		connect_NXT.sendRGBCalibration(rgb_values);
 		LCD.drawString("calibration done, press BT", 1, 1);
 		Button.waitForAnyPress();
 		LCD.clear();
@@ -57,9 +58,9 @@ public class Main {
 //				}
 				// ...execute code below
 				
-				connect_NXT.sendMode(1);
-				connect_NXT.sendScanResultVector(cube.executeCompleteScan());
-				Button.waitForAnyPress();
+				//connect_NXT.sendMode(1);
+				//connect_NXT.sendScanResultVector(cube.executeCompleteScan());
+				//Button.waitForAnyPress();
 //			}
 //		colorDetector.calibrate();
 		// ***********************************
