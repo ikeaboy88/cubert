@@ -75,6 +75,63 @@ public class Cube {
 	}
 	
 	/**
+	 * Get the average distance (3D-MHD & Color-Distance) over all cubies of a turned face
+	 * @param face that has been turned (t, d, l, r, f, b)
+	 * @return distance of the face to it's solved state
+	 */
+	public double calculateFaceDistance(char face) {
+		
+		double distance = 0.0;
+		
+		int[] moved_cubies = getAllCubiesByFace(face);
+		
+		for (int i = 0; i < moved_cubies.length; i++) {
+			distance += calculateManhattanDistance(moved_cubies[i]) + calculateColorDistance(moved_cubies[i]);
+		}
+		return distance / 8.0;
+	}
+	
+	/**
+	 * Get indices of all cubies from a given face
+	 * @param face (t, d, l, r, f, b)
+	 * @return integer array with cubie indices of the given face
+	 */
+	private int[] getAllCubiesByFace(char face) {
+		
+		int[] cubies_of_face;
+		
+		switch (face) {
+			case 't':
+				cubies_of_face = new int[] {5, 6, 7, 10, 11, 17, 18, 19}; 
+				break;
+	
+			case 'd':
+				cubies_of_face = new int[] {0, 1, 2, 8, 9, 12, 13, 14}; 
+				break;
+			
+			case 'l':
+				cubies_of_face = new int[] {0, 3, 5, 8, 10, 12, 15, 17}; 
+				break;
+			
+			case 'r':
+				cubies_of_face = new int[] {2, 4, 7, 9, 11, 14, 16, 19}; 
+				break;
+			
+			case 'f':
+				cubies_of_face = new int[] {12, 13, 14, 15, 16, 17, 18, 19}; 
+				break;
+			
+			case 'b':
+				cubies_of_face = new int[] {0, 1, 2, 3, 4, 5, 6, 7}; 
+				break;
+			
+			default:
+				return null;
+		}
+		return cubies_of_face;
+	}
+	
+	/**
 	 * Calculates the 3D-Manhattan-Distance between a given cubie and it's solved position
 	 * @param cubie_index 	Index of cubie to check
 	 * @return 3D-Manhattan distance of both positions
