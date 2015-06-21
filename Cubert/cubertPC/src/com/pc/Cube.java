@@ -38,6 +38,9 @@ public class Cube {
 		// Compare signature of cubie with all solved cubie signatures
 		for (int i = 0; i < cube_solved.length; i++) {
 
+			int x_count = 0;
+			int x_count_solved = 0;
+			
 			// Go through cubie's signature
 			for (int j = 0; j < cubie.length; j++) {
 				
@@ -49,12 +52,20 @@ public class Cube {
 						match = false;
 						break;
 					}
+				} else {
+					x_count++;
+				}
+				
+				if (cube_solved[i][j] == 'x') {
+					x_count_solved++;
 				}
 			}
 
 			// Return the solved index of the matching cubie
 			if (match) {
-				return i;
+				if (x_count_solved == x_count) {
+					return i;
+				}
 			} else {
 				match = true;
 			}
@@ -64,17 +75,16 @@ public class Cube {
 	}
 	
 	/**
-	 * Calculates the 3D-Manhattan-Distance between two cubies
-	 * @param cubie_index_current 	Index of a cubie
-	 * @param cubie_index_target	Index of another cubie to compare
-	 * @return 3D-Manhattan distance of both cubies as integer
+	 * Calculates the 3D-Manhattan-Distance between a given cubie and it's solved position
+	 * @param cubie_index 	Index of cubie to check
+	 * @return 3D-Manhattan distance of both positions
 	 */
-	public int calculateManhattanDistance(int cubie_index_current, int cubie_index_target) {
+	public int calculateManhattanDistance(int cubie_index) {
 		
 		int manhattan_distance = 0;
 		
 		for (int i = 0; i < 3; i++) {
-			manhattan_distance += Math.abs(cubie_coordinates[cubie_index_current][i] - cubie_coordinates[cubie_index_target][i]);
+			manhattan_distance += Math.abs( cubie_coordinates[cubie_index][i] - cubie_coordinates[this.findCubieSolvedIndex(cube_scrambled[cubie_index])][i] );
 		}
 		
 		return manhattan_distance;
