@@ -2,6 +2,9 @@ package com.pc;
 
 public class Cube {
 
+	// 3D-Coordinates for every cubie (to calculate Manhattan distance)
+	private int[][] cubie_coordinates = null;
+	
 	// Initial orientation of the cube itself - which centers are facing in which direction
 	public char[] cube_orientation = new char[6];
 	public char[][] cube_scrambled = null;
@@ -20,6 +23,42 @@ public class Cube {
 			cube_solved = createSolvedState(new char [] {'W', 'Y', 'O', 'R', 'G', 'B'});
 			cube_scrambled = this.getDummySolvedState();
 		}
+		cubie_coordinates = this.getCubieCoordinates();
+	}
+	
+	private int[][] getCubieCoordinates() {
+		
+		// 3D coordinates of each cubie by it's index
+		// (see presentation)		  x, y, z
+		int[] cubie_00_coordinates = {0, 0, 0};
+		int[] cubie_01_coordinates = {1, 0, 0};
+		int[] cubie_02_coordinates = {2, 0, 0};
+		int[] cubie_03_coordinates = {0, 1, 0};
+		int[] cubie_04_coordinates = {2, 1, 0};
+		int[] cubie_05_coordinates = {0, 2, 0};
+		int[] cubie_06_coordinates = {1, 2, 0};
+		int[] cubie_07_coordinates = {2, 2, 0};
+		int[] cubie_08_coordinates = {0, 0, 1};
+		int[] cubie_09_coordinates = {2, 0, 1};
+		int[] cubie_10_coordinates = {0, 2, 1};
+		int[] cubie_11_coordinates = {2, 2, 1};
+		int[] cubie_12_coordinates = {0, 0, 2};
+		int[] cubie_13_coordinates = {1, 0, 2};
+		int[] cubie_14_coordinates = {2, 0, 2};
+		int[] cubie_15_coordinates = {0, 1, 2};
+		int[] cubie_16_coordinates = {2, 1, 2};
+		int[] cubie_17_coordinates = {0, 2, 2};
+		int[] cubie_18_coordinates = {1, 2, 2};
+		int[] cubie_19_coordinates = {2, 2, 2};
+		
+		int[][] cubie_coordinates = {
+							cubie_00_coordinates, cubie_01_coordinates, cubie_02_coordinates, cubie_03_coordinates, cubie_04_coordinates,
+							cubie_05_coordinates, cubie_06_coordinates, cubie_07_coordinates, cubie_08_coordinates, cubie_09_coordinates,
+							cubie_10_coordinates, cubie_11_coordinates, cubie_12_coordinates, cubie_13_coordinates, cubie_14_coordinates,
+							cubie_15_coordinates, cubie_16_coordinates, cubie_17_coordinates, cubie_18_coordinates, cubie_19_coordinates
+						};
+		
+		return cubie_coordinates;
 	}
 	
 	// Quarter turn clockwise (when look at the face directly)
