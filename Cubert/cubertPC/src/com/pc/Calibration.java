@@ -17,14 +17,9 @@ public class Calibration {
 	public Calibration(Connection con){
 		this.con = con;
 	}
+		
 	public void calibrate() {
 
-
-	//	String reference_rgb = con.getReferenceRgbValues();
-		//int reference_rgb = con.getMode();
-//		byte [] reference_rgb = con.getMode();
-		
-		//fill array with reference rgb values from calibration
 		byte [] reference_rgb = con.getReferenceRgbValues();
 		File calibration = new File("src/calibration/reference_RGB_values.txt");
 		if (!calibration.exists()) {
@@ -39,6 +34,12 @@ public class Calibration {
 		
 		//when file already exist, write in file 
 		try {
+			//empty current calibration file 
+			Writer deleter = new FileWriter(calibration);
+			deleter.write("");
+			deleter.close();
+			
+			//fill calibration file with new calibration values
 			Writer file_writer = new FileWriter(calibration);
 			String sequence;
 			//go through byte buffer, read recieved reference rgb values and write them in reference_RGB_values.txt
