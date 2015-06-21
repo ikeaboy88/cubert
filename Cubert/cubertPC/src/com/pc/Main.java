@@ -5,38 +5,41 @@ public class Main {
 	public static void main(String[] args) {
 		Connection connect_PC = new Connection();
 		connect_PC.connectToNXT();
+		Calibration cal = new Calibration(connect_PC);
 
 		//safe recieved int value from datainputstream in byte buffer
 		byte[] mode = connect_PC.getMode();
-		//System.out.println(mode[0]);
 		
+		//when recieveing mode 0, calibrattion mode 
 		if (mode[0] == 0) {
 			System.out.println("calibration mode");
-			Calibration cal = new Calibration(connect_PC);
 			cal.calibrate();
 			System.out.println("calibration done");
 		}
-		System.out.println("solving mode");
-		Cube cube = new Cube(connect_PC.getScanResultVector());
-		if (cube.cube_orientation == null) {
-			System.out.println("SCAN ERROR");
-		}
+		//when mode not 0 or calibration is done...
+			System.out.println("sending RGB reference values to NXT...");
+			int[]ref_RGB_calibration = cal.readCalibrationFromFile();
+			connect_PC.sendRGBCalibration(ref_RGB_calibration);
+			System.out.println("done");
+			Cube cube = new Cube(connect_PC.getScanResultVector());
+			if (cube.cube_orientation == null) {
+				System.out.println("SCAN ERROR");
+			}
 
-		int count = 0;
-		for (char[] cube_solved_vector : cube.cube_solved) {
-			System.out.println();
-			System.out.println();
-			System.out.println("Cubie : " + count + " solved: ");
-			for (char color : cube_solved_vector) {
-				System.out.print(" " + color);
+			int count = 0;
+			for (char[] cube_solved_vector : cube.cube_solved) {
+				System.out.println();
+				System.out.println();
+				System.out.println("Cubie : " + count + " solved: ");
+				for (char color : cube_solved_vector) {
+					System.out.print(" " + color);
+				}
+				System.out.println();
+				System.out.println("Cubie : " + count + " scrambled: ");
+				for (char color : cube.cube_scrambled[count]) {
+					System.out.print(" " + color);
+				}
+				count++;
 			}
-			System.out.println();
-			System.out.println("Cubie : " + count + " scrambled: ");
-			for (char color : cube.cube_scrambled[count]) {
-				System.out.print(" " + color);
-			}
-			count++;
-		}
-		
 	}
 }
