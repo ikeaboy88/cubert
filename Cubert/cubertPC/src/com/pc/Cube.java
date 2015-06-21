@@ -31,7 +31,7 @@ public class Cube {
 	 * @param cubie as char[] of its signature
 	 * @return index of the solved position of the passed cubie
 	 */
-	public int findCubieSolvedIndex(char[] cubie) {
+	private int findCubieSolvedIndex(char[] cubie) {
 		
 		boolean match = true;
 		
@@ -136,7 +136,7 @@ public class Cube {
 	 * @param cubie_index 	Index of cubie to check
 	 * @return 3D-Manhattan distance of both positions
 	 */
-	public int calculateManhattanDistance(int cubie_index) {
+	private int calculateManhattanDistance(int cubie_index) {
 		
 		int manhattan_distance = 0;
 		
@@ -152,7 +152,7 @@ public class Cube {
 	 * @param cubie_index Index of the cubie to check
 	 * @return Color distance of cubie to it's solved orientation
 	 */
-	public int calculateColorDistance(int cubie_index) {
+	private int calculateColorDistance(int cubie_index) {
 		
 		int color_distance = 0;
 		
