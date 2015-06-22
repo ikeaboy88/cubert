@@ -1,5 +1,7 @@
 package com.pc;
 
+import java.util.Arrays;
+
 public class Cube {
 
 	// 3D-Coordinates for every cubie (to calculate Manhattan distance)
@@ -24,6 +26,11 @@ public class Cube {
 			cube_scrambled = this.getDummySolvedState();
 		}
 		cubie_coordinates = this.getCubieCoordinates();
+	}
+	
+	public int hashCubeState(char[][] cube_state) {
+		
+		return Arrays.deepHashCode(cube_state);
 	}
 	
 	/**
