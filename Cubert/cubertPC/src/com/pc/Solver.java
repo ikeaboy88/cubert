@@ -22,7 +22,7 @@ public class Solver {
 	
 	public Cube cube;
 	
-	private char[] actions = new char[]{'t', 'd', 'l', 'r', 'f', 'b'};
+	private char[] actions = new char[]{'t', 'd', 'l', 'r', 'f', 'b', 'T', 'D', 'L', 'R', 'F', 'B'};
 	
 	public Stack<Node> solution_nodes_stack;
 	
@@ -75,6 +75,7 @@ public class Solver {
 				
 				//permute cube?
 				cube.permuteCube(current_node.getAction());
+				char[][] cached_state = cube.cube_scrambled;
 				
 				// Expand node - Create nodes for every subsequent state of the cube's current state
 				List<Node> neighbour_nodes = this.getNeighbourNodes(current_node, cube, actions);
@@ -111,6 +112,7 @@ public class Solver {
 							neighbour.setH_costs(neighbour_node.getH_costs());
 							neighbour.setAction(neighbour_node.getAction());
 							//set scrambled state to nodes predecessor node
+							cube.cube_scrambled = cached_state;
 						}
 						
 					}
