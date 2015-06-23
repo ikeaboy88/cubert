@@ -72,7 +72,10 @@ public class Solver {
 			{
 				// Add current node to closed list
 				closed_list.put(current_node.getState_hash(), current_node);
-			
+				
+				//permute cube?
+				cube.permuteCube(current_node.getAction());
+				
 				// Expand node - Create nodes for every subsequent state of the cube's current state
 				List<Node> neighbour_nodes = this.getNeighbourNodes(current_node, cube, actions);
 		
@@ -149,17 +152,19 @@ public class Solver {
 		
 		for (int i = 0; i < actions.length; i++) {
 			
-			// Reset temporary copy to the current cube's state
-			Cube cube_temp = cube;
-			
 			// Simulate a permutation of the cube
-			cube_temp.permuteCube(actions[i]);
-			int state_hash = cube_temp.hashCubeState(cube_temp.cube_scrambled);
+			cube.permuteCube(actions[i]);
+			int state_hash = cube.hashCubeState(cube.cube_scrambled);
 			int g_costs = current_node.getG_costs() + 1;
-			double h_costs = cube_temp.calculateFaceDistance(actions[i]);
+			double h_costs = cube.calculateFaceDistance(actions[i]);
 			
 			// Add the resulting state as a neighbour
 			neighbours.add(i, new Node(current_node, state_hash, g_costs, h_costs, actions[i]));
+
+			// Reset permutation
+			cube.permuteCube(actions[i]);
+			cube.permuteCube(actions[i]);
+			cube.permuteCube(actions[i]);
 		}
 		
 		return neighbours;
