@@ -90,7 +90,7 @@ public class Cube {
 		
 		double distance = 0.0;
 		
-		int[] moved_cubies = getAllCubiesByFace(face);
+		int[] moved_cubies = getAllCubiesByFace(Character.toLowerCase(face));
 		
 		for (int i = 0; i < moved_cubies.length; i++) {
 			distance += calculateManhattanDistance(moved_cubies[i]) + calculateColorDistance(moved_cubies[i]);
@@ -222,6 +222,43 @@ public class Cube {
 		// Explanation: For a given face..
 		//	.. change the orientations ONLY of all the involved cubies like they will be after the turn,
 		//  .. then switch the newly oriented cubies' positions like they will be after the turn
+		
+		if (face == 'T') {
+			// Rotate top face counter clockwise
+			this.permuteCube('t');
+			this.permuteCube('t');
+			this.permuteCube('t');
+		}
+		if (face == 'D') {
+			// Rotate down face counter clockwise
+			this.permuteCube('d');
+			this.permuteCube('d');
+			this.permuteCube('d');
+		}		
+		if (face == 'L') {
+			// Rotate left face counter clockwise
+			this.permuteCube('l');
+			this.permuteCube('l');
+			this.permuteCube('l');
+		}
+		if (face == 'R') {
+			// Rotate right face counter clockwise
+			this.permuteCube('r');
+			this.permuteCube('r');
+			this.permuteCube('r');
+		}
+		if (face == 'F') {
+			// Rotate front face counter clockwise
+			this.permuteCube('f');
+			this.permuteCube('f');
+			this.permuteCube('f');
+		}
+		if (face == 'B') {
+			// Rotate back face counter clockwise
+			this.permuteCube('b');
+			this.permuteCube('b');
+			this.permuteCube('b');
+		}
 		
 		// Rotate top face
 		if (face == 't') {
