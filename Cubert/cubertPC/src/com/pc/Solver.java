@@ -75,6 +75,8 @@ public class Solver {
 			state_hash = current_node.getState_hash();
 			predecessor_node = current_node.getPredecessor_node();
 			
+			
+			
 			permuteCubeFromStartToCurrentNode(cube_start_state, current_node);
 			
 			
@@ -140,7 +142,7 @@ public class Solver {
 					}
 				}
 			}
-							
+			revertCubePermutations(cube, current_node);			
 		}
 		// Open list empty or solved node found
 		
@@ -170,7 +172,19 @@ public class Solver {
 		return solving_sequence;
 	}
 	
-	
+	private void revertCubePermutations(Cube cube, Node current_node) {
+
+		Node current = current_node;
+		
+		do {
+			cube.permuteCube(current.getAction());
+			cube.permuteCube(current.getAction());
+			cube.permuteCube(current.getAction());
+			
+			current = current.getPredecessor_node();
+			
+		} while (current != null); 
+	}
 
 	private List<Node> getNeighbourNodes(Node current_node, Cube cube, char[] actions) {
 		
@@ -215,10 +229,10 @@ public class Solver {
 			path_nodes_list.add(path_nodes_stack.pop());
 		}
 		cube.cube_scrambled = cube_start_state;
-		System.out.println("Current best sequence:");
+//		System.out.println("Current best sequence:");
 		for (Node node : path_nodes_list) {
 			cube.permuteCube(node.getAction());
-			System.out.println(node.getAction());
+//			System.out.println(node.getAction());
 		}
 		
 		/**

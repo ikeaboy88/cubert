@@ -1,6 +1,7 @@
 package com.pc;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
 
@@ -13,18 +14,24 @@ public class Main {
 		
 		// Code for debugging the permutations
 		Cube cube = new Cube(null);
+		Solver magic = new Solver(cube);
 		
 		if (cube.cube_orientation == null) {
 			System.out.println("SCAN ERROR");
 		}
 
-		cube.permuteCube('t');
+		// Random scramble sequence
+		cube.permuteCube('L');
+		cube.permuteCube('T');
 		cube.permuteCube('l');
-		cube.permuteCube('d');
-		cube.permuteCube('r');
-		cube.permuteCube('f');
-		cube.permuteCube('b');
-		
+		cube.permuteCube('D');
+		cube.permuteCube('B');
+		cube.permuteCube('d'); // 6 permutations:  1 s
+		cube.permuteCube('R'); // 7 permutations:  4 s
+		cube.permuteCube('t'); // 8 permutations: 31 s
+		cube.permuteCube('f'); // 9 permutations: Cancelled after 10 minutes...
+
+
 		int count = 0;
 		for (char[] cube_solved_cubie: cube.cube_solved) {
 			System.out.println();
@@ -54,5 +61,12 @@ public class Main {
 		} else {
 			System.out.println("CUBE IS SCRAMBLED");
 		}
+		
+		List<Character> solving_sequence = magic.calculateSolvingSequence();
+		for (Character character : solving_sequence) {
+			System.out.println(character);
+		}
+		
+		System.out.println("END");
 	}
 }
