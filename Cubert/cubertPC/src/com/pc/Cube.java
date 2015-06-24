@@ -1,11 +1,20 @@
 package com.pc;
 
+import java.util.Arrays;
+import java.util.Hashtable;
+
 public class Cube {
 
+	// 3D-Coordinates for every cubie (to calculate Manhattan distance)
+	private int[][] cubie_coordinates = null;
+	
 	// Initial orientation of the cube itself - which centers are facing in which direction
 	public char[] cube_orientation = new char[6];
 	public char[][] cube_scrambled = null;
+
 	public char[][] cube_solved = null;
+	
+	public Hashtable<Integer, char[][]> hash_to_state_table = new Hashtable<Integer, char[][]>();
 	
 	public Cube(char[] scan_result_vector) {
 		if (scan_result_vector != null) {
@@ -15,7 +24,210 @@ public class Cube {
 				cube_solved = createSolvedState(cube_orientation);
 				cube_scrambled = createScrambledState(scan_result_vector);
 			}
+		} else {
+			// In DEBUG case if there is no scan result from the NXT
+			cube_solved = createSolvedState(new char [] {'W', 'Y', 'O', 'R', 'G', 'B'});
+			cube_scrambled = this.getDummySolvedState();
 		}
+		cubie_coordinates = this.getCubieCoordinates();
+	}
+	
+	public int hashCubeState(char[][] cube_state) {
+		
+		int deepHashCode = Arrays.deepHashCode(cube_state);
+		
+//		insert hash and cube state in hashmap for further use 
+		PutIntoTranslationMap(deepHashCode,cube_state);
+		
+		return deepHashCode;
+	}
+	
+	private void PutIntoTranslationMap(int hash_value, char[][] cube_state) {
+		// TODO Auto-generated method stub
+		hash_to_state_table.put(hash_value, cube_state);
+	}
+	
+	public char[][] getStateFromHash(int hash_value){
+		char[][] cube_state = hash_to_state_table.get(hash_value);
+		return cube_state;
+	}
+
+	/**
+	 * Finds the solved index/position of a given cubie signature
+	 * @param cubie as char[] of its signature
+	 * @return index of the solved position of the passed cubie
+	 */
+	private int findCubieSolvedIndex(char[] cubie) {
+		
+		boolean match = true;
+		
+		// Compare signature of cubie with all solved cubie signatures
+		for (int i = 0; i < cube_solved.length; i++) {
+
+			int x_count = 0;
+			int x_count_solved = 0;
+			
+			// Go through cubie's signature
+			for (int j = 0; j < cubie.length; j++) {
+				
+				// skip entries with x
+				if (cubie[j] != 'x') {
+					
+					// Skip current cubie if one color is not contained in the current checked solved cubie
+					if (! (new String(cube_solved[i]).contains("" + cubie[j]))) {
+						match = false;
+						break;
+					}
+				} else {
+					x_count++;
+				}
+				
+				if (cube_solved[i][j] == 'x') {
+					x_count_solved++;
+				}
+			}
+
+			// Return the solved index of the matching cubie
+			if (match) {
+				if (x_count_solved == x_count) {
+					return i;
+				}
+			} else {
+				match = true;
+			}
+		}
+		// No match found
+		return -1;
+	}
+	
+	/**
+	 * Get the average distance (3D-MHD & Color-Distance) over all cubies of a turned face
+	 * @param face that has been turned (t, d, l, r, f, b)
+	 * @return distance of the face to it's solved state
+	 */
+	public double calculateFaceDistance(char face) {
+		
+		double distance = 0.0;
+		
+		int[] moved_cubies = getAllCubiesByFace(Character.toLowerCase(face));
+		
+		for (int i = 0; i < moved_cubies.length; i++) {
+			distance += calculateManhattanDistance(moved_cubies[i]) + calculateColorDistance(moved_cubies[i]);
+		}
+		return distance / 8.0;
+	}
+	
+	/**
+	 * Get indices of all cubies from a given face
+	 * @param face (t, d, l, r, f, b)
+	 * @return integer array with cubie indices of the given face
+	 */
+	private int[] getAllCubiesByFace(char face) {
+		
+		int[] cubies_of_face;
+		
+		switch (face) {
+			case 't':
+				cubies_of_face = new int[] {5, 6, 7, 10, 11, 17, 18, 19}; 
+				break;
+	
+			case 'd':
+				cubies_of_face = new int[] {0, 1, 2, 8, 9, 12, 13, 14}; 
+				break;
+			
+			case 'l':
+				cubies_of_face = new int[] {0, 3, 5, 8, 10, 12, 15, 17}; 
+				break;
+			
+			case 'r':
+				cubies_of_face = new int[] {2, 4, 7, 9, 11, 14, 16, 19}; 
+				break;
+			
+			case 'f':
+				cubies_of_face = new int[] {12, 13, 14, 15, 16, 17, 18, 19}; 
+				break;
+			
+			case 'b':
+				cubies_of_face = new int[] {0, 1, 2, 3, 4, 5, 6, 7}; 
+				break;
+			
+			default:
+				return null;
+		}
+		return cubies_of_face;
+	}
+	
+	/**
+	 * Calculates the 3D-Manhattan-Distance between a given cubie and it's solved position
+	 * @param cubie_index 	Index of cubie to check
+	 * @return 3D-Manhattan distance of both positions
+	 */
+	private int calculateManhattanDistance(int cubie_index) {
+		
+		int manhattan_distance = 0;
+		
+		for (int i = 0; i < 3; i++) {
+			manhattan_distance += Math.abs( cubie_coordinates[cubie_index][i] - cubie_coordinates[this.findCubieSolvedIndex(cube_scrambled[cubie_index])][i] );
+		}
+		
+		return manhattan_distance;
+	}
+	
+	/**
+	 * Calculates the number of incorrect oriented colors of a given cubie compared to it's solved orientation
+	 * @param cubie_index Index of the cubie to check
+	 * @return Color distance of cubie to it's solved orientation
+	 */
+	private int calculateColorDistance(int cubie_index) {
+		
+		int color_distance = 0;
+		
+		for (int i = 0; i < 6; i++) {
+
+			if ( cube_scrambled[cubie_index][i] != cube_solved[this.findCubieSolvedIndex(cube_scrambled[cubie_index])][i] ) {
+
+				if ( cube_scrambled[cubie_index][i] != 'x' ) {
+					
+					color_distance++;
+				}
+			}
+		}
+		return color_distance;
+	}
+	
+	private int[][] getCubieCoordinates() {
+		
+		// 3D coordinates of each cubie by it's index
+		// (see presentation)		  x, y, z
+		int[] cubie_00_coordinates = {0, 0, 0};
+		int[] cubie_01_coordinates = {1, 0, 0};
+		int[] cubie_02_coordinates = {2, 0, 0};
+		int[] cubie_03_coordinates = {0, 1, 0};
+		int[] cubie_04_coordinates = {2, 1, 0};
+		int[] cubie_05_coordinates = {0, 2, 0};
+		int[] cubie_06_coordinates = {1, 2, 0};
+		int[] cubie_07_coordinates = {2, 2, 0};
+		int[] cubie_08_coordinates = {0, 0, 1};
+		int[] cubie_09_coordinates = {2, 0, 1};
+		int[] cubie_10_coordinates = {0, 2, 1};
+		int[] cubie_11_coordinates = {2, 2, 1};
+		int[] cubie_12_coordinates = {0, 0, 2};
+		int[] cubie_13_coordinates = {1, 0, 2};
+		int[] cubie_14_coordinates = {2, 0, 2};
+		int[] cubie_15_coordinates = {0, 1, 2};
+		int[] cubie_16_coordinates = {2, 1, 2};
+		int[] cubie_17_coordinates = {0, 2, 2};
+		int[] cubie_18_coordinates = {1, 2, 2};
+		int[] cubie_19_coordinates = {2, 2, 2};
+		
+		int[][] cubie_coordinates = {
+							cubie_00_coordinates, cubie_01_coordinates, cubie_02_coordinates, cubie_03_coordinates, cubie_04_coordinates,
+							cubie_05_coordinates, cubie_06_coordinates, cubie_07_coordinates, cubie_08_coordinates, cubie_09_coordinates,
+							cubie_10_coordinates, cubie_11_coordinates, cubie_12_coordinates, cubie_13_coordinates, cubie_14_coordinates,
+							cubie_15_coordinates, cubie_16_coordinates, cubie_17_coordinates, cubie_18_coordinates, cubie_19_coordinates
+						};
+		
+		return cubie_coordinates;
 	}
 	
 	// Quarter turn clockwise (when look at the face directly)
@@ -23,12 +235,49 @@ public class Cube {
 		
 		char new_top, new_bottom, new_left, new_right, new_front, new_back;
 		char[] 	cubie_00_temp, cubie_01_temp, cubie_02_temp, cubie_03_temp, cubie_04_temp, cubie_05_temp, 
-				cubie_06_temp, cubie_07_temp, cubie_08_temp, cubie_09_temp, cubie_11_temp, cubie_12_temp,
+				cubie_06_temp, cubie_07_temp, cubie_08_temp, cubie_09_temp, cubie_10_temp, cubie_11_temp, cubie_12_temp,
 				cubie_13_temp, cubie_14_temp, cubie_15_temp, cubie_17_temp;    
 		
 		// Explanation: For a given face..
 		//	.. change the orientations ONLY of all the involved cubies like they will be after the turn,
 		//  .. then switch the newly oriented cubies' positions like they will be after the turn
+		
+		if (face == 'T') {
+			// Rotate top face counter clockwise
+			this.permuteCube('t');
+			this.permuteCube('t');
+			this.permuteCube('t');
+		}
+		if (face == 'D') {
+			// Rotate down face counter clockwise
+			this.permuteCube('d');
+			this.permuteCube('d');
+			this.permuteCube('d');
+		}		
+		if (face == 'L') {
+			// Rotate left face counter clockwise
+			this.permuteCube('l');
+			this.permuteCube('l');
+			this.permuteCube('l');
+		}
+		if (face == 'R') {
+			// Rotate right face counter clockwise
+			this.permuteCube('r');
+			this.permuteCube('r');
+			this.permuteCube('r');
+		}
+		if (face == 'F') {
+			// Rotate front face counter clockwise
+			this.permuteCube('f');
+			this.permuteCube('f');
+			this.permuteCube('f');
+		}
+		if (face == 'B') {
+			// Rotate back face counter clockwise
+			this.permuteCube('b');
+			this.permuteCube('b');
+			this.permuteCube('b');
+		}
 		
 		// Rotate top face
 		if (face == 't') {
@@ -269,13 +518,14 @@ public class Cube {
 			cube_scrambled[8] = cube_scrambled[15];
 
 			// Cubie 10 is replaced by Cubie 3 
+			cubie_10_temp = cube_scrambled[10];
 			cube_scrambled[10] = cubie_03_temp;
 			
 			// Cubie 12 is replaced by Cubie 17 
 			cube_scrambled[12] = cube_scrambled[17];
 			
 			// Cubie 15 is replaced by Cubie 10 
-			cube_scrambled[15] = cube_scrambled[10];
+			cube_scrambled[15] = cubie_10_temp;
 			
 			// Cubie 17 is replaced by Cubie 5 
 			cube_scrambled[17] = cubie_05_temp;
@@ -455,84 +705,84 @@ public class Cube {
 		if (face == 'b') {
 			
 			// Cubie 0
-			new_top = cube_scrambled[0][2];
-			new_left = cube_scrambled[0][1];
+			new_bottom = cube_scrambled[0][2];
+			new_right = cube_scrambled[0][1];
 			cube_scrambled[0][2] = 'x';
 			cube_scrambled[0][1] = 'x';
-			cube_scrambled[0][0] = new_top;
-			cube_scrambled[0][2] = new_left;
+			cube_scrambled[0][1] = new_bottom;
+			cube_scrambled[0][3] = new_right;
 	
 			// Cubie 1
-			new_left = cube_scrambled[1][1];
+			new_right = cube_scrambled[1][1];
 			cube_scrambled[1][1] = 'x';
-			cube_scrambled[1][2] = new_left;
+			cube_scrambled[1][3] = new_right;
 	
 			// Cubie 2
-			new_bottom = cube_scrambled[2][3];
-			new_left = cube_scrambled[2][1];
+			new_top = cube_scrambled[2][3];
+			new_right = cube_scrambled[2][1];
 			cube_scrambled[2][3] = 'x';
 			cube_scrambled[2][1] = 'x';
-			cube_scrambled[2][1] = new_bottom;
-			cube_scrambled[2][2] = new_left;
+			cube_scrambled[2][0] = new_top;
+			cube_scrambled[2][3] = new_right;
 			
 			// Cubie 3
-			new_top = cube_scrambled[3][2];
+			new_bottom = cube_scrambled[3][2];
 			cube_scrambled[3][2] = 'x';
-			cube_scrambled[3][0] = new_top;
+			cube_scrambled[3][1] = new_bottom;
 			
 			// Cubie 4
-			new_bottom = cube_scrambled[4][3];
+			new_top = cube_scrambled[4][3];
 			cube_scrambled[4][3] = 'x';
-			cube_scrambled[4][1] = new_bottom;
+			cube_scrambled[4][0] = new_top;
 			
 			// Cubie 5
-			new_top = cube_scrambled[5][2];
-			new_right = cube_scrambled[5][0];
+			new_bottom = cube_scrambled[5][2];
+			new_left = cube_scrambled[5][0];
 			cube_scrambled[5][2] = 'x';
 			cube_scrambled[5][0] = 'x';
-			cube_scrambled[5][0] = new_top;
-			cube_scrambled[5][3] = new_right;
+			cube_scrambled[5][1] = new_bottom;
+			cube_scrambled[5][2] = new_left;
 			
 			// Cubie 6
-			new_right = cube_scrambled[6][0];
+			new_left = cube_scrambled[6][0];
 			cube_scrambled[6][0] = 'x';
-			cube_scrambled[6][3] = new_right;
+			cube_scrambled[6][2] = new_left;
 			
 			// Cubie 7
-			new_bottom = cube_scrambled[7][3];
-			new_right = cube_scrambled[7][0];
+			new_top = cube_scrambled[7][3];
+			new_left = cube_scrambled[7][0];
 			cube_scrambled[7][3] = 'x';
 			cube_scrambled[7][0] = 'x';
-			cube_scrambled[7][1] = new_bottom;
-			cube_scrambled[7][3] = new_right;
+			cube_scrambled[7][0] = new_top;
+			cube_scrambled[7][2] = new_left;
 			
-			// Cubie 00 is replaced by Cubie 02 
+			// Cubie 0 is replaced by Cubie 5 
 			cubie_00_temp = cube_scrambled[0];
-			cube_scrambled[0] = cube_scrambled[2];
+			cube_scrambled[0] = cube_scrambled[5];
 			
-			// Cubie 01 is replaced by Cubie 04 
+			// Cubie 1 is replaced by Cubie 3 
 			cubie_01_temp = cube_scrambled[1];
-			cube_scrambled[1] = cube_scrambled[4];
+			cube_scrambled[1] = cube_scrambled[3];
 			
-			// Cubie 02 is replaced by Cubie 07 
-			cube_scrambled[2] = cube_scrambled[7];
+			// Cubie 2 is replaced by Cubie 0 
+			cubie_02_temp = cube_scrambled[2];
+			cube_scrambled[2] = cubie_00_temp;
 			
-			// Cubie 03 is replaced by Cubie 01 
-			cubie_03_temp = cube_scrambled[3];
-			cube_scrambled[3] = cubie_01_temp;
+			// Cubie 3 is replaced by Cubie 6 
+			cube_scrambled[3] = cube_scrambled[6];
 			
-			// Cubie 04 is replaced by Cubie 06 
-			cube_scrambled[4] = cube_scrambled[6];
+			// Cubie 4 is replaced by Cubie 1 
+			cubie_04_temp = cube_scrambled[4];
+			cube_scrambled[4] = cubie_01_temp;
 			
-			// Cubie 05 is replaced by Cubie 00 
-			cubie_05_temp = cube_scrambled[5];
-			cube_scrambled[5] = cubie_00_temp;
+			// Cubie 5 is replaced by Cubie 7 
+			cube_scrambled[5] = cube_scrambled[7];
 			
-			// Cubie 06 is replaced by Cubie 03 
-			cube_scrambled[6] = cubie_03_temp;
+			// Cubie 6 is replaced by Cubie 4 
+			cube_scrambled[6] = cubie_04_temp;
 			
-			// Cubie 07 is replaced by Cubie 05 
-			cube_scrambled[7] = cubie_05_temp;
+			// Cubie 7 is replaced by Cubie 2 
+			cube_scrambled[7] = cubie_02_temp;
 		}
 	}
 	
@@ -1059,5 +1309,42 @@ public class Cube {
 			return null;
 		}
 		return new_cube_orientation;
+	}
+	
+	public char[][] getDummySolvedState() {
+				
+		// FOR DEBUGGING ONLY
+		
+		// Solved state for each cubie (White side of the cube showing up, green side facing front)
+		// 		values in the array: x - no color (facing inside), r - red, g - green, b - blue, w - white, y - yellow, o - orange)
+		// 		positions in the array: Top, bottom, left, right, front, back)
+		char[] cubie_01 = {'x', 'Y', 'O', 'x', 'x', 'B'}; // Corner: 	Yellow	, orange, blue
+		char[] cubie_02 = {'x', 'Y', 'x', 'x', 'x', 'B'}; // Edge:		Yellow	, blue
+		char[] cubie_03 = {'x', 'Y', 'x', 'R', 'x', 'B'}; // Corner: 	Yellow	, red	, blue
+		char[] cubie_04 = {'x', 'x', 'O', 'x', 'x', 'B'}; // Edge:		Orange	, blue
+		char[] cubie_05 = {'x', 'x', 'x', 'R', 'x', 'B'}; // Edge:		Red		, blue
+		char[] cubie_06 = {'W', 'x', 'O', 'x', 'x', 'B'}; // Corner: 	White	, orange, blue
+		char[] cubie_07 = {'W', 'x', 'x', 'x', 'x', 'B'}; // Edge:		White	, blue
+		char[] cubie_08 = {'W', 'x', 'x', 'R', 'x', 'B'}; // Corner: 	White	, red	, blue
+		char[] cubie_09 = {'x', 'Y', 'O', 'x', 'x', 'x'}; // Edge:		Yellow	, orange
+		char[] cubie_10 = {'x', 'Y', 'x', 'R', 'x', 'x'}; // Edge:		Yellow	, red
+		char[] cubie_11 = {'W', 'x', 'O', 'x', 'x', 'x'}; // Edge:		White	, orange
+		char[] cubie_12 = {'W', 'x', 'x', 'R', 'x', 'x'}; // Edge:		White	, red
+		char[] cubie_13 = {'x', 'Y', 'O', 'x', 'G', 'x'}; // Corner: 	Yellow	, orange, green
+		char[] cubie_14 = {'x', 'Y', 'x', 'x', 'G', 'x'}; // Edge:		Yellow	, green
+		char[] cubie_15 = {'x', 'Y', 'x', 'R', 'G', 'x'}; // Corner: 	Yellow	, red	, green
+		char[] cubie_16 = {'x', 'x', 'O', 'x', 'G', 'x'}; // Edge:		Orange	, green
+		char[] cubie_17 = {'x', 'x', 'x', 'R', 'G', 'x'}; // Edge:		Red		, green
+		char[] cubie_18 = {'W', 'x', 'O', 'x', 'G', 'x'}; // Corner: 	White	, orange, green
+		char[] cubie_19 = {'W', 'x', 'x', 'x', 'G', 'x'}; // Edge:		White	, green
+		char[] cubie_20 = {'W', 'x', 'x', 'R', 'G', 'x'}; // Corner: 	White	, red	, green
+		
+		char[][] dummy_solved_state = { cubie_01, cubie_02, cubie_03, cubie_04,
+									cubie_05 ,cubie_06, cubie_07, cubie_08,	cubie_09,
+									cubie_10, cubie_11, cubie_12, cubie_13, cubie_14,
+									cubie_15, cubie_16, cubie_17, cubie_18, cubie_19, cubie_20
+								};
+		
+		return dummy_solved_state;
 	}
 }

@@ -67,7 +67,7 @@ public class ColorDetector extends ColorHTSensor {
 	 * Uses the average of multiple readings and then returns the reference color with the shortest euklidian distance.
 	 * @param duration How long the the complete measuring process should take
 	 * @param iterations How many measurements will be executed within that duration
-	 * @return Detected color as char (r, g, b, w, y, o, x)
+	 * @return Detected color as char (R, G, B, W, Y, O, x)
 	 */
 	public char detectColor(long duration, int iterations) {
 		
