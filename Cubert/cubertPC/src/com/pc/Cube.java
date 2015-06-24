@@ -1,6 +1,7 @@
 package com.pc;
 
 import java.util.Arrays;
+import java.util.Hashtable;
 
 public class Cube {
 
@@ -10,7 +11,10 @@ public class Cube {
 	// Initial orientation of the cube itself - which centers are facing in which direction
 	public char[] cube_orientation = new char[6];
 	public char[][] cube_scrambled = null;
+
 	public char[][] cube_solved = null;
+	
+	public Hashtable<Integer, char[][]> hash_to_state_table = new Hashtable<Integer, char[][]>();
 	
 	public Cube(char[] scan_result_vector) {
 		if (scan_result_vector != null) {
@@ -30,9 +34,24 @@ public class Cube {
 	
 	public int hashCubeState(char[][] cube_state) {
 		
-		return Arrays.deepHashCode(cube_state);
+		int deepHashCode = Arrays.deepHashCode(cube_state);
+		
+//		insert hash and cube state in hashmap for further use 
+		PutIntoTranslationMap(deepHashCode,cube_state);
+		
+		return deepHashCode;
 	}
 	
+	private void PutIntoTranslationMap(int hash_value, char[][] cube_state) {
+		// TODO Auto-generated method stub
+		hash_to_state_table.put(hash_value, cube_state);
+	}
+	
+	public char[][] getStateFromHash(int hash_value){
+		char[][] cube_state = hash_to_state_table.get(hash_value);
+		return cube_state;
+	}
+
 	/**
 	 * Finds the solved index/position of a given cubie signature
 	 * @param cubie as char[] of its signature
