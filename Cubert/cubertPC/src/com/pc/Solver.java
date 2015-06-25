@@ -34,6 +34,8 @@ public class Solver {
 	public Node predecessor_node;
 	public Node current_node;
 	
+	List<Node> neighbours = new ArrayList<Node>();
+	
 	public long counter = 0;
 	
 	// Constructor
@@ -188,7 +190,7 @@ public class Solver {
 
 	private List<Node> getNeighbourNodes(Node current_node, Cube cube, char[] actions) {
 		
-		List<Node> neighbours = new ArrayList<Node>();
+		neighbours.clear();
 		
 		for (int i = 0; i < actions.length; i++) {
 			
