@@ -11,6 +11,7 @@ public class Main {
 		Connection connect_PC = new Connection();
 		connect_PC.connectToNXT();
 		Calibration cal = new Calibration(connect_PC);
+		char[]scan_result_vector = new char[54];
 
 		//safe recieved int value from datainputstream in byte buffer
 		byte[] mode = connect_PC.getMode();
@@ -20,38 +21,34 @@ public class Main {
 			System.out.println("calibration mode");
 			cal.calibrate();
 			System.out.println("calibration done");
+			
 		}
-		//when mode not 0 or calibration is done...
+	
+		if(mode[0] == 1){
 			System.out.println("sending RGB reference values to NXT...");
 			int[]ref_RGB_calibration = cal.readCalibrationFromFile();
 			connect_PC.sendRGBCalibration(ref_RGB_calibration);
 			System.out.println("done");
-			Cube cube = new Cube(connect_PC.getScanResultVector());
-			if (cube.cube_orientation == null) {
-				System.out.println("SCAN ERROR");
+		}
+//		else{
+			//cube has already to be scanned until pc can recieve data
+			System.out.println("need solving sequence!!");
+			mode = connect_PC.getMode();
+		
+			//nxt ready to send data
+			if( mode[0] == 2){
+				System.out.println("im solving...");
+				scan_result_vector = connect_PC.getScanResultVector();
+				
+				System.out.println("scan result vector pc:");
+				for(int i = 0; i <scan_result_vector.length; i++){
+					
+					System.out.println(scan_result_vector[i]);
+				}
+				Cube cube = new Cube(scan_result_vector);
+				if (cube.cube_orientation == null) {
+					System.out.println("SCAN ERROR");
+				}
 			}
-
-			System.out.println();
-			if (Arrays.equals(cube.cube_scrambled[count], cube_solved_cubie)) {
-				System.out.println("IDENTICAL");
-			} else {
-				System.out.println("DIFFERENT");
-			}
-			count ++;
 		}
-		
-		System.out.println();
-		if (Arrays.deepEquals(cube.cube_solved, cube.cube_scrambled)) {
-			System.out.println("CUBE IS SOLVED");
-		} else {
-			System.out.println("CUBE IS SCRAMBLED");
-		}
-		
-		List<Character> solving_sequence = magic.calculateSolvingSequence();
-		for (Character character : solving_sequence) {
-			System.out.println(character);
-		}
-		
-		System.out.println("END");
-	}
 }

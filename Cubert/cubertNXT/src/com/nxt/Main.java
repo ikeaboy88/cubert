@@ -50,13 +50,41 @@ public class Main {
 				LCD.clear();
 				}
 				
-				//when not calibration mode = 1
-				LCD.drawString("Safe Ref_RGB values...", 0, 1);
-				cube.detect.rgb_ref=connect_NXT.safeReferenceRGBValues();
-				Button.waitForAnyPress();	
+				LCD.drawString("Press RIGHT button to", 0, 0);
+				LCD.drawString("initialize", 0, 1);
+				
+				if (Button.waitForAnyPress() == Button.ID_RIGHT){
+					LCD.clear();
+					connect_NXT.sendMode(1);
+					LCD.drawString("Safe Ref_RGB values...", 0, 1);
+					cube.detect.rgb_ref=connect_NXT.safeReferenceRGBValues();
+				
+					int count=0;
+					LCD.clear();
+					for(int[] c : cube.detect.rgb_ref){
+						LCD.drawString(c[0]+","+c[1]+","+c[2], 0, count);
+						count++;
+					}
+					Button.waitForAnyPress();	
+					LCD.clear();
+				}
+				
+//				LCD.drawString("ref: "+cube.detect.rgb_ref[2][2], 0, 1);
+				
+				//execute complete scan and send scan result vector to pc
+			
+				char[]complete_scan = new char[54];
+				
+//				connect_NXT.sendMode(2);
+				complete_scan = cube.executeCompleteScan();
 				LCD.clear();
-				LCD.drawString("ref: "+cube.detect.rgb_ref[2][2], 0, 1);
-				connect_NXT.sendScanResultVector(cube.executeCompleteScan());	
+				connect_NXT.sendMode(2);
+				LCD.drawString("start solving?", 0, 3);
+				Button.waitForAnyPress();
+				LCD.clear();
+				LCD.drawString("calculate solving sequence!", 0, 3);
+				connect_NXT.sendScanResultVector(complete_scan);
+//				connect_NXT.sendScanResultVector(cube.executeCompleteScan());	
 				Button.waitForAnyPress();	
 			}
 //		colorDetector.calibrate();
