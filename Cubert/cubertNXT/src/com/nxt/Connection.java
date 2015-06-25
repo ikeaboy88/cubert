@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import lejos.nxt.Button;
@@ -16,9 +17,7 @@ public class Connection {
 	private USBConnection connection = null;
 	private DataOutputStream dos = null;
 	private DataInputStream dis = null;
-	private BufferedReader bufferedReader = null; 
-	
-	static int[][]ref_rgb = new int[6][3];
+	private BufferedReader bufferedReader = null; 	
 	
 	public void connectToPC() {
 		LCD.drawString("Right BT->USB Verbindung", 0, 0);
@@ -50,23 +49,125 @@ public class Connection {
 	/** send an String array character by character to the PC*/
 	public void sendScanResultVector(char[] scan_result_vector) {
 		LCD.clear();
-//		char[]scan_result_vector = {'A','B','C','D'};
-		LCD.drawString("sending data to pc...", 1, 3);
-		String[] scanResult = new String[54];
+		LCD.drawString("filling array..", 0, 0);
+
+//		List<Integer> scan_result_vector_as_byte = new ArrayList<Integer>();
+		byte[]scan_result = new byte[54];
+		
+		for(int i = 0; i < scan_result_vector.length; i++){
+				switch(scan_result_vector[i]){
+
+				case 'R' : //scan_result_vector_as_byte.add(0);
+							scan_result[0] = 0;
+					try {
+						dos.write(scan_result, 0, 1);
+						dos.flush();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+							LCD.drawString("R", 0, 1);
+					break; 
+				case 'Y' : //scan_result_vector_as_byte.add(1);
+							scan_result[0] = 1;
+					try {
+						dos.write(scan_result, 0, 1);
+						dos.flush();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+							LCD.drawString("Y", 0, 1);
+					break; 
+				case 'B' : //scan_result_vector_as_byte.add(2);
+							scan_result[0] = 2;
+					try {
+						dos.write(scan_result, 0, 1);
+						dos.flush();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+							LCD.drawString("B", 0, 1);
+					break; 
+				case 'G' : //scan_result_vector_as_byte.add(3);
+							scan_result[0] = 3;
+					try {
+						dos.write(scan_result, 0, 1);
+						dos.flush();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+							LCD.drawString("G", 0, 1);
+					break; 
+				case 'O' : //scan_result_vector_as_byte.add(4);
+							scan_result[0] = 4;
+					try {
+						dos.write(scan_result, 0, 1);
+						dos.flush();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+							LCD.drawString("O", 0, 1);
+					break; 
+				case 'W' : //scan_result_vector_as_byte.add(5);
+							scan_result[0] = 5;
+					try {
+						dos.write(scan_result, 0, 1);
+						dos.flush();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+							LCD.drawString("W", 0, 1);
+					break; 				
+				}
+			
+		}
+		
+
+		LCD.drawString("sending scan result to pc...", 1, 3);
+		/*
 		try {
-			for (int i = 0; i < scan_result_vector.length; i++){
-			scanResult[i] = Character.toString(scan_result_vector[i]);
-			dos.writeBytes(scanResult[i]);
+			byte[]scan_result = new byte[scan_result_vector_as_byte.size()];
+			for(int i = 0; i < scan_result_vector_as_byte.size(); i++){
+				int ref = scan_result_vector_as_byte.get(i);
+				scan_result[i] = (byte) ref;
 			}
+			dos.write(scan_result, 0, scan_result_vector_as_byte.size());
 			dos.flush();
-//			dos.close();
 		} catch (IOException e) {
 			LCD.drawString("Can't send data to PC", 1, 4);
 			e.printStackTrace();
 		}
-//		LCD.drawString("press BT", 1, 4);
-//		Button.waitForAnyPress();
+		*/
 	}
+
+	/*
+	//Because we can only send byte through stream, translate characters into bytes
+	private List<Integer> translateScanResultVectorIntoByte(char[] char_sequence) {
+		// TODO Auto-generated method stub
+			for(Character color : char_sequence){
+				switch(color){
+				case 'R' : byte_sequence.add(0);
+					break; 
+				case 'Y' : byte_sequence.add(1);
+					break; 
+				case 'B' : byte_sequence.add(2);
+					break; 
+				case 'G' : byte_sequence.add(3);
+					break; 
+				case 'O' : byte_sequence.add(4);
+					break; 
+				case 'W' : byte_sequence.add(5);
+					break; 				
+				}
+			
+		}
+		return byte_sequence;
+	}*/
 
 	// return type should be int ,void only for testing
 	public void getSolvingSequence() {
@@ -85,15 +186,11 @@ public class Connection {
 				e.printStackTrace();
 			}
 		}
-		
-//		LCD.drawString("Data??? ", 0, 1);
-	
 	}
 
 	public void sendRGBCalibration(List<Integer> reference) {
 		// TODO Auto-generated method stub
 		LCD.clear();
-//		char[]scan_result_vector = {'A','B','C','D'};
 		LCD.drawString("sending data to pc...", 1, 3);
 		try {
 			byte[]rgb_calibration_value = new byte[18];
@@ -102,8 +199,6 @@ public class Connection {
 				rgb_calibration_value[i] = (byte) ref;
 			}
 			dos.write(rgb_calibration_value, 0, reference.size());
-			//dos.writeBytes(reference);
-			
 			dos.flush();
 		} catch (IOException e) {
 			LCD.drawString("Can't send data to PC", 1, 4);
@@ -111,7 +206,7 @@ public class Connection {
 		}
 		
 	}
-	
+		
 	public void sendMode(int mode){
 		try {
 			byte[]b = new byte[1];
@@ -128,52 +223,58 @@ public class Connection {
 		// TODO Auto-generated method stub
 		LCD.clear();
 		
-		byte[] recieved_rgb_value = new byte[18];
+		byte[] recieved_rgb_value = new byte[3];
 		int[][]rgb_reference = new int[6][3];
 		try {
 
-			// read 18 characters in byte array
-			//int recieved_byte = dis.read(recieved_rgb_value, 0, 18);
-			LCD.drawString("reading...", 0, 0);
-			dis.read(recieved_rgb_value, 0, 18);
-			//format values
 			int rgb;
-			int index = 0;
-//			if(recieved_rgb_value[0]!=0){
-				for (int i = 0; i < 6; i++){
+			int tmp_rgb;
+			int data_available=0; 
+			for(int [] j : rgb_reference){
+				for (int i =0; i < 3; i++){
 					
-					for(int j = i*3; j < 3+(i*3); j++){
-						index = j;
-						//is there is a byte overflow, convert the byte into int
-						if(recieved_rgb_value[j]<0){
-							//get positive value of overflow
-							int temp_rgb = -recieved_rgb_value[j];
-							//bring overflow value into range of 32bit Integer
-							rgb = 255-temp_rgb;
-						}
-						else{					
-							rgb = recieved_rgb_value[j];
-						}
-						
-						// writing values in two dimensional array range: [6][3]
-						// therefore modulo operation on j, so that range is between 0 and 2
-						if(j>=3){
-							index %= 3;
-						}
-						rgb_reference[i][index] = rgb;
-//						ref_rgb[i][index]=rgb;
-						LCD.drawString("ref: "+rgb_reference[i][index], 0, 3);
-						LCD.drawString("i: "+i, 0, 4);
-						LCD.drawString("j: "+j, 0, 5);
-						LCD.drawString("index: "+index, 0, 6);
-					
-						
+					int data_recieved = 0;
+					do{
+						data_available = dis.read(recieved_rgb_value, data_recieved, 3);
+						data_recieved += data_available;
+						LCD.drawString("data: "+data_recieved, 0, 4);
+					}while(data_recieved < 3);
+					if(recieved_rgb_value[i] < 0){
+						tmp_rgb = -recieved_rgb_value[i];
+						rgb = 255 - tmp_rgb;
+					}else{
+						rgb = recieved_rgb_value[i];
 					}
-					LCD.drawString("1 for", 0, 2);
+					j[i] = rgb;
+					
 				}
-//			}
-//			ref_rgb = rgb_reference;
-			LCD.drawString("ref: "+ref_rgb[0][1], 0, 3);
+			}
+			//format values
+			
+//			int index = 0;
+//				for (int i = 0; i < 6; i++){
+//					
+//					for(int j = i*3; j < 3+(i*3); j++){
+//						index = j;
+//						//is there is a byte overflow, convert the byte into int
+//						if(recieved_rgb_value[j]<0){
+//							//get positive value of overflow
+//							int temp_rgb = -recieved_rgb_value[j];
+//							//bring overflow value into range of 32bit Integer
+//							rgb = 255-temp_rgb;
+//						}
+//						else{					
+//							rgb = recieved_rgb_value[j];
+//						}
+//						
+//						// writing values in two dimensional array range: [6][3]
+//						// therefore modulo operation on j, so that range is between 0 and 2
+//						if(j>=3){
+//							index %= 3;
+//						}
+//						rgb_reference[i][index] = rgb;
+//					}
+//				}
 		} catch (IOException e) {
 			LCD.clear();
 			LCD.drawString("ERROR while safing reference values!", 0, 1);

@@ -60,40 +60,62 @@ public class Connection {
 		}
 	}
 
-	/** Returns an array with the scanned colors */
-	public char[] getScanResultVector() {
-		String recievedString = null;
+	/** Returns an char array with the scanned colors */
+	public char[] getScanResultVector() {	
+		int data_available;
+		int data_recieved = 0;
+		//array the data inputstream will be read in
+		byte[]scan_result_vector_as_byte = new byte[54];
+		
+		//desired format for scan result vector
 		char[] scan_result_vector = new char[54];
 
 		try {
+			//ask input stream for data as long as 54 bytes are available
+			do {
+				data_available=	dis.read(scan_result_vector_as_byte, data_recieved, 54);
+				data_recieved += data_available;
+				System.out.println(data_recieved);
+			}while(data_recieved < 54);
 
-			recievedString = bufferedReader.readLine();
-			// System.out.println("Recieved String: " +recievedString);
-			recievedString.toCharArray();
-
-			for (int i = 0; i < recievedString.length(); i++) {
-				scan_result_vector[i] = recievedString.charAt(i);
-
-				// System.out.println("Recieved Data: " +scan_result_vector[i]);
+			//fill char array with translated byte values
+			System.out.println("Scan result vector:");
+			for (int i = 0; i < scan_result_vector_as_byte.length; i++) {
+			
+				switch(scan_result_vector_as_byte[i]){
+				
+				case 0: scan_result_vector[i] = 'R';
+				break;
+				case 1: scan_result_vector[i] = 'Y';
+				break;
+				case 2: scan_result_vector[i] = 'B';
+				break;
+				case 3: scan_result_vector[i] = 'G';
+				break;
+				case 4: scan_result_vector[i] = 'O';
+				break;
+				case 5: scan_result_vector[i] = 'W';
+				break;
+				default: System.out.println("nix da :(");
+				break;
+				}
+			
+				
+				System.out.println(scan_result_vector[i]);
 			}
-			// dis.close();
 		} catch (IOException e) {
 			System.out.println("Can't communicate to NXT");
 			e.printStackTrace();
 		}
-
 		return scan_result_vector;
 	}
 
 	/** Returns an array with the scanned colors */
 	public byte[] getReferenceRgbValues() {
 		byte[] recieved_rgb_value = new byte[18];
-		// String recieved_rgb_value = null;
 		try {
-
 			// read 18 characters
-			// recieved_rgb_value += bufferedReader.readLine();
-			int recieved_byte = dis.read(recieved_rgb_value, 0, 18);
+			int recieved_byte = dis.read(recieved_rgb_value, 0, 54);
 		} catch (IOException e) {
 			System.out.println("Can't communicate to NXT");
 			e.printStackTrace();
@@ -123,7 +145,7 @@ public class Connection {
 		// mode 0 = scanning; mode 1 = solving
 		int mode = 0;
 		byte[] b = new byte[1];
-
+		System.out.println("waiting for mode...");
 		// dis = new DataInputStream(nxt_Comm.getInputStream());
 		try {
 
@@ -146,10 +168,10 @@ public class Connection {
 		byte[]b = new byte[18];
 		for(int i = 0; i < ref_RGB_calibration.length; i++){
 			b[i] = (byte)ref_RGB_calibration[i];
+			dos.write(b, 0, 18);
+			dos.flush();
 		}
 		//write 18 bytes from byte array
-			dos.write(b, 0, b.length);
-			dos.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
