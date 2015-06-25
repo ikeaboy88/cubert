@@ -6,8 +6,18 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
-// Theory: 				http://www.policyalmanac.org/games/aStarTutorial_de.html	
-// Example project: 	https://code.google.com/p/jianwikis/wiki/AStarAlgorithmForPathPlanning
+// Theory: 					http://www.policyalmanac.org/games/aStarTutorial_de.html	
+// Example project: 		https://code.google.com/p/jianwikis/wiki/AStarAlgorithmForPathPlanning
+
+// Ideas for improvements	https://www.cs.princeton.edu/courses/archive/fall06/cos402/papers/korfrubik.pdf
+
+// - Count number of created nodes for comparison
+// - Clone cube object in constructor and use it's initial state instead of revertCubePermutations() in every iteration
+// - Implement actions for 180 degree turn of each face
+// - Eliminate all subsequent actions that would result in the predecessing state (no L after an l turn, ...)
+// - Test variations of the heuristic
+// - Implement IDA*
+// - Use pattern databases
 
 public class Solver {
 
@@ -34,7 +44,11 @@ public class Solver {
 	public Node predecessor_node;
 	public Node current_node;
 	
-	public long counter = 0;
+	List<Node> neighbours = new ArrayList<Node>();
+	
+	public long counter_nodes = 0;
+	public long counter_improved_nodes = 0;
+	public int counter_tree_depth = 0;
 	
 	// Constructor
 	public Solver(Cube cube) {
@@ -55,6 +69,7 @@ public class Solver {
 		
 		/** 1 */
 		// Add start node to the open list and to the priority queue
+		System.out.println("Number of nodes created: " + counter_nodes++);
 		open_list.put(cube_start_hash, start_node);
 		priority_queue.add(start_node);
 		
@@ -71,14 +86,10 @@ public class Solver {
 			open_list.remove(current_node.getState_hash());
 			
 			/** DEBUG - get predecessor node from current node */
-			System.out.println(counter++);
 			state_hash = current_node.getState_hash();
 			predecessor_node = current_node.getPredecessor_node();
 			
-			
-			
 			permuteCubeFromStartToCurrentNode(cube_start_state, current_node);
-			
 			
 			// IF current node holds the solved state: Set current node as solved node and break the loop
 			if (current_node.getState_hash() == cube_solved_hash)
@@ -120,7 +131,7 @@ public class Solver {
 							// Add node to opened list and priority queue
 							open_list.put(neighbour_node.getState_hash(), neighbour_node);
 							priority_queue.add(neighbour_node);
-							System.out.println("neue unbekannte node in open list aufgenommen");
+							System.out.println("neue unbekannte node in open list aufgenommen - Count: " + counter_nodes++);
 						}
 						// ELSE IF (neighbour is already in open list, check if new path is better)
 						else if (neighbour_node.getG_costs() < known_node.getG_costs())
@@ -136,7 +147,7 @@ public class Solver {
 							priority_queue.remove(known_node);
 							priority_queue.add(known_node);
 							
-							System.out.println("!!Bekannte node verbessert!!");
+							System.out.println("!! Node bereits bekannt - Weg dort hin verbessert !! - Count improved: " + counter_improved_nodes++);
 						}
 						
 					}
@@ -149,6 +160,10 @@ public class Solver {
 		// Get solving sequence
 		if(solved_node != null)
 		{
+			System.out.println();
+			System.out.println("Number of nodes: " + counter_nodes);
+			System.out.println("Improved nodes: " + counter_improved_nodes);
+			System.out.println("Tree depth: " + counter_tree_depth);
 			//get solved_node and fill array from top to bottom
 			solution_nodes_stack = new Stack<Node>();
 			List<Node> solution_nodes_list = new ArrayList<Node>();
@@ -188,7 +203,7 @@ public class Solver {
 
 	private List<Node> getNeighbourNodes(Node current_node, Cube cube, char[] actions) {
 		
-		List<Node> neighbours = new ArrayList<Node>();
+		neighbours.clear();
 		
 		for (int i = 0; i < actions.length; i++) {
 			
@@ -217,12 +232,20 @@ public class Solver {
 		List<Node> path_nodes_list = new ArrayList<Node>();
 		Node parent_node = current_node;
 
+		int local_depth_count = 0;
 		// As long as a node has an predecessor
 		while (parent_node != null)
 		{
 			//.. fill the stack with those nodes
 			path_nodes_stack.push(parent_node);
 			parent_node = parent_node.getPredecessor_node();
+			
+			// Debug tree depth
+			if (local_depth_count > counter_tree_depth)
+			{
+				counter_tree_depth++;
+			}
+			local_depth_count++;
 		}
 		while (path_nodes_stack.size() > 0 )
 		{
@@ -234,48 +257,5 @@ public class Solver {
 			cube.permuteCube(node.getAction());
 //			System.out.println(node.getAction());
 		}
-		
-		/**
-		//reconstruct scrambled state for this node from it's predecessor node if it is not the start node
-		if(predecessor_node != null){
-			predecessor_state = cube.getStateFromHash(predecessor_node.getState_hash());
-			
-			//if new node from start is expanded, set scrambled state to start state
-			if(predecessor_node.getState_hash() == start_node.getState_hash())
-			{
-				//go back to start node's scrambled state
-				cube.setCube_scrambled(cube.getStateFromHash(start_node.getState_hash()));
-				
-				//reconstruct the way from start node to current node ( = new Edge in Graph)
-				Node temp_predecessor = current_node.getPredecessor_node();
-				edge = new Stack<Node>();
-				List<Node> path = new ArrayList<Node>();
-	
-				// As long as a node has an predecessor
-				while (temp_predecessor != null)
-				{
-					//.. fill the stack with those nodes
-					edge.push(temp_predecessor);
-					temp_predecessor = temp_predecessor.getPredecessor_node();
-				}
-				
-				//fill nodes in list
-				while(edge.size()>0){
-					path.add(edge.pop());
-				}
-				
-				List<Character> path_to_node = new ArrayList<Character>();
-				//determine sequence of moves until current node's state from start node is reached...
-				for(Node node : path){
-					path_to_node.add(node.getAction());
-				}
-				
-				//permute cube according to determined path to current node
-				for(int i = 0; i <path_to_node.size(); i++){
-					cube.permuteCube(path_to_node.get(i));
-				}
-			}
-		}
-		*/
 	}
 }
