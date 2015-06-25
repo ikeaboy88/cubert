@@ -6,8 +6,18 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
-// Theory: 				http://www.policyalmanac.org/games/aStarTutorial_de.html	
-// Example project: 	https://code.google.com/p/jianwikis/wiki/AStarAlgorithmForPathPlanning
+// Theory: 					http://www.policyalmanac.org/games/aStarTutorial_de.html	
+// Example project: 		https://code.google.com/p/jianwikis/wiki/AStarAlgorithmForPathPlanning
+
+// Ideas for improvements	https://www.cs.princeton.edu/courses/archive/fall06/cos402/papers/korfrubik.pdf
+
+// - Count number of created nodes for comparison
+// - Clone cube object in constructor and use it's initial state instead of revertCubePermutations() in every iteration
+// - Implement actions for 180 degree turn of each face
+// - Eliminate all subsequent actions that would result in the predecessing state (no L after an l turn, ...)
+// - Test variations of the heuristic
+// - Implement IDA*
+// - Use pattern databases
 
 public class Solver {
 
