@@ -23,9 +23,10 @@ public class Cube {
 		for (char action : solving_sequence) {
 			permuteCube(action);
 		}
+		move.releaseCube();
 	}
 	
-	public void permuteCube(char action) {
+	private void permuteCube(char action) {
 		
 		int initial_face_index = 0;
 		
@@ -75,68 +76,96 @@ public class Cube {
 			}
 			char target_downface = initial_orientation[Math.abs(initial_face_index) - 1];
 			
-			int count_tilts = 0;
-
-			move.holdCube();
-			Delay.msDelay(200);
-
-			//change orientation until bottom value of current orientation is equal to the initial index value
-			while (current_orientation[1] != target_downface) {
-				//TODO: Maybe another litte A* for the shortest way to orientate the cube correctly
-
-				if (count_tilts == 3)
-				{
-					// rotate 90 degrees
-					move.releaseCube();
-					Delay.msDelay(200);
-					move.rotateTable(90);
-					Delay.msDelay(200);
-					
-					// Update cube orientation after rotation
-					char old_left = current_orientation[2];
-					char old_right = current_orientation[3];
-					char old_front = current_orientation[4];
-					char old_back = current_orientation[5];
-					current_orientation[2] = old_back; // new left is old back
-					current_orientation[3] = old_front; // new right is old front
-					current_orientation[4] = old_left; // new front is old left
-					current_orientation[5] = old_right; // new back is old right
-					
-					move.holdCube();
-					Delay.msDelay(500);
-				}
-				move.tiltCube();
-				Delay.msDelay(1000);
-				move.releaseCube();
-				Delay.msDelay(200);
-				move.holdCube();
-				Delay.msDelay(200);
-				count_tilts++;
-				
-				// Update cube orientation after tilt
-				char old_top = current_orientation[0];
-				char old_down = current_orientation[1];
-				char old_front = current_orientation[4];
-				char old_back = current_orientation[5];
-				current_orientation[0] = old_front; // new top is old front
-				current_orientation[1] = old_back; // new down is old back
-				current_orientation[4] = old_down; // new front is old down
-				current_orientation[5] = old_top; // new back is old top
-				
-//				if (count_tilts > 7)
-//				{
-//					// something went wrong
-//					break;
-//				}
-			}
+			//change orientation of cube so that the target face is at the bottom (Looking at the cube from the sensor)
+			orientateCubeForPermutation(target_downface);
 
 			//permute current bottom face clockwise or counterclockwise according to the action
+			move.holdCube();
+			Delay.msDelay(200);
 			move.rotateTable((int) (Math.signum(initial_face_index) * 90));
-			Delay.msDelay(200);
-			move.releaseCube();
-			Delay.msDelay(200);
-		
 		}
+	}
+	
+	private void orientateCubeForPermutation(char target_downface) {
+		
+		// Current right needed as downface
+		if (current_orientation[3] == target_downface)
+		{
+			// rotate 90 degrees clockwise, then tilt once
+			move.releaseCube();
+			exectueQuarterRotationClockwise();
+			executeTilt();
+			return;
+		}
+		// Current left needed as downface
+		if (current_orientation[2] == target_downface)
+		{
+			// rotate 270 degrees COUNTER-clockwise, then tilt once					
+			move.releaseCube();
+			exectueQuarterRotationClockwise();
+			exectueQuarterRotationClockwise();
+			exectueQuarterRotationClockwise();
+			executeTilt();
+			return;
+		}
+		// Current front needed as downface
+		if (current_orientation[4] == target_downface)
+		{
+			// rotate 180 degrees COUNTER-clockwise, then tilt twice					
+			move.releaseCube();
+			exectueQuarterRotationClockwise();
+			exectueQuarterRotationClockwise();
+			executeTilt();
+			return;
+		}
+		// Current back needed as downface
+		if (current_orientation[5] == target_downface)
+		{
+			// tilt once
+			executeTilt();
+			return;
+		}
+		// Current top needed as downface
+		if (current_orientation[0] == target_downface)
+		{
+			// tilt twice
+			executeTilt();
+			executeTilt();
+			return;
+		}
+	}
+	
+	private void exectueQuarterRotationClockwise() {
+		
+		move.rotateTable(90);
+		
+		// Update cube orientation after rotation
+		char old_left = current_orientation[2];
+		char old_right = current_orientation[3];
+		char old_front = current_orientation[4];
+		char old_back = current_orientation[5];
+		current_orientation[2] = old_back; // new left is old back
+		current_orientation[3] = old_front; // new right is old front
+		current_orientation[4] = old_left; // new front is old left
+		current_orientation[5] = old_right; // new back is old right
+	}
+	
+	private void executeTilt() {
+		
+		move.holdCube();
+		Delay.msDelay(200);
+		move.tiltCube();
+		Delay.msDelay(700);
+		
+		// Update cube orientation after tilt
+		char old_top = current_orientation[0];
+		char old_down = current_orientation[1];
+		char old_front = current_orientation[4];
+		char old_back = current_orientation[5];
+		current_orientation[0] = old_front; // new top is old front
+		current_orientation[1] = old_back; // new down is old back
+		current_orientation[4] = old_down; // new front is old down
+		current_orientation[5] = old_top; // new back is old top
 	}
 	
 	public char[] executeCompleteScan() {
