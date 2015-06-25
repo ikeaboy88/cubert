@@ -47,6 +47,7 @@ public class Solver {
 	List<Node> neighbours = new ArrayList<Node>();
 	
 	public long counter = 0;
+	public long counter_improved = 0;
 	
 	// Constructor
 	public Solver(Cube cube) {
@@ -67,6 +68,7 @@ public class Solver {
 		
 		/** 1 */
 		// Add start node to the open list and to the priority queue
+		System.out.println("Number of nodes created: " + counter++);
 		open_list.put(cube_start_hash, start_node);
 		priority_queue.add(start_node);
 		
@@ -83,14 +85,10 @@ public class Solver {
 			open_list.remove(current_node.getState_hash());
 			
 			/** DEBUG - get predecessor node from current node */
-			System.out.println(counter++);
 			state_hash = current_node.getState_hash();
 			predecessor_node = current_node.getPredecessor_node();
 			
-			
-			
 			permuteCubeFromStartToCurrentNode(cube_start_state, current_node);
-			
 			
 			// IF current node holds the solved state: Set current node as solved node and break the loop
 			if (current_node.getState_hash() == cube_solved_hash)
@@ -132,7 +130,7 @@ public class Solver {
 							// Add node to opened list and priority queue
 							open_list.put(neighbour_node.getState_hash(), neighbour_node);
 							priority_queue.add(neighbour_node);
-							System.out.println("neue unbekannte node in open list aufgenommen");
+							System.out.println("neue unbekannte node in open list aufgenommen - Count: " + counter++);
 						}
 						// ELSE IF (neighbour is already in open list, check if new path is better)
 						else if (neighbour_node.getG_costs() < known_node.getG_costs())
@@ -148,7 +146,7 @@ public class Solver {
 							priority_queue.remove(known_node);
 							priority_queue.add(known_node);
 							
-							System.out.println("!!Bekannte node verbessert!!");
+							System.out.println("!! Node bereits bekannt - Weg dort hin verbessert !! - Count improved: " + counter_improved++);
 						}
 						
 					}
@@ -161,6 +159,8 @@ public class Solver {
 		// Get solving sequence
 		if(solved_node != null)
 		{
+			System.out.println("Number of nodes: " + counter);
+			System.out.println("Improved nodes: " + counter_improved);
 			//get solved_node and fill array from top to bottom
 			solution_nodes_stack = new Stack<Node>();
 			List<Node> solution_nodes_list = new ArrayList<Node>();
