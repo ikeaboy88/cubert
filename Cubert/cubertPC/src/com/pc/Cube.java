@@ -1,5 +1,8 @@
 package com.pc;
 
+import java.util.Arrays;
+import java.util.Hashtable;
+
 public class Cube {
 
 	// 3D-Coordinates for every cubie (to calculate Manhattan distance)
@@ -8,7 +11,10 @@ public class Cube {
 	// Initial orientation of the cube itself - which centers are facing in which direction
 	public char[] cube_orientation = new char[6];
 	public char[][] cube_scrambled = null;
+
 	public char[][] cube_solved = null;
+	
+	public Hashtable<Integer, char[][]> hash_to_state_table = new Hashtable<Integer, char[][]>();
 	
 	public Cube(char[] scan_result_vector) {
 		if (scan_result_vector != null) {
@@ -26,6 +32,26 @@ public class Cube {
 		cubie_coordinates = this.getCubieCoordinates();
 	}
 	
+	public int hashCubeState(char[][] cube_state) {
+		
+		int deepHashCode = Arrays.deepHashCode(cube_state);
+		
+//		insert hash and cube state in hashmap for further use 
+		PutIntoTranslationMap(deepHashCode,cube_state);
+		
+		return deepHashCode;
+	}
+	
+	private void PutIntoTranslationMap(int hash_value, char[][] cube_state) {
+		// TODO Auto-generated method stub
+		hash_to_state_table.put(hash_value, cube_state);
+	}
+	
+	public char[][] getStateFromHash(int hash_value){
+		char[][] cube_state = hash_to_state_table.get(hash_value);
+		return cube_state;
+	}
+
 	/**
 	 * Finds the solved index/position of a given cubie signature
 	 * @param cubie as char[] of its signature
@@ -83,7 +109,7 @@ public class Cube {
 		
 		double distance = 0.0;
 		
-		int[] moved_cubies = getAllCubiesByFace(face);
+		int[] moved_cubies = getAllCubiesByFace(Character.toLowerCase(face));
 		
 		for (int i = 0; i < moved_cubies.length; i++) {
 			distance += calculateManhattanDistance(moved_cubies[i]) + calculateColorDistance(moved_cubies[i]);
@@ -215,6 +241,43 @@ public class Cube {
 		// Explanation: For a given face..
 		//	.. change the orientations ONLY of all the involved cubies like they will be after the turn,
 		//  .. then switch the newly oriented cubies' positions like they will be after the turn
+		
+		if (face == 'T') {
+			// Rotate top face counter clockwise
+			this.permuteCube('t');
+			this.permuteCube('t');
+			this.permuteCube('t');
+		}
+		if (face == 'D') {
+			// Rotate down face counter clockwise
+			this.permuteCube('d');
+			this.permuteCube('d');
+			this.permuteCube('d');
+		}		
+		if (face == 'L') {
+			// Rotate left face counter clockwise
+			this.permuteCube('l');
+			this.permuteCube('l');
+			this.permuteCube('l');
+		}
+		if (face == 'R') {
+			// Rotate right face counter clockwise
+			this.permuteCube('r');
+			this.permuteCube('r');
+			this.permuteCube('r');
+		}
+		if (face == 'F') {
+			// Rotate front face counter clockwise
+			this.permuteCube('f');
+			this.permuteCube('f');
+			this.permuteCube('f');
+		}
+		if (face == 'B') {
+			// Rotate back face counter clockwise
+			this.permuteCube('b');
+			this.permuteCube('b');
+			this.permuteCube('b');
+		}
 		
 		// Rotate top face
 		if (face == 't') {
