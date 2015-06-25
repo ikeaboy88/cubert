@@ -29,7 +29,7 @@ public class Main {
 		cube.permuteCube('d'); // 6 permutations:  1 s
 		cube.permuteCube('R'); // 7 permutations:  4 s
 		cube.permuteCube('t'); // 8 permutations: 31 s
-		cube.permuteCube('f'); // 9 permutations: Cancelled after 10 minutes...
+//		cube.permuteCube('f'); // 9 permutations: Cancelled after 10 minutes...
 
 
 		int count = 0;
