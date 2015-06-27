@@ -45,14 +45,14 @@ public class Connection {
 		bufferedReader = new BufferedReader(new InputStreamReader(dis));
 	}
 
-	public void sendSolvingSequence(char[] sequence) {
+	public void sendSolvingSequence(List<Character>sequence) {
 		
 		//save sequence in list because we don't know how long the sequence will be
 		List<Byte>solving_sequence = new ArrayList<Byte>();
 
 		//translate character into byte values
-		for(int i = 0; i < sequence.length; i++){
-			switch(sequence[i]){
+		for(int i = 0; i < sequence.size(); i++){
+			switch(sequence.get(i)){
 			case 't' :solving_sequence.add((byte) 0);
 				break; 
 			case 'T' :solving_sequence.add((byte) 1);

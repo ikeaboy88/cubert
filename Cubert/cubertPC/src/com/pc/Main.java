@@ -64,15 +64,15 @@ public class Main {
 				
 				//fill char array with values from List
 				System.out.println("best path: ");
-				char[]solving_sequence = new char[sequence.size()]; 
-				for(int i= 0; i < sequence.size(); i++){
-				solving_sequence[i] = sequence.get(i);
-				System.out.println(sequence.get(i));
-				
-				}
+//				char[]solving_sequence = new char[sequence.size()]; 
+//				for(int i= 0; i < sequence.size(); i++){
+//				solving_sequence[i] = sequence.get(i);
+//				System.out.println(sequence.get(i));
+//				
+//				}
 				
 				//determine length of solving sequence
-				int sequence_length = solving_sequence.length;
+				int sequence_length = sequence.size();
 
 //				for (Character character : sequence) {
 //					System.out.println(character);
@@ -82,7 +82,7 @@ public class Main {
 				connect_PC.sendSolvingSequenceLength(sequence_length);
 		
 				//send solving sequence to nxt
-				connect_PC.sendSolvingSequence(solving_sequence);
+				connect_PC.sendSolvingSequence(sequence);
 				
 				if (cube.cube_orientation == null) {
 					System.out.println("SCAN ERROR");
