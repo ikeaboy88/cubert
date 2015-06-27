@@ -222,4 +222,19 @@ public class Connection {
 		}
 		
 	}
+
+	public void sendSolvingSequenceLength(int sequence_length) {
+		// TODO Auto-generated method stub
+		byte[]length = new byte[1];
+		length[0] =(byte) sequence_length;
+		try {
+			dos.write(length, 0, 1);
+			dos.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		
+	}
 }

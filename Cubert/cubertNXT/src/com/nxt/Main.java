@@ -19,7 +19,10 @@ public class Main {
 		Connection connect_NXT = new Connection();
 		connect_NXT.connectToPC();
 		
-		char[] solving_sequence = connect_NXT.getSolvingSequence();
+		//get length of solving sequence
+		int solving_sequence_length = connect_NXT.getSolvingSequenceLength();
+		
+		char[] solving_sequence = connect_NXT.getSolvingSequence(solving_sequence_length);
 		LCD.clear();
 		LCD.drawString("chars:", 0, 0);
 		Button.waitForAnyPress();

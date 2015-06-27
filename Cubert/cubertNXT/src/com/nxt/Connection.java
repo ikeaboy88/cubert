@@ -169,11 +169,11 @@ public class Connection {
 		return byte_sequence;
 	}*/
 
-	public char[] getSolvingSequence() {
+	public char[] getSolvingSequence(int solving_sequence_length) {
 		LCD.clear();
 		
 		//dynamisches array?!
-		byte[]solving_sequence_as_byte = new byte[4];
+		byte[]solving_sequence_as_byte = new byte[solving_sequence_length];
 		int data_available=0; 
 		int data_recieved = 0;
 		
@@ -182,7 +182,7 @@ public class Connection {
 			do{
 				try {
 					
-					data_available = dis.read(solving_sequence_as_byte, data_recieved, 4);
+					data_available = dis.read(solving_sequence_as_byte, data_recieved, solving_sequence_length);
 					data_recieved += data_available;
 					LCD.drawString("recieved:"+data_recieved, 0, 0);
 				} catch (IOException e) {
@@ -190,15 +190,15 @@ public class Connection {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}while(data_recieved < 4);
+			}while(data_recieved < solving_sequence_length);
 			Button.waitForAnyPress();
 //		}
 		
-		char[] solving_sequence = new char[solving_sequence_as_byte.length];
+		char[] solving_sequence = new char[solving_sequence_as_byte.length-1];
 		
 		//translate bytes into chars 
 		//therefore ignore the last int, representing the stop sign. length-1
-		for(int i = 0; i < solving_sequence_as_byte.length; i++){
+		for(int i = 0; i < solving_sequence_as_byte.length-1; i++){
 //			for(Byte b: solving_sequence_as_byte){
 				switch(solving_sequence_as_byte[i]){
 				case 0: solving_sequence[i] = 't';
@@ -328,6 +328,19 @@ public class Connection {
 		}
 		return rgb_reference;
 
+	}
+
+	public int getSolvingSequenceLength() {
+		// TODO Auto-generated method stub
+		byte[]b = new byte[1];
+		try {
+			dis.read(b, 0, 1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int sequence_length = b[0];
+		return sequence_length;
 	}
 
 	/*

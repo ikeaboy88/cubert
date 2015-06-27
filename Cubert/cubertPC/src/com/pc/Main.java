@@ -23,6 +23,9 @@ public class Main {
 			System.out.println(character);
 		}
 		
+		int sequence_length = sequence.size();
+		//send length of solving sequence to nxt
+		connect_PC.sendSolvingSequenceLength(sequence_length);
 		
 //		char[]scan_result_vector = new char[54];
 		char[]solving_sequence = new char[]{'L','D','F','D'};
