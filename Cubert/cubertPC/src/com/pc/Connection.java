@@ -49,35 +49,35 @@ public class Connection {
 		
 		//save sequence in list because we don't know how long the sequence will be
 		List<Byte>solving_sequence = new ArrayList<Byte>();
-		
+
 		//translate character into byte values
 		for(int i = 0; i < sequence.length; i++){
 			switch(sequence[i]){
-			case 't' : solving_sequence.add((byte) 0);
+			case 't' :solving_sequence.add((byte) 0);
 				break; 
 			case 'T' :solving_sequence.add((byte) 1);
 				break; 
-			case 'd':solving_sequence.add((byte) 2);
+			case 'd' :solving_sequence.add((byte) 2);
 				break; 
 			case 'D' :solving_sequence.add((byte) 3);
 				break; 
-			case 'l': solving_sequence.add((byte) 4);
+			case 'l' :solving_sequence.add((byte) 4);
 				break; 
-			case 'L': solving_sequence.add((byte) 5);
+			case 'L' :solving_sequence.add((byte) 5);
 				break; 
-			case 'r': solving_sequence.add((byte) 6);
+			case 'r' :solving_sequence.add((byte) 6);
 				break; 
-			case 'R': solving_sequence.add((byte) 7);
+			case 'R' :solving_sequence.add((byte) 7);
 				break; 
-			case 'f': solving_sequence.add((byte) 8);
+			case 'f' :solving_sequence.add((byte) 8);
 				break; 
-			case 'F': solving_sequence.add((byte) 9);
+			case 'F' :solving_sequence.add((byte) 9);
 				break; 
-			case 'b': solving_sequence.add((byte) 10);
+			case 'b' :solving_sequence.add((byte) 10);
 				break; 
-			case 'B': solving_sequence.add((byte) 11);
+			case 'B' :solving_sequence.add((byte) 11);
 				break; 
-			default: System.out.println("unlösbar :-(");
+			default  :System.out.println("unlösbar :-(");
 			}
 		}
 		
@@ -86,16 +86,19 @@ public class Connection {
 		
 		//transfer bytes from list to array for data transfer between pc and nxt
 		byte[] solving_sequence_as_byte = new byte[solving_sequence.size()];
+		System.out.println("solving sequence: ");
 		for(int i = 0; i < solving_sequence_as_byte.length; i++){
-			for(byte b : solving_sequence){
-				solving_sequence_as_byte[i] = b;
-			}
+//			for(byte b : solving_sequence){
+				solving_sequence_as_byte[i] = solving_sequence.get(i);
+				System.out.println(solving_sequence.get(i));
+			
+//			}
 		}
 		try {
-
+			
 			dos.write(solving_sequence_as_byte,0,solving_sequence_as_byte.length);
 			dos.flush();
-			// dos.close();
+//					dos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

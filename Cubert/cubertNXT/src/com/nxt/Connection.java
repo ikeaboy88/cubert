@@ -171,26 +171,35 @@ public class Connection {
 
 	public char[] getSolvingSequence() {
 		LCD.clear();
-		byte[]solving_sequence_as_byte = new byte[20];
-
+		
+		//dynamisches array?!
+		byte[]solving_sequence_as_byte = new byte[4];
+		int data_available=0; 
+		int data_recieved = 0;
+		
 		//when stop sign accurs, stop reading input stream!
-		for(int i = 0; i < solving_sequence_as_byte.length; i++){
+//		for(int i = 0; i < solving_sequence_as_byte.length; i++){
 			do{
 				try {
-					dis.read(solving_sequence_as_byte, 0, 20);
+					
+					data_available = dis.read(solving_sequence_as_byte, data_recieved, 4);
+					data_recieved += data_available;
+					LCD.drawString("recieved:"+data_recieved, 0, 0);
 				} catch (IOException e) {
+					LCD.drawString("nix da", 0, 1);
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}while(solving_sequence_as_byte[i] != -1);
-		}
+			}while(data_recieved < 4);
+			Button.waitForAnyPress();
+//		}
 		
 		char[] solving_sequence = new char[solving_sequence_as_byte.length];
 		
 		//translate bytes into chars 
 		//therefore ignore the last int, representing the stop sign. length-1
-		for(int i = 0; i < solving_sequence_as_byte.length-1; i++){
-			for(Byte b: solving_sequence_as_byte){
+		for(int i = 0; i < solving_sequence_as_byte.length; i++){
+//			for(Byte b: solving_sequence_as_byte){
 				switch(solving_sequence_as_byte[i]){
 				case 0: solving_sequence[i] = 't';
 					break; 
@@ -216,9 +225,9 @@ public class Connection {
 					break; 
 				case 11: solving_sequence[i] = 'B';
 					break; 
-				case -1: LCD.drawString("stop sign", 0, 0);
+				case -1: LCD.drawString("stop sign", 0, 1);
 				}
-			}
+//			}
 		}
 		return solving_sequence;
 	}
@@ -265,10 +274,11 @@ public class Connection {
 			int rgb;
 			int tmp_rgb;
 			int data_available=0; 
+			int data_recieved = 0;
 			for(int [] j : rgb_reference){
 				for (int i =0; i < 3; i++){
 					
-					int data_recieved = 0;
+					 data_recieved = 0;
 					do{
 						data_available = dis.read(recieved_rgb_value, data_recieved, 3);
 						data_recieved += data_available;
