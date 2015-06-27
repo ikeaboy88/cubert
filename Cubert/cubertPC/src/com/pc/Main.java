@@ -40,10 +40,11 @@ public class Main {
 				Cube cube = new Cube(null);
 				Solver magic = new Solver(cube);
 				
-				cube.permuteCube('d');
+				cube.permuteCube('B');
 				cube.permuteCube('f');
 				cube.permuteCube('d');
 				cube.permuteCube('l');
+				cube.permuteCube('R');
 				
 //				scan_result_vector = connect_PC.getScanResultVector();
 				
@@ -56,13 +57,22 @@ public class Main {
 				//INIT Cube Object with scan result vector
 //				Cube cube = new Cube(scan_result_vector);
 
-				char[]solving_sequence = new char[]{'L','D','F','D'};
+//				char[]solving_sequence = new char[]{'r','L','D','f','b'};
 
 				//Calculate solving sequence
 				List<Character> sequence = magic.calculateSolvingSequence();
 				
+				//fill char array with values from List
+				System.out.println("best path: ");
+				char[]solving_sequence = new char[sequence.size()]; 
+				for(int i= 0; i < sequence.size(); i++){
+				solving_sequence[i] = sequence.get(i);
+				System.out.println(sequence.get(i));
+				
+				}
+				
 				//determine length of solving sequence
-				int sequence_length = sequence.size();
+				int sequence_length = solving_sequence.length;
 
 //				for (Character character : sequence) {
 //					System.out.println(character);

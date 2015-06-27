@@ -86,11 +86,11 @@ public class Connection {
 		
 		//transfer bytes from list to array for data transfer between pc and nxt
 		byte[] solving_sequence_as_byte = new byte[solving_sequence.size()];
-		System.out.println("solving sequence: ");
+//		System.out.println("solving sequence: ");
 		for(int i = 0; i < solving_sequence_as_byte.length; i++){
 //			for(byte b : solving_sequence){
 				solving_sequence_as_byte[i] = solving_sequence.get(i);
-				System.out.println(solving_sequence.get(i));
+//				System.out.println(solving_sequence.get(i));
 			
 //			}
 		}
