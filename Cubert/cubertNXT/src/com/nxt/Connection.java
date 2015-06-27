@@ -169,23 +169,58 @@ public class Connection {
 		return byte_sequence;
 	}*/
 
-	// return type should be int ,void only for testing
-	public void getSolvingSequence() {
+	public char[] getSolvingSequence() {
 		LCD.clear();
-//		String s = "";
-		int s;
-		LCD.drawString("recieve..", 0, 0);
+		byte[]solving_sequence_as_byte = new byte[20];
 
-		while(true){
-			
-			try {
-				s = bufferedReader.read();
-				LCD.drawString("Data: "+s, 0, 2);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		//when stop sign accurs, stop reading input stream!
+		for(int i = 0; i < solving_sequence_as_byte.length; i++){
+			do{
+				try {
+					dis.read(solving_sequence_as_byte, 0, 20);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}while(solving_sequence_as_byte[i] != -1);
+		}
+		
+		char[] solving_sequence = new char[solving_sequence_as_byte.length];
+		
+		//translate bytes into chars 
+		//therefore ignore the last int, representing the stop sign. length-1
+		for(int i = 0; i < solving_sequence_as_byte.length-1; i++){
+			for(Byte b: solving_sequence_as_byte){
+				switch(solving_sequence_as_byte[i]){
+				case 0: solving_sequence[i] = 't';
+					break; 
+				case 1: solving_sequence[i] = 'T';
+					break; 
+				case 2: solving_sequence[i] = 'd';
+					break;
+				case 3: solving_sequence[i] = 'D';
+					break; 
+				case 4: solving_sequence[i] = 'l';
+					break; 
+				case 5: solving_sequence[i] = 'L';
+					break; 
+				case 6: solving_sequence[i] = 'r';
+					break; 
+				case 7: solving_sequence[i] = 'R';
+					break; 
+				case 8: solving_sequence[i] = 'f';
+					break; 
+				case 9: solving_sequence[i] = 'F';
+					break; 
+				case 10: solving_sequence[i] = 'b';
+					break; 
+				case 11: solving_sequence[i] = 'B';
+					break; 
+				case -1: LCD.drawString("stop sign", 0, 0);
+				}
 			}
 		}
+		return solving_sequence;
 	}
 
 	public void sendRGBCalibration(List<Integer> reference) {

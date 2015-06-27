@@ -5,6 +5,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+
 import lejos.pc.comm.NXTCommLogListener;
 import lejos.pc.comm.NXTConnector;
 import lejos.pc.comm.NXTInfo;
@@ -42,17 +46,54 @@ public class Connection {
 	}
 
 	public void sendSolvingSequence(char[] sequence) {
-		// String[] solvingSequence = new String[3];
-		int i = 23;
+		
+		//save sequence in list because we don't know how long the sequence will be
+		List<Byte>solving_sequence = new ArrayList<Byte>();
+		
+		//translate character into byte values
+		for(int i = 0; i < sequence.length; i++){
+			switch(sequence[i]){
+			case 't' : solving_sequence.add((byte) 0);
+				break; 
+			case 'T' :solving_sequence.add((byte) 1);
+				break; 
+			case 'd':solving_sequence.add((byte) 2);
+				break; 
+			case 'D' :solving_sequence.add((byte) 3);
+				break; 
+			case 'l': solving_sequence.add((byte) 4);
+				break; 
+			case 'L': solving_sequence.add((byte) 5);
+				break; 
+			case 'r': solving_sequence.add((byte) 6);
+				break; 
+			case 'R': solving_sequence.add((byte) 7);
+				break; 
+			case 'f': solving_sequence.add((byte) 8);
+				break; 
+			case 'F': solving_sequence.add((byte) 9);
+				break; 
+			case 'b': solving_sequence.add((byte) 10);
+				break; 
+			case 'B': solving_sequence.add((byte) 11);
+				break; 
+			default: System.out.println("unlösbar :-(");
+			}
+		}
+		
+		//stop sign
+		solving_sequence.add((byte) -1);
+		
+		//transfer bytes from list to array for data transfer between pc and nxt
+		byte[] solving_sequence_as_byte = new byte[solving_sequence.size()];
+		for(int i = 0; i < solving_sequence_as_byte.length; i++){
+			for(byte b : solving_sequence){
+				solving_sequence_as_byte[i] = b;
+			}
+		}
 		try {
 
-			// for (int i = 0; i < sequence.length; i++){
-			// solvingSequence[i] = Character.toString(sequence[i]);
-			// dos.writeBytes(solvingSequence[i]);
-			// System.out.println(solvingSequence[i]);
-			// }
-			dos.writeInt(i);
-			// send data through stream
+			dos.write(solving_sequence_as_byte,0,solving_sequence_as_byte.length);
 			dos.flush();
 			// dos.close();
 		} catch (IOException e) {
