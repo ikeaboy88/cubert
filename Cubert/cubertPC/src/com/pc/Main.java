@@ -92,7 +92,10 @@ public class Main {
 			
 		}while(mode[0] != -1);
 	
-		System.exit(0);
+		System.out.println("Ich glaube..., der Cube ist gelöst! :-)");
+		System.out.println("Und Tschüss!");
+		System.exit(0);		System.out.println("Ich glaube..., der Cube ist gelöst! :-)");
+
 		
 	}
 }
