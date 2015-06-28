@@ -77,7 +77,7 @@ public class Connection {
 				break; 
 			case 'B' :solving_sequence.add((byte) 11);
 				break; 
-			default  :System.out.println("unlösbar :-(");
+			default  :System.out.println("Am Ziel!");
 			}
 		}
 		
