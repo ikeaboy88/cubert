@@ -9,22 +9,22 @@ import lejos.nxt.ColorSensor;
 import lejos.nxt.LCD;
 import lejos.nxt.SensorPort;
 import lejos.nxt.addon.ColorHTSensor;
+import lejos.robotics.Color;
 
 public class Main {
 
 	public static void main(String[] args) {
 		
-	/*	ColorHTSensor test = new ColorHTSensor(SensorPort.S3);
 		
-		do{
-			
-		LCD.drawString(""+test.getColorID(), 0,0);
-		LCD.drawString(""+test.getColor().getRed(), 0, 1);
-		LCD.drawString(""+test.getColor().getGreen(), 0, 2);
-		LCD.drawString(""+test.getColor().getBlue(), 0, 3);
-		}while(true);
+//		do{
+//			
+//		LCD.drawString(""+test.getColorID(), 0,0);
+//		LCD.drawString(""+test.getColor().getRed(), 0, 1);
+//		LCD.drawString(""+test.getColor().getGreen(), 0, 2);
+//		LCD.drawString(""+test.getColor().getBlue(), 0, 3);
+//		}while(true);
 		
-		*/
+		
 		
 		
 		/* Connection between NXT and PC */
@@ -33,6 +33,45 @@ public class Main {
 
 		// Create object to execute movements on Cubert
 		Cube cube = new Cube();
+		
+		
+//		LCD.clear();
+//		LCD.drawString("White", 0, 0);
+//		Button.waitForAnyPress();
+//		int white = cube.detect.initWhiteBalance();
+//		LCD.drawString("white: "+white, 1, 0);
+//		Button.waitForAnyPress();
+//		LCD.clear();
+//		LCD.drawString("Black", 0, 0);
+//		Button.waitForAnyPress();
+//		int black = cube.detect.initBlackLevel();
+//		LCD.drawString("black: "+black, 1, 0);
+//		Button.waitForAnyPress();
+//		System.exit(0);
+		
+//		do{
+//			Button.waitForAnyPress();
+//			cube.move.moveSensorToCenter();
+//			LCD.clear();
+//			LCD.drawString(""+cube.detect.getColorID(), 0,0);
+//			LCD.drawString(""+cube.detect.getRGBNormalized(Color.RED), 0, 1);
+//			LCD.drawString(""+cube.detect.getRGBNormalized(Color.GREEN), 0, 2);
+//			LCD.drawString(""+cube.detect.getRGBNormalized(Color.BLUE), 0, 3);
+//			Button.waitForAnyPress();
+//			LCD.clear();
+////			LCD.clear();
+////			cube.move.moveSensorToEdge();
+////			LCD.clear();
+////			LCD.drawString(""+cube.detect.getColorID(), 0,0);
+////			LCD.drawString(""+cube.detect.getColor().getRed(), 0, 1);
+////			LCD.drawString(""+cube.detect.getColor().getGreen(), 0, 2);
+////			LCD.drawString(""+cube.detect.getColor().getBlue(), 0, 3);
+////			Button.waitForAnyPress();
+//			cube.move.moveSensorToEdge();
+//			cube.move.removeSensor();
+//			
+//		}while(true);
+		
 		
 		boolean ready_for_scan = false; 
 		
@@ -66,13 +105,22 @@ public class Main {
 					cube.executeCompleteScan(true);
 					List<Integer>rgb_values = new ArrayList<Integer>();
 					LCD.clear();
+					
+					int count = 0;
+					LCD.drawString("Reference:"	, 0, 0);
 					for(int [] reference_rgb : cube.detect.rgb_ref){
+						
+						LCD.drawString(reference_rgb[0]+", "+reference_rgb[1]+", "+reference_rgb[2], 0, count);
+						count++;
 						for (int i = 0; i <reference_rgb.length; i++)
 						{
 							rgb_values.add(reference_rgb[i]);
+							
 						}
 					}
 					
+					Button.waitForAnyPress();
+					LCD.clear();
 					connect_NXT.sendRGBCalibration(rgb_values);
 					LCD.drawString("calibration done, press BT", 1, 1);
 					Button.waitForAnyPress();
@@ -109,18 +157,20 @@ public class Main {
 				connect_NXT.sendMode(2);
 				
 				
-				char[] dummy_orientation = new char[] {'W', 'Y', 'O', 'R', 'G', 'B'};
-				cube.setInitialDummyCubeOrientation(dummy_orientation); 
+//				char[] dummy_orientation = new char[] {'W', 'Y', 'O', 'R', 'G', 'B'};
+//				cube.setInitialDummyCubeOrientation(dummy_orientation); 
 				
-//			char[]complete_scan = new char[54];
-//			complete_scan = cube.executeCompleteScan();
+				char[]complete_scan = new char[54];
+//				char[] complete_scan = new char[]{'W','O','B','B','W','O','W','B','B','G','O','O','W','O','G','O','W','O','Y','Y','Y','G','G','Y','G','G','Y','B','B','R','R','R','R','R','R','R','O','O','Y','Y','B','B','B','Y','Y','R','G','G','W','W','R','W','W','G'};
+				complete_scan = cube.executeCompleteScan();
 				
 				//execute complete scan and send scan result vector to pc
 				
 				//DUMMY scan_result_vector
-				char[] complete_scan = new char[]{'W','O','B','B','W','O','W','B','B','G','O','O','W','O','G','O','W','O','Y','Y','Y','G','G','Y','G','G','Y','B','B','R','R','R','R','R','R','R','O','O','Y','Y','B','B','B','Y','Y','R','G','G','W','W','R','W','W','G'};
 				connect_NXT.sendScanResultVector(complete_scan);	
 			
+				Button.waitForAnyPress();
+				
 				//get length of solving sequence
 				int solving_sequence_length = connect_NXT.getSolvingSequenceLength();
 				

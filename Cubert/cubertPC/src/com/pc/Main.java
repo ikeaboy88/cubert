@@ -41,9 +41,44 @@ public class Main {
 				scan_result_vector = connect_PC.getScanResultVector();
 				
 				System.out.println("scan result vector pc:");
+				int orange = 0;
+				int red = 0;
+				int green = 0;
+				int white = 0;
+				int yellow = 0;
+				int blue = 0;
+				
 				for(int i = 0; i <scan_result_vector.length; i++){
 					
+					switch(scan_result_vector[i]){
+					case 'R': red++;
+					break; 
+					case 'O': orange++;
+					break;
+					case 'G': green++; 
+					break; 
+					case 'B' : blue++;
+					break; 
+					case 'W' : white++;
+					break; 
+					case 'Y' : yellow++;
+					break;
+					default: System.out.println("keine farbe erkannt!");
+					}
+					
 					System.out.println(scan_result_vector[i]);
+					
+				}
+				if(red != 9 || orange != 9 || green != 9 || blue != 9 || white != 9 || yellow != 9)
+				{
+					System.out.println("red: "+ red);
+					System.out.println("orange: "+ orange);
+					System.out.println("blue: "+ blue);
+					System.out.println("green: "+green);
+					System.out.println("white: "+ white);
+					System.out.println("yellow: "+yellow);
+					System.exit(0);
+					
 				}
 				
 				//INIT Cube Object with scan result vector
