@@ -5,11 +5,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lejos.nxt.Button;
+import lejos.nxt.ColorSensor;
 import lejos.nxt.LCD;
+import lejos.nxt.SensorPort;
+import lejos.nxt.addon.ColorHTSensor;
 
 public class Main {
 
 	public static void main(String[] args) {
+		
+	/*	ColorHTSensor test = new ColorHTSensor(SensorPort.S3);
+		
+		do{
+			
+		LCD.drawString(""+test.getColorID(), 0,0);
+		LCD.drawString(""+test.getColor().getRed(), 0, 1);
+		LCD.drawString(""+test.getColor().getGreen(), 0, 2);
+		LCD.drawString(""+test.getColor().getBlue(), 0, 3);
+		}while(true);
+		
+		*/
+		
+		
 		/* Connection between NXT and PC */
 		Connection connect_NXT = new Connection();
 		connect_NXT.connectToPC();
@@ -18,6 +35,8 @@ public class Main {
 		Cube cube = new Cube();
 		
 		boolean ready_for_scan = false; 
+		
+//		cube.executeCompleteScan();
 		
 		
 		// "Runtime loop"
@@ -62,6 +81,8 @@ public class Main {
 				}
 				
 				//INIT ref_rgb values from txt.file on pc
+				//TODO: make clear that .txt file contains reference values!!
+				//TODO: prevent negative size exception in solving sequence array!!
 				if (Button.waitForAnyPress() == Button.ID_LEFT){
 //					LCD.clear();
 //					connect_NXT.sendMode(1);
@@ -87,8 +108,6 @@ public class Main {
 			if(ready_for_scan){
 				connect_NXT.sendMode(2);
 				
-				//execute complete scan and send scan result vector to pc
-//			connect_NXT.sendScanResultVector(cube.executeCompleteScan());	
 				
 				char[] dummy_orientation = new char[] {'W', 'Y', 'O', 'R', 'G', 'B'};
 				cube.setInitialDummyCubeOrientation(dummy_orientation); 
@@ -96,6 +115,12 @@ public class Main {
 //			char[]complete_scan = new char[54];
 //			complete_scan = cube.executeCompleteScan();
 				
+				//execute complete scan and send scan result vector to pc
+				
+				//DUMMY scan_result_vector
+				char[] complete_scan = new char[]{'W','O','B','B','W','O','W','B','B','G','O','O','W','O','G','O','W','O','Y','Y','Y','G','G','Y','G','G','Y','B','B','R','R','R','R','R','R','R','O','O','Y','Y','B','B','B','Y','Y','R','G','G','W','W','R','W','W','G'};
+				connect_NXT.sendScanResultVector(complete_scan);	
+			
 				//get length of solving sequence
 				int solving_sequence_length = connect_NXT.getSolvingSequenceLength();
 				

@@ -36,27 +36,27 @@ public class Main {
 			
 			if( mode[0] == 2){
 				System.out.println("im solving...");
-
-				Cube cube = new Cube(null);
-				Solver magic = new Solver(cube);
 				
-				cube.permuteCube('B');
-				cube.permuteCube('f');
-				cube.permuteCube('d');
-				cube.permuteCube('l');
-				cube.permuteCube('R');
+				//get scan result vector
+				scan_result_vector = connect_PC.getScanResultVector();
 				
-//				scan_result_vector = connect_PC.getScanResultVector();
-				
-//				System.out.println("scan result vector pc:");
-//				for(int i = 0; i <scan_result_vector.length; i++){
-//					
-//					System.out.println(scan_result_vector[i]);
-//				}
+				System.out.println("scan result vector pc:");
+				for(int i = 0; i <scan_result_vector.length; i++){
+					
+					System.out.println(scan_result_vector[i]);
+				}
 				
 				//INIT Cube Object with scan result vector
-//				Cube cube = new Cube(scan_result_vector);
+				Cube cube = new Cube(scan_result_vector);
 
+//				Cube cube = new Cube(null);
+//				cube.permuteCube('B');
+//				cube.permuteCube('f');
+//				cube.permuteCube('d');
+//				cube.permuteCube('l');
+//				cube.permuteCube('R');
+				
+				Solver magic = new Solver(cube);
 //				char[]solving_sequence = new char[]{'r','L','D','f','b'};
 
 				//Calculate solving sequence
