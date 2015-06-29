@@ -23,7 +23,6 @@ public class Main {
 				System.out.println("calibration mode");
 				cal.calibrate();
 				System.out.println("calibration done");
-				
 			}
 			
 			if(mode[0] == 1){
@@ -49,26 +48,29 @@ public class Main {
 				
 				for(int i = 0; i <scan_result_vector.length; i++){
 					
-					switch(scan_result_vector[i]){
-					case 'R': red++;
-					break; 
-					case 'O': orange++;
-					break;
-					case 'G': green++; 
-					break; 
-					case 'B' : blue++;
-					break; 
-					case 'W' : white++;
-					break; 
-					case 'Y' : yellow++;
-					break;
-					default: System.out.println("keine farbe erkannt!");
+					//skip middle cubies 
+					if(i != 0 && i != 18 && i != 36 && i != 45 && i != 9 && i != 27){
+						switch(scan_result_vector[i]){
+						case 'R': red++;
+						break; 
+						case 'O': orange++;
+						break;
+						case 'G': green++; 
+						break; 
+						case 'B' : blue++;
+						break; 
+						case 'W' : white++;
+						break; 
+						case 'Y' : yellow++;
+						break;
+						default: System.out.println("keine farbe erkannt!");
+						}
 					}
 					
 					System.out.println(scan_result_vector[i]);
 					
 				}
-				if(red != 9 || orange != 9 || green != 9 || blue != 9 || white != 9 || yellow != 9)
+				if(red != 8 || orange != 8 || green != 8 || blue != 8 || white != 8 || yellow != 8)
 				{
 					System.out.println("red: "+ red);
 					System.out.println("orange: "+ orange);
@@ -76,10 +78,13 @@ public class Main {
 					System.out.println("green: "+green);
 					System.out.println("white: "+ white);
 					System.out.println("yellow: "+yellow);
-					System.exit(0);
 					
+					//tell nxt that solving sequence can't be computed
+					connect_PC.sendMode(-1);
+					continue;
 				}
 				
+				connect_PC.sendMode(1);
 				//INIT Cube Object with scan result vector
 				Cube cube = new Cube(scan_result_vector);
 
@@ -105,11 +110,12 @@ public class Main {
 				connect_PC.sendSolvingSequence(sequence);
 				System.out.println("Cubert, solve the cube!");
 				
+				connect_PC.sendMode(-1);
+				
 				if (cube.cube_orientation == null) {
 					System.out.println("SCAN ERROR");
 				}
 			}
-			
 			
 		}while(mode[0] != -1);
 		System.out.println("Und Tschüss!");
