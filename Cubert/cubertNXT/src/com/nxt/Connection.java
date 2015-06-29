@@ -282,7 +282,7 @@ public class Connection {
 					do{
 						data_available = dis.read(recieved_rgb_value, data_recieved, 3);
 						data_recieved += data_available;
-						LCD.drawString("data: "+data_recieved, 0, 4);
+//						LCD.drawString("data: "+data_recieved, 0, 4);
 					}while(data_recieved < 3);
 					if(recieved_rgb_value[i] < 0){
 						tmp_rgb = -recieved_rgb_value[i];
@@ -290,6 +290,9 @@ public class Connection {
 					}else{
 						rgb = recieved_rgb_value[i];
 					}
+					LCD.drawString("rgb: "+rgb, 0, i);
+					Button.waitForAnyPress();
+					LCD.clear();
 					j[i] = rgb;
 					
 				}

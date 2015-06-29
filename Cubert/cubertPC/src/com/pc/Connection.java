@@ -212,9 +212,9 @@ public class Connection {
 		byte[]b = new byte[18];
 		for(int i = 0; i < ref_RGB_calibration.length; i++){
 			b[i] = (byte)ref_RGB_calibration[i];
-			dos.write(b, 0, 18);
-			dos.flush();
 		}
+		dos.write(b, 0, 18);
+		dos.flush();
 		//write 18 bytes from byte array
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

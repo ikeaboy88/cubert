@@ -98,8 +98,8 @@ public class Main {
 //						LCD.drawString(c[0]+","+c[1]+","+c[2], 0, count);
 //						count++;
 //					}
-					Button.waitForAnyPress();	
-					LCD.clear();
+//					Button.waitForAnyPress();	
+//					LCD.clear();
 					ready_for_scan = true;
 				}
 				
