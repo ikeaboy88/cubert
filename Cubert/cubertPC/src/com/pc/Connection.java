@@ -237,4 +237,18 @@ public class Connection {
 	
 		
 	}
+
+	public void sendMode(int i) {
+		// TODO Auto-generated method stub
+		byte b[] = new byte[1];
+		b[0] = (byte)i;
+		try {
+			dos.write(b, 0, 1);
+			dos.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }
