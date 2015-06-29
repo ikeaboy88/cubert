@@ -15,18 +15,6 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		
-//		do{
-//			
-//		LCD.drawString(""+test.getColorID(), 0,0);
-//		LCD.drawString(""+test.getColor().getRed(), 0, 1);
-//		LCD.drawString(""+test.getColor().getGreen(), 0, 2);
-//		LCD.drawString(""+test.getColor().getBlue(), 0, 3);
-//		}while(true);
-		
-		
-		
-		
 		/* Connection between NXT and PC */
 		Connection connect_NXT = new Connection();
 		connect_NXT.connectToPC();
@@ -34,49 +22,7 @@ public class Main {
 		// Create object to execute movements on Cubert
 		Cube cube = new Cube();
 		
-		
-//		LCD.clear();
-//		LCD.drawString("White", 0, 0);
-//		Button.waitForAnyPress();
-//		int white = cube.detect.initWhiteBalance();
-//		LCD.drawString("white: "+white, 1, 0);
-//		Button.waitForAnyPress();
-//		LCD.clear();
-//		LCD.drawString("Black", 0, 0);
-//		Button.waitForAnyPress();
-//		int black = cube.detect.initBlackLevel();
-//		LCD.drawString("black: "+black, 1, 0);
-//		Button.waitForAnyPress();
-//		System.exit(0);
-		
-//		do{
-//			Button.waitForAnyPress();
-//			cube.move.moveSensorToCenter();
-//			LCD.clear();
-//			LCD.drawString(""+cube.detect.getColorID(), 0,0);
-//			LCD.drawString(""+cube.detect.getRGBNormalized(Color.RED), 0, 1);
-//			LCD.drawString(""+cube.detect.getRGBNormalized(Color.GREEN), 0, 2);
-//			LCD.drawString(""+cube.detect.getRGBNormalized(Color.BLUE), 0, 3);
-//			Button.waitForAnyPress();
-//			LCD.clear();
-////			LCD.clear();
-////			cube.move.moveSensorToEdge();
-////			LCD.clear();
-////			LCD.drawString(""+cube.detect.getColorID(), 0,0);
-////			LCD.drawString(""+cube.detect.getColor().getRed(), 0, 1);
-////			LCD.drawString(""+cube.detect.getColor().getGreen(), 0, 2);
-////			LCD.drawString(""+cube.detect.getColor().getBlue(), 0, 3);
-////			Button.waitForAnyPress();
-//			cube.move.moveSensorToEdge();
-//			cube.move.removeSensor();
-//			
-//		}while(true);
-		
-		
 		boolean ready_for_scan = false; 
-		
-//		cube.executeCompleteScan();
-		
 		
 		// "Runtime loop"
 		while (true) {
@@ -86,9 +32,6 @@ public class Main {
 				break;
 			}
 			// ...execute code below
-			
-			
-			//calibration mode (0)
 			
 			do{
 				LCD.drawString("Press RIGHT button", 0, 0);
@@ -110,8 +53,10 @@ public class Main {
 					LCD.drawString("Reference:"	, 0, 0);
 					for(int [] reference_rgb : cube.detect.rgb_ref){
 						
-						LCD.drawString(reference_rgb[0]+", "+reference_rgb[1]+", "+reference_rgb[2], 0, count);
-						count++;
+						
+						//DEBUG
+//						LCD.drawString(reference_rgb[0]+", "+reference_rgb[1]+", "+reference_rgb[2], 0, count);
+//						count++;
 						for (int i = 0; i <reference_rgb.length; i++)
 						{
 							rgb_values.add(reference_rgb[i]);
@@ -152,24 +97,19 @@ public class Main {
 			}while(!ready_for_scan);
 				
 			
-			//solving mode
-			if(ready_for_scan){
+			//solving mode only when calibrated or initialized and pressed enter
+			LCD.clear();
+			LCD.drawString("Press enter to solve cube..", 0, 0);
+			if(ready_for_scan && Button.waitForAnyPress() == Button.ID_ENTER){
 				connect_NXT.sendMode(2);
 				
-				
-//				char[] dummy_orientation = new char[] {'W', 'Y', 'O', 'R', 'G', 'B'};
-//				cube.setInitialDummyCubeOrientation(dummy_orientation); 
-				
 				char[]complete_scan = new char[54];
-//				char[] complete_scan = new char[]{'W','O','B','B','W','O','W','B','B','G','O','O','W','O','G','O','W','O','Y','Y','Y','G','G','Y','G','G','Y','B','B','R','R','R','R','R','R','R','O','O','Y','Y','B','B','B','Y','Y','R','G','G','W','W','R','W','W','G'};
 				complete_scan = cube.executeCompleteScan();
 				
 				//execute complete scan and send scan result vector to pc
-				
-				//DUMMY scan_result_vector
 				connect_NXT.sendScanResultVector(complete_scan);	
 			
-				Button.waitForAnyPress();
+//				Button.waitForAnyPress();
 				
 				//get length of solving sequence
 				int solving_sequence_length = connect_NXT.getSolvingSequenceLength();
@@ -178,15 +118,16 @@ public class Main {
 				char[] solving_sequence = connect_NXT.getSolvingSequence(solving_sequence_length);
 				LCD.clear();
 				
-				LCD.drawString("chars:", 0, 0);
-				Button.waitForAnyPress();
-				LCD.clear();
-				for(int i = 0; i < solving_sequence.length; i++){
-					LCD.drawChar(solving_sequence[i], i, 0);
-				}
+				//DEBUG
+//				LCD.drawString("chars:", 0, 0);
+//				Button.waitForAnyPress();
+//				LCD.clear();
+//				for(int i = 0; i < solving_sequence.length; i++){
+//					LCD.drawChar(solving_sequence[i], i, 0);
+//				}
 				
-				LCD.drawString("solving?:", 0, 8);
-				Button.waitForAnyPress();
+//				LCD.drawString("solving?:", 0, 8);
+//				Button.waitForAnyPress();
 				
 				//permute cube according to solving sequence
 				cube.executeSolvingSequence(solving_sequence);

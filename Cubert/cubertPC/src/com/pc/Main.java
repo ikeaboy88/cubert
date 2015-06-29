@@ -1,7 +1,6 @@
 package com.pc;
 
 import java.util.Arrays;
-import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -35,7 +34,7 @@ public class Main {
 			}
 			
 			if( mode[0] == 2){
-				System.out.println("im solving...");
+				System.out.println("waiting for cubert finishing complete scan...");
 				
 				//get scan result vector
 				scan_result_vector = connect_PC.getScanResultVector();
@@ -84,40 +83,27 @@ public class Main {
 				//INIT Cube Object with scan result vector
 				Cube cube = new Cube(scan_result_vector);
 
-//				Cube cube = new Cube(null);
-//				cube.permuteCube('B');
-//				cube.permuteCube('f');
-//				cube.permuteCube('d');
-//				cube.permuteCube('l');
-//				cube.permuteCube('R');
-				
 				Solver magic = new Solver(cube);
-//				char[]solving_sequence = new char[]{'r','L','D','f','b'};
 
 				//Calculate solving sequence
 				List<Character> sequence = magic.calculateSolvingSequence();
 				
 				//fill char array with values from List
 				System.out.println("best path: ");
-//				char[]solving_sequence = new char[sequence.size()]; 
+				
 				for(int i= 0; i < sequence.size(); i++){
-//				solving_sequence[i] = sequence.get(i);
 				System.out.println(sequence.get(i));
-//				
 				}
 				
 				//determine length of solving sequence
 				int sequence_length = sequence.size();
 
-//				for (Character character : sequence) {
-//					System.out.println(character);
-//				}
-				
-				//send LENGTH of solvinf sequence to nxt
+				//send LENGTH of solving sequence to nxt
 				connect_PC.sendSolvingSequenceLength(sequence_length);
 		
 				//send solving sequence to nxt
 				connect_PC.sendSolvingSequence(sequence);
+				System.out.println("Cubert, solve the cube!");
 				
 				if (cube.cube_orientation == null) {
 					System.out.println("SCAN ERROR");
@@ -126,11 +112,7 @@ public class Main {
 			
 			
 		}while(mode[0] != -1);
-	
-		System.out.println("Ich glaube..., der Cube ist gelöst! :-)");
 		System.out.println("Und Tschüss!");
-		System.exit(0);		System.out.println("Ich glaube..., der Cube ist gelöst! :-)");
-
-		
+		System.exit(0);		
 	}
 }
