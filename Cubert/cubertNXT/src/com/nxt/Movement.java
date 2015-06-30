@@ -64,14 +64,19 @@ public class Movement {
 		if (mc.getArmState() == Arm.HOLDING) {
 			
 			mc.setArmState(Arm.MOVING);
-			mc.setPower(80);
+			mc.setPower(70);
 	
 			// tilt consists of 2 moves: pull and push
 			for (int i = 1; i <= 2; i++) {
+				Delay.msDelay(600);
 				mc.resetTachoCount();
-	
+
+				if (i == 2) {
+					mc.setPower(90);
+				}
+
 				// move 90 degrees
-				while (Math.abs(mc.getTachoCount()) < 75) {
+				while (Math.abs(mc.getTachoCount()) < 82) {
 					// first move: pull cube
 					if (i == 1) {
 						mc.backward();
@@ -83,9 +88,11 @@ public class Movement {
 					}
 				}
 				mc.stop();
-				Delay.msDelay(300);
 			}
+			Delay.msDelay(800);
 			mc.setArmState(Arm.HOLDING);
+			releaseCube();
+			Delay.msDelay(300);
 		}
 		return mc.getArmState();
 	}
@@ -124,7 +131,7 @@ public class Movement {
 			
 			mc.setArmState(Arm.MOVING);
 			mc.resetTachoCount();
-			mc.setPower(50); // Full batteries 60 - half empty 80
+			mc.setPower(60); // Full batteries 60 - half empty 80
 			
 			// move 110 degrees
 			while (Math.abs(mc.getTachoCount()) < 110) {
