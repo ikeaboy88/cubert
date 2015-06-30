@@ -147,7 +147,7 @@ public class Movement {
 				
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(-150);
+			mb.rotateTo(-115);
 			mb.stop();
 			mb.setSensorState(Sensor.REMOVED);
 		}
@@ -165,7 +165,7 @@ public class Movement {
 	
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(215);
+			mb.rotateTo(150);
 			mb.stop();
 			mb.setSensorState(Sensor.CENTER);
 		}
@@ -183,7 +183,7 @@ public class Movement {
 
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(-65);
+			mb.rotateTo(-35);
 			mb.stop();
 			mb.setSensorState(Sensor.EDGE);
 		}
@@ -192,7 +192,7 @@ public class Movement {
 			
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(15);
+			mb.rotateTo(10);
 			mb.stop();
 			mb.setSensorState(Sensor.EDGE);
 		}
@@ -210,7 +210,7 @@ public class Movement {
 			
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(-15);
+			mb.rotateTo(-10);
 			mb.stop();
 			mb.setSensorState(Sensor.CORNER);
 		}

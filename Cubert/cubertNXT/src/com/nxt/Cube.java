@@ -12,6 +12,7 @@ public class Cube {
 	public char[] current_orientation = new char[6];
 	public Movement move;
 	public ColorDetector detect;
+	private int number_tilts = 0;
 	
 	public Cube() {
 		move = new Movement(true);
@@ -93,6 +94,7 @@ public class Cube {
 		{
 			// rotate 90 degrees clockwise, then tilt once
 			move.releaseCube();
+			number_tilts = 0;
 			exectueQuarterRotationClockwise();
 			executeTilt();
 			return;
@@ -102,6 +104,7 @@ public class Cube {
 		{
 			// rotate 270 degrees COUNTER-clockwise, then tilt once					
 			move.releaseCube();
+			number_tilts = 0;
 			exectueQuarterRotationClockwise();
 			exectueQuarterRotationClockwise();
 			exectueQuarterRotationClockwise();
@@ -113,6 +116,7 @@ public class Cube {
 		{
 			// rotate 180 degrees COUNTER-clockwise, then tilt twice					
 			move.releaseCube();
+			number_tilts = 0;
 			exectueQuarterRotationClockwise();
 			exectueQuarterRotationClockwise();
 			executeTilt();
@@ -152,6 +156,12 @@ public class Cube {
 	
 	private void executeTilt() {
 		
+		number_tilts++;
+		if (number_tilts > 2)
+		{
+			move.releaseCube();
+			Delay.msDelay(500);
+		}
 		move.holdCube();
 		Delay.msDelay(200);
 		move.tiltCube();
@@ -181,6 +191,7 @@ public class Cube {
 		for (int j = 0; j < 6; j++) {
 			
 			// scan center
+			move.rotateTable(45);
 			move.moveSensorToCenter();
 			Delay.msDelay(200);
 			if (reference_scan) {
@@ -192,6 +203,9 @@ public class Cube {
 				scan_result_vector[index] = detect.detectColor(200, 5);
 			}
 			index += 1;
+			move.moveSensorToEdge();
+			move.moveSensorToCorner();
+			move.rotateTable(-45);
 			
 			//Scan edge
 			move.moveSensorToEdge();
@@ -209,7 +223,9 @@ public class Cube {
 			//Scan remaining 7 cubie-surfaces clockwise on the current upper side
 			for (int i = 0; i < 7; i++) {
 				Delay.msDelay(200);
+//				move.removeSensor(); //
 				move.rotateTable(45);
+//				move.moveSensorToCenter(); //
 				if (i % 2 == 1) {
 					move.moveSensorToEdge();
 				} else {

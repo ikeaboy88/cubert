@@ -212,9 +212,9 @@ public class ColorDetector extends ColorHTSensor {
 			for (int i = 0; i < iterations; i++) {
 
 				// read normalized RGB values and cumulate them in the vector slots
-				rgb_vector[0] += this.getRGBNormalized(Color.RED);
-				rgb_vector[1] += this.getRGBNormalized(Color.GREEN);
-				rgb_vector[2] += this.getRGBNormalized(Color.BLUE);
+				rgb_vector[0] += this.getColor().getRed();
+				rgb_vector[1] += this.getColor().getGreen();
+				rgb_vector[2] += this.getColor().getBlue();
 				
 				// wait until next reading
 				Delay.msDelay(duration/iterations);

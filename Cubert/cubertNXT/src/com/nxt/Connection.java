@@ -22,13 +22,13 @@ public class Connection {
 	public void connectToPC() {
 		LCD.drawString("Right BT->USB Verbindung", 0, 0);
 
-		if (Button.waitForAnyPress() == Button.ID_RIGHT) {
-			LCD.drawString("Waiting for USB connection", 0, 1);
-			connection = USB.waitForConnection();
-		}
+//		if (Button.waitForAnyPress() == Button.ID_RIGHT) {
+		LCD.drawString("Waiting for USB connection", 0, 1);
+		connection = USB.waitForConnection();
+//		}
 		LCD.clear();
 		LCD.drawString("connected", 0, 0);
-		Button.waitForAnyPress();
+//		Button.waitForAnyPress();
 		dos = connection.openDataOutputStream();
 		dis = getConnection().openDataInputStream();
 		bufferedReader = new BufferedReader(new InputStreamReader(dis));
@@ -282,7 +282,7 @@ public class Connection {
 					do{
 						data_available = dis.read(recieved_rgb_value, data_recieved, 3);
 						data_recieved += data_available;
-						LCD.drawString("data: "+data_recieved, 0, 4);
+//						LCD.drawString("data: "+data_recieved, 0, 4);
 					}while(data_recieved < 3);
 					if(recieved_rgb_value[i] < 0){
 						tmp_rgb = -recieved_rgb_value[i];
@@ -290,6 +290,9 @@ public class Connection {
 					}else{
 						rgb = recieved_rgb_value[i];
 					}
+					LCD.drawString("rgb: "+rgb, 0, i);
+					Button.waitForAnyPress();
+					LCD.clear();
 					j[i] = rgb;
 					
 				}
@@ -341,6 +344,19 @@ public class Connection {
 		}
 		int sequence_length = b[0];
 		return sequence_length;
+	}
+
+	public int getMode() {
+		// TODO Auto-generated method stub
+		byte[]b = new byte[1];
+		try {
+			dis.read(b, 0, 1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return b[0];
 	}
 
 	/*
