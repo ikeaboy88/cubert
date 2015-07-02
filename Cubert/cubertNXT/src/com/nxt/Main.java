@@ -8,8 +8,10 @@ import lejos.nxt.Button;
 import lejos.nxt.ColorSensor;
 import lejos.nxt.LCD;
 import lejos.nxt.SensorPort;
+import lejos.nxt.Sound;
 import lejos.nxt.addon.ColorHTSensor;
 import lejos.robotics.Color;
+import lejos.util.Delay;
 
 public class Main {
 
@@ -146,8 +148,10 @@ public class Main {
 					
 					//permute cube according to solving sequence
 					cube.executeSolvingSequence(solving_sequence);
-					
 					ready_for_scan = false; 
+
+					Sound.beepSequenceUp();
+					cube.move.rotateTable(360);
 					
 					mode = connect_NXT.getMode();
 					
