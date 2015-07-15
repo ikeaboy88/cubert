@@ -82,8 +82,11 @@ public class Cube {
 
 			//permute current bottom face clockwise or counterclockwise according to the action
 			move.holdCube();
-			Delay.msDelay(200);
-			move.rotateTable((int) (Math.signum(initial_face_index) * 90));
+			Delay.msDelay(500);
+			move.rotateTable((int) (Math.signum(initial_face_index) * 105));
+			Delay.msDelay(300);
+			move.rotateTable((int) (Math.signum(initial_face_index) * -15));
+			Delay.msDelay(300);
 		}
 	}
 	
@@ -141,7 +144,9 @@ public class Cube {
 	
 	private void exectueQuarterRotationClockwise() {
 		
+		Delay.msDelay(300);
 		move.rotateTable(90);
+		Delay.msDelay(300);
 		
 		// Update cube orientation after rotation
 		char old_left = current_orientation[2];
@@ -156,12 +161,12 @@ public class Cube {
 	
 	private void executeTilt() {
 		
-		number_tilts++;
-		if (number_tilts > 2)
-		{
-			move.releaseCube();
-			Delay.msDelay(500);
-		}
+//		number_tilts++;
+//		if (number_tilts > 2)
+//		{
+//			move.releaseCube();
+//			Delay.msDelay(500);
+//		}
 		move.holdCube();
 		Delay.msDelay(200);
 		move.tiltCube();
@@ -259,11 +264,12 @@ public class Cube {
 			move.tiltCube();
 			if (j == 4) {
 				Delay.msDelay(300);
+				move.holdCube();
 				move.tiltCube();
 			}
 			Delay.msDelay(1000);
 			move.releaseCube();
-			Delay.msDelay(1000);
+			Delay.msDelay(500);
 			 
 			//Cancel scan by holding down orange button on NXT
 			if (Button.ESCAPE.isDown()) {
