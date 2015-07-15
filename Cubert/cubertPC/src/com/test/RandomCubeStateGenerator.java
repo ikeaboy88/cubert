@@ -1,5 +1,6 @@
 package com.test;
 
+import java.awt.Button;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,6 +14,8 @@ import com.pc.Solver;
 public class RandomCubeStateGenerator {
 
 	public static void main(String[] args) {
+		InputStreamReader isr = new InputStreamReader(System.in);
+		BufferedReader br = new BufferedReader(isr);
 		
 		do{
 			System.out.println("Generating randomly scrambled cube...");
@@ -26,8 +29,6 @@ public class RandomCubeStateGenerator {
 			
 			
 			try {
-			InputStreamReader isr = new InputStreamReader(System.in);
-		    BufferedReader br = new BufferedReader(isr);
 		    
 		    System.out.println("wie oft soll der cube permutiert werden?");
 				String eingabe = br.readLine();
