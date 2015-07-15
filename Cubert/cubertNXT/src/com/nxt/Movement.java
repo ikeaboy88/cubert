@@ -24,9 +24,11 @@ public class Movement {
 		mb = new NXTRegulatedStateMotor(MotorPort.B, false);
 		mc = new NXTUnregulatedStateMotor(MotorPort.C, false);
 	}
-
-	public NXTRegulatedStateMotor getMb() {
-		return mb;
+	
+	public Movement(boolean debug) {
+		ma = new NXTRegulatedStateMotor(MotorPort.A, debug);
+		mb = new NXTRegulatedStateMotor(MotorPort.B, debug);
+		mc = new NXTUnregulatedStateMotor(MotorPort.C, debug);
 	}
 
 	/**
@@ -62,14 +64,19 @@ public class Movement {
 		if (mc.getArmState() == Arm.HOLDING) {
 			
 			mc.setArmState(Arm.MOVING);
-			mc.setPower(100);
+			mc.setPower(70);
 	
 			// tilt consists of 2 moves: pull and push
 			for (int i = 1; i <= 2; i++) {
+				Delay.msDelay(600);
 				mc.resetTachoCount();
-	
+
+				if (i == 2) {
+					mc.setPower(90);
+				}
+
 				// move 90 degrees
-				while (Math.abs(mc.getTachoCount()) < 75) {
+				while (Math.abs(mc.getTachoCount()) < 82) {
 					// first move: pull cube
 					if (i == 1) {
 						mc.backward();
@@ -81,9 +88,11 @@ public class Movement {
 					}
 				}
 				mc.stop();
-				Delay.msDelay(300);
 			}
+			Delay.msDelay(800);
 			mc.setArmState(Arm.HOLDING);
+			releaseCube();
+			Delay.msDelay(300);
 		}
 		return mc.getArmState();
 	}
@@ -99,7 +108,7 @@ public class Movement {
 			
 			mc.setArmState(Arm.MOVING);
 			mc.resetTachoCount();
-			mc.setPower(60);
+			mc.setPower(50);
 			
 			// move 110 degrees
 			while (Math.abs(mc.getTachoCount()) < 110) {
@@ -122,7 +131,7 @@ public class Movement {
 			
 			mc.setArmState(Arm.MOVING);
 			mc.resetTachoCount();
-			mc.setPower(60);
+			mc.setPower(60); // Full batteries 60 - half empty 80
 			
 			// move 110 degrees
 			while (Math.abs(mc.getTachoCount()) < 110) {
@@ -145,7 +154,7 @@ public class Movement {
 				
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(-130);
+			mb.rotateTo(-115);
 			mb.stop();
 			mb.setSensorState(Sensor.REMOVED);
 		}
@@ -163,7 +172,7 @@ public class Movement {
 	
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(195);
+			mb.rotateTo(150);
 			mb.stop();
 			mb.setSensorState(Sensor.CENTER);
 		}
@@ -181,7 +190,7 @@ public class Movement {
 
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(-65);
+			mb.rotateTo(-35);
 			mb.stop();
 			mb.setSensorState(Sensor.EDGE);
 		}
@@ -190,7 +199,7 @@ public class Movement {
 			
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(15);
+			mb.rotateTo(10);
 			mb.stop();
 			mb.setSensorState(Sensor.EDGE);
 		}
@@ -208,7 +217,7 @@ public class Movement {
 			
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(-15);
+			mb.rotateTo(-10);
 			mb.stop();
 			mb.setSensorState(Sensor.CORNER);
 		}
