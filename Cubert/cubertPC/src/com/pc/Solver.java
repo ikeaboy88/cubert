@@ -35,7 +35,7 @@ public class Solver {
 	char[][] predecessor_state;
 	public int state_hash;
 	
-	private char[] actions = new char[]{'t', 'd', 'l', 'r', 'f', 'b', 'T', 'D', 'L', 'R', 'F', 'B','0','1','2','3','4','5'};
+	private char[] actions = new char[]{'t', 'd', 'l', 'r', 'f', 'b', 'T', 'D', 'L', 'R', 'F', 'B','w','e','z','u','i','o'};
 	
 	public Stack<Node> solution_nodes_stack;
 	public Stack<Node> path_nodes_stack;

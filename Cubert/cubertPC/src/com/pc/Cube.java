@@ -109,6 +109,21 @@ public class Cube {
 		
 		double distance = 0.0;
 		
+		switch(face){
+		case 'w': face = 't';
+			break; 
+		case 'e': face = 'd';
+			break; 
+		case 'z': face = 'l';
+			break; 
+		case 'u': face = 'r';
+			break; 
+		case 'i': face = 'f';
+			break; 
+		case 'o': face = 'b';
+			break; 
+		}
+		
 		int[] moved_cubies = getAllCubiesByFace(Character.toLowerCase(face));
 		
 		for (int i = 0; i < moved_cubies.length; i++) {
@@ -281,32 +296,32 @@ public class Cube {
 		
 		//180° turn 
 		
-		if (face == '0') {
+		if (face == 'w') {
 			// Rotate top face counter clockwise
 			this.permuteCube('t');
 			this.permuteCube('t');
 		}
-		if (face == '1') {
+		if (face == 'e') {
 			// Rotate down face counter clockwise
 			this.permuteCube('d');
 			this.permuteCube('d');
 		}		
-		if (face == '2') {
+		if (face == 'z') {
 			// Rotate left face counter clockwise
 			this.permuteCube('l');
 			this.permuteCube('l');
 		}
-		if (face == '3') {
+		if (face == 'u') {
 			// Rotate right face counter clockwise
 			this.permuteCube('r');
 			this.permuteCube('r');
 		}
-		if (face == '4') {
+		if (face == 'i') {
 			// Rotate front face counter clockwise
 			this.permuteCube('f');
 			this.permuteCube('f');
 		}
-		if (face == '5') {
+		if (face == 'o') {
 			// Rotate back face counter clockwise
 			this.permuteCube('b');
 			this.permuteCube('b');
