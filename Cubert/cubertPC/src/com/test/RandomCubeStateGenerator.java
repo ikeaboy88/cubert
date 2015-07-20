@@ -38,13 +38,36 @@ public class RandomCubeStateGenerator {
 				e.printStackTrace();
 			}
 		
-			// randomly permutation of cube according to permutationCount
-			for (int i = 0; i < permutationCount; i++) {
-				Character face = permutedFace.charAt(randomIndex.nextInt(permutedFace.length()));
-				scrambledCube.add(face);
-				cube.permuteCube(face);
+			
+			if (permutationCount == 0)
+			{
+				cube.permuteCube('T');
+				cube.permuteCube('d');
+				cube.permuteCube('l');
+				cube.permuteCube('d');
+				cube.permuteCube('B');
+				
+				cube.permuteCube('r');
+				cube.permuteCube('f');	// 1 s
+				cube.permuteCube('B');	// 6 s
+				cube.permuteCube('R');	// 55 s
+				//cube.permuteCube('F');	//  3 m 20s 1.360.020 nodes - very slow
 			}
-
+			else if (permutationCount > 0)
+			{
+				// randomly permutation of cube according to permutationCount
+				for (int i = 0; i < permutationCount; i++) {
+					Character face = permutedFace.charAt(randomIndex.nextInt(permutedFace.length()));
+					scrambledCube.add(face);
+					cube.permuteCube(face);
+				}
+			}
+			else
+			{
+				System.out.println("bad input - shutting down");
+				return;
+			}
+			
 			Solver magic = new Solver(cube);
 
 			// Calculate solving sequence
