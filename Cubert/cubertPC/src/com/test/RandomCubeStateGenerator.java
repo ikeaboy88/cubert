@@ -47,11 +47,11 @@ public class RandomCubeStateGenerator {
 				cube.permuteCube('d');
 				cube.permuteCube('B');
 				
-				cube.permuteCube('r');
-				cube.permuteCube('f');	// 1 s
-				cube.permuteCube('B');	// 6 s
-				cube.permuteCube('R');	// 55 s
-				//cube.permuteCube('F');	//  3 m 20s 1.360.020 nodes - very slow
+				//cube.permuteCube('r');	// 	  < 1 s /     1.128 nodes - mit 180 turns 	< 1 s /     2.511 nodes
+				//cube.permuteCube('f');	// 		1 s /     7.231 nodes - mit 180 turns 	  4 s /    34.523 nodes
+				//cube.permuteCube('B');	// 		7 s /    65.801 nodes - mit 180 turns 	 47 s /   440.404 nodes
+				//cube.permuteCube('R');	// 	   59 s /   597.744 nodes - mit 180 turns 	180 s / 1.333.985 nodes ABBRUCH
+				//cube.permuteCube('F');	//200 s / 1.360.020 nodes ABBRUCH
 			}
 			else if (permutationCount > 0)
 			{
