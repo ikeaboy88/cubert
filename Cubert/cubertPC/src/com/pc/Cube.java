@@ -279,6 +279,40 @@ public class Cube {
 			this.permuteCube('b');
 		}
 		
+		//180° turn 
+		
+		if (face == '0') {
+			// Rotate top face counter clockwise
+			this.permuteCube('t');
+			this.permuteCube('t');
+		}
+		if (face == '1') {
+			// Rotate down face counter clockwise
+			this.permuteCube('d');
+			this.permuteCube('d');
+		}		
+		if (face == '2') {
+			// Rotate left face counter clockwise
+			this.permuteCube('l');
+			this.permuteCube('l');
+		}
+		if (face == '3') {
+			// Rotate right face counter clockwise
+			this.permuteCube('r');
+			this.permuteCube('r');
+		}
+		if (face == '4') {
+			// Rotate front face counter clockwise
+			this.permuteCube('f');
+			this.permuteCube('f');
+		}
+		if (face == '5') {
+			// Rotate back face counter clockwise
+			this.permuteCube('b');
+			this.permuteCube('b');
+		}
+		
+		
 		// Rotate top face
 		if (face == 't') {
 		
