@@ -207,10 +207,6 @@ public class Solver {
 		int neighbour_index = 0;
 		
 		for (int i = 0; i < actions.length; i++) {
-			System.out.println(checkAction(current_node, actions[i]));
-			// Check if next action makes sense with the previous action in mind - NO IMPROVEMENT since A* does that already..
-			if (checkAction(current_node, actions[i]))
-			{
 				// Simulate a permutation of the cube
 				cube.permuteCube(actions[i]);
 				int state_hash = cube.hashCubeState(cube.cube_scrambled);
@@ -226,7 +222,6 @@ public class Solver {
 				cube.permuteCube(actions[i]);
 				
 				neighbour_index++;
-			}
 		}
 		
 		return neighbours;
