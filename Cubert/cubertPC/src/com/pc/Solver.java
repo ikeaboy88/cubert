@@ -55,6 +55,16 @@ public class Solver {
 		this.cube = cube;
 	}
 	
+	public List<Character> calculateSolvingSequenceIDA() {
+		
+		List<Character> solving_sequence = new ArrayList<Character>();
+		
+		
+		
+		
+		return solving_sequence;
+	}
+	
 	public List<Character> calculateSolvingSequence() {
 
 		List<Character> solving_sequence = new ArrayList<Character>();
