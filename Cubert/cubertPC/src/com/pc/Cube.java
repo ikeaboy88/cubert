@@ -109,12 +109,27 @@ public class Cube {
 		
 		double distance = 0.0;
 		
+		switch(face){
+		case 'w': face = 't';
+			break; 
+		case 'e': face = 'd';
+			break; 
+		case 'z': face = 'l';
+			break; 
+		case 'u': face = 'r';
+			break; 
+		case 'i': face = 'f';
+			break; 
+		case 'o': face = 'b';
+			break; 
+		}
+		
 		int[] moved_cubies = getAllCubiesByFace(Character.toLowerCase(face));
 		
 		for (int i = 0; i < moved_cubies.length; i++) {
-			distance += calculateManhattanDistance(moved_cubies[i]) + calculateColorDistance(moved_cubies[i]);
+			distance += calculateManhattanDistance(moved_cubies[i]) + (calculateColorDistance(moved_cubies[i])) * 1.5;
 		}
-		return distance / 8.0;
+		return distance / 4.5; //4.5
 	}
 	
 	/**
@@ -162,12 +177,20 @@ public class Cube {
 	 * @param cubie_index 	Index of cubie to check
 	 * @return 3D-Manhattan distance of both positions
 	 */
-	private int calculateManhattanDistance(int cubie_index) {
+	private double calculateManhattanDistance(int cubie_index) {
 		
 		int manhattan_distance = 0;
+		double turns_to_solve = 1.0;
 		
 		for (int i = 0; i < 3; i++) {
-			manhattan_distance += Math.abs( cubie_coordinates[cubie_index][i] - cubie_coordinates[this.findCubieSolvedIndex(cube_scrambled[cubie_index])][i] );
+			// Edges need only a max of 3 turns to be positioned, edges 4
+			if (cubie_index == 0 || cubie_index == 2 || cubie_index == 5 || cubie_index == 7 || cubie_index == 12 || cubie_index == 14 || cubie_index == 17 || cubie_index == 19)
+			{
+				turns_to_solve = 0.5;
+			} else {
+				turns_to_solve = 1.5;
+			}
+			manhattan_distance += turns_to_solve * Math.abs( cubie_coordinates[cubie_index][i] - cubie_coordinates[this.findCubieSolvedIndex(cube_scrambled[cubie_index])][i] );
 		}
 		
 		return manhattan_distance;
@@ -178,9 +201,10 @@ public class Cube {
 	 * @param cubie_index Index of the cubie to check
 	 * @return Color distance of cubie to it's solved orientation
 	 */
-	private int calculateColorDistance(int cubie_index) {
+	private double calculateColorDistance(int cubie_index) {
 		
 		int color_distance = 0;
+		double turns_to_orient = 1;
 		
 		for (int i = 0; i < 6; i++) {
 
@@ -188,7 +212,14 @@ public class Cube {
 
 				if ( cube_scrambled[cubie_index][i] != 'x' ) {
 					
-					color_distance++;
+					// Edges need only a max of 2 turns to be oriented, edges 3
+					if (cubie_index == 0 || cubie_index == 2 || cubie_index == 5 || cubie_index == 7 || cubie_index == 12 || cubie_index == 14 || cubie_index == 17 || cubie_index == 19)
+					{
+						turns_to_orient = 0.5;
+					} else {
+						turns_to_orient = 1.5;
+					}
+					color_distance += turns_to_orient * 1;
 				}
 			}
 		}
@@ -278,6 +309,40 @@ public class Cube {
 			this.permuteCube('b');
 			this.permuteCube('b');
 		}
+		
+		//180° turn 
+		
+		if (face == 'w') {
+			// Rotate top face counter clockwise
+			this.permuteCube('t');
+			this.permuteCube('t');
+		}
+		if (face == 'e') {
+			// Rotate down face counter clockwise
+			this.permuteCube('d');
+			this.permuteCube('d');
+		}		
+		if (face == 'z') {
+			// Rotate left face counter clockwise
+			this.permuteCube('l');
+			this.permuteCube('l');
+		}
+		if (face == 'u') {
+			// Rotate right face counter clockwise
+			this.permuteCube('r');
+			this.permuteCube('r');
+		}
+		if (face == 'i') {
+			// Rotate front face counter clockwise
+			this.permuteCube('f');
+			this.permuteCube('f');
+		}
+		if (face == 'o') {
+			// Rotate back face counter clockwise
+			this.permuteCube('b');
+			this.permuteCube('b');
+		}
+		
 		
 		// Rotate top face
 		if (face == 't') {
