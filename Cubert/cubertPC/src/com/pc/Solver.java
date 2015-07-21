@@ -35,7 +35,7 @@ public class Solver {
 	char[][] predecessor_state;
 	public int state_hash;
 	
-	private char[] actions = new char[]{'t', 'd', 'l', 'r', 'f', 'b', 'T', 'D', 'L', 'R', 'F', 'B'};
+	private char[] actions = new char[]{'t', 'd', 'l', 'r', 'f', 'b', 'T', 'D', 'L', 'R', 'F', 'B'};//,'w','e','z','u','i','o'};
 	
 	public Stack<Node> solution_nodes_stack;
 	public Stack<Node> path_nodes_stack;
@@ -204,25 +204,90 @@ public class Solver {
 	private List<Node> getNeighbourNodes(Node current_node, Cube cube, char[] actions) {
 		
 		neighbours.clear();
+		int neighbour_index = 0;
 		
 		for (int i = 0; i < actions.length; i++) {
-			
-			// Simulate a permutation of the cube
-			cube.permuteCube(actions[i]);
-			int state_hash = cube.hashCubeState(cube.cube_scrambled);
-			int g_costs = current_node.getG_costs() + 1;
-			double h_costs = cube.calculateFaceDistance(actions[i]);
-			
-			// Add the resulting state as a neighbour
-			neighbours.add(i, new Node(current_node, state_hash, g_costs, h_costs, actions[i]));
-
-			// Reset permutation
-			cube.permuteCube(actions[i]);
-			cube.permuteCube(actions[i]);
-			cube.permuteCube(actions[i]);
+				// Simulate a permutation of the cube
+				cube.permuteCube(actions[i]);
+				int state_hash = cube.hashCubeState(cube.cube_scrambled);
+				int g_costs = current_node.getG_costs() + 1;
+				double h_costs = cube.calculateFaceDistance(actions[i]);
+				
+				// Add the resulting state as a neighbour
+				neighbours.add(neighbour_index, new Node(current_node, state_hash, g_costs, h_costs, actions[i]));
+	
+				// Reset permutation
+				cube.permuteCube(actions[i]);
+				cube.permuteCube(actions[i]);
+				cube.permuteCube(actions[i]);
+				
+				neighbour_index++;
 		}
 		
 		return neighbours;
+	}
+	
+	private boolean checkAction(Node node, char action) {
+		
+		char previous_action = node.getAction(); 
+		
+		switch (action) {
+		case 't':
+			if (previous_action == 'T') return false;
+			break;
+		case 'T':
+			if (previous_action == 't') return false;
+			break;
+		case 'd':
+			if (previous_action == 'D') return false;
+			break;
+		case 'D':
+			if (previous_action == 'd') return false;
+			break;
+		case 'l':
+			if (previous_action == 'L') return false;
+			break;
+		case 'L':
+			if (previous_action == 'l') return false;
+			break;
+		case 'r':
+			if (previous_action == 'R') return false;
+			break;
+		case 'R':
+			if (previous_action == 'r') return false;
+			break;
+		case 'f':
+			if (previous_action == 'F') return false;
+			break;
+		case 'F':
+			if (previous_action == 'f') return false;
+			break;
+		case 'b':
+			if (previous_action == 'B') return false;
+			break;
+		case 'B':
+			if (previous_action == 'b') return false;
+			break;
+		case 'w':
+			if (previous_action == action) return false;
+			break;
+		case 'e':
+			if (previous_action == action) return false;
+			break;
+		case 'z':
+			if (previous_action == action) return false;
+			break;
+		case 'u':
+			if (previous_action == action) return false;
+			break;
+		case 'i':
+			if (previous_action == action) return false;
+			break;
+		case 'o':
+			if (previous_action == action) return false;
+			break;
+		}
+		return true;
 	}
 	
 	private void permuteCubeFromStartToCurrentNode(char[][] cube_start_state, Node current_node) {
