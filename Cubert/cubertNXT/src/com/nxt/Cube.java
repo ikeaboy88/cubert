@@ -198,7 +198,7 @@ public class Cube {
 			// scan center
 			move.rotateTable(45);
 			move.moveSensorToCenter();
-			Delay.msDelay(200);
+			//Delay.msDelay(200);
 			if (reference_scan) {
 				current_rgb_vector = detect.getAverageRgbVector(200, 5);
 				detect.rgb_ref[j][0] += current_rgb_vector[0];
@@ -214,7 +214,7 @@ public class Cube {
 			
 			//Scan edge
 			move.moveSensorToEdge();
-			Delay.msDelay(200);
+			//Delay.msDelay(200);
 			if (reference_scan) {
 				current_rgb_vector = detect.getAverageRgbVector(200, 5);
 				detect.rgb_ref[j][0] += current_rgb_vector[0];
@@ -227,7 +227,7 @@ public class Cube {
 	
 			//Scan remaining 7 cubie-surfaces clockwise on the current upper side
 			for (int i = 0; i < 7; i++) {
-				Delay.msDelay(200);
+				//Delay.msDelay(200);
 //				move.removeSensor(); //
 				move.rotateTable(45);
 //				move.moveSensorToCenter(); //
@@ -248,14 +248,14 @@ public class Cube {
 			}
 			
 			//Prepare for tilt
-			Delay.msDelay(200);
+			//Delay.msDelay(200);
 			move.rotateTable(45);
 			//After 4 sides do an additional quarter turn
 			if (j == 3) {
 				move.rotateTable(90);
 			}
 			move.moveSensorToEdge();
-			Delay.msDelay(200);
+			//Delay.msDelay(200);
 			move.removeSensor();
 			
 			//Tilt cube (2x after scanning the 5th side, not after scanning last side)
@@ -277,13 +277,13 @@ public class Cube {
 			}
 		}
 		move.rotateTable(-90);
-		Delay.msDelay(1000);
+		Delay.msDelay(500);
 		move.holdCube();
-		Delay.msDelay(1000);
+		//Delay.msDelay(1000);
 		move.tiltCube();
-		Delay.msDelay(1000);
+		Delay.msDelay(500);
 		move.releaseCube();
-		Delay.msDelay(1000);
+		Delay.msDelay(300);
 		
 		if (reference_scan) {
 			for (int k = 0; k < 6; k++) {
