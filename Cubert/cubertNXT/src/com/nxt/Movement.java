@@ -68,7 +68,7 @@ public class Movement {
 	
 			// tilt consists of 2 moves: pull and push
 			for (int i = 1; i <= 2; i++) {
-				Delay.msDelay(600);
+				Delay.msDelay(100);
 				mc.resetTachoCount();
 
 				if (i == 2) {
@@ -89,7 +89,7 @@ public class Movement {
 				}
 				mc.stop();
 			}
-			Delay.msDelay(800);
+			Delay.msDelay(400);
 			mc.setArmState(Arm.HOLDING);
 			releaseCube();
 			Delay.msDelay(300);
@@ -154,7 +154,7 @@ public class Movement {
 				
 			mb.setSensorState(Sensor.MOVING);
 			mb.resetTachoCount();
-			mb.rotateTo(-115);
+			mb.rotateTo(-114); //115
 			mb.stop();
 			mb.setSensorState(Sensor.REMOVED);
 		}
