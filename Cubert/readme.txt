@@ -32,7 +32,7 @@ Scramble
 
 Recognize state
 ---------------
-4a. Press orange button to start a complete scan of the scrambled state (Takes 2-3 minutes)
+4a. Press orange button to start a complete scan of the scrambled state (Takes less than 2 minutes)
 
 4b. When finished the state (scan_result_vector) will automatically be sent to the PC
 
@@ -43,7 +43,7 @@ Solve the cube
 
 5b. When the solution has been found, the PC automatically sends the solving sequence to Cubert
 
-5c. Press orange button to make Cubert solve the cube
+5c. Press orange button to make Cubert solve the cube (8 quarter turns should take about 60 s)
 
 
 Make another solve
