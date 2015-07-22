@@ -1,9 +1,18 @@
 Cubert - An intelligent Rubik's Cube solving robot
 --------------------------------------------------
+Summer term 2015
+Programming Intelligent Applications
+Computer Science and Media (M.Sc.)
+Media University Stuttgart (HdM)
 --------------------------------------------------
 Code: Vanessa Werner (vw017@hdm-stuttgart.de) & Maximilian Braun (mb238@hdm-stuttgart.de)
 Robot design: David Gilday http://mindcuber.com/ (with a few little changes)
 -----------------------------------------------------------------------------------------
+
+Demo
+----
+https://youtu.be/THuT3VbyxvY
+
 
 Instructions
 ------------
