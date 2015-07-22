@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
+import javax.crypto.spec.GCMParameterSpec;
+
 // Theory: 					http://www.policyalmanac.org/games/aStarTutorial_de.html	
 // Example project: 		https://code.google.com/p/jianwikis/wiki/AStarAlgorithmForPathPlanning
 
@@ -43,26 +45,95 @@ public class Solver {
 	public Node solved_node;
 	public Node predecessor_node;
 	public Node current_node;
+	public Node current_best_node;
 	
 	List<Node> neighbours = new ArrayList<Node>();
 	
 	public long counter_nodes = 0;
 	public long counter_improved_nodes = 0;
 	public int counter_tree_depth = 0;
+	public double new_threshold;
+	public int cube_solved_hash;
 	
 	// Constructor
 	public Solver(Cube cube) {
 		this.cube = cube;
 	}
 	
-	public List<Character> calculateSolvingSequenceIDA() {
+	public Node calculateSolvingSequenceIDA() {
 		
-		List<Character> solving_sequence = new ArrayList<Character>();
+		// Initialize start node with cube's initial state
+		char[][] cube_start_state = cube.cube_scrambled;
+		int cube_start_hash = cube.hashCubeState(cube_start_state);
+		Node start_node = new Node(cube_start_hash);
+		cube_solved_hash = cube.hashCubeState(cube.cube_solved);
 		
+		/* Until here identical with A*/
+		double threshold = 10.0;											// Start treshold??
+
+		// Initialize solved node with null
+		solved_node = null;
+		current_best_node = null;
 		
+		while (solved_node == null) {
+			
+			open_list.put(start_node.getState_hash(), start_node);
+			new_threshold = 9999999;
+			solved_node = IDA(start_node, threshold);
+			threshold = new_threshold;
+			System.out.println("new threshold: " + threshold);
+			open_list.clear();
+			
+			if (current_node != null) {
+				revertCubePermutations(cube, current_node);				// Im IDA selbst auch noch reverts??
+			}
+		}
+		return solved_node;
+	}
+	
+	private Node IDA(Node current_node, double threshold) {
 		
-		
-		return solving_sequence;
+		// Expand node - Create nodes for every subsequent state of the cube's current state
+		neighbours = this.getNeighbourNodes(current_node, cube, actions);
+		System.out.println("Node expanded");
+		System.out.println("Tree depth: " + this.getTreeDepth(current_node));
+
+		// loop - For every new node (neighbours)
+		for (int i = 0; i < neighbours.size(); i++)
+		{
+			cube.permuteCube(current_node.getAction());
+			current_node = neighbours.get(i);
+			this.current_node = current_node;
+			cube.permuteCube(current_node.getAction());
+			cube.permuteCube(current_node.getAction());
+			cube.permuteCube(current_node.getAction());
+			
+			// Neighbour is solution
+			if (current_node.getState_hash() == cube_solved_hash) {
+				//neighbours.get(i).setPredecessor_node(current_node); //schon in getNeighbours?!
+				return current_node;
+			}
+			
+			Node visited = open_list.get(current_node.getState_hash());
+			if (visited == null) {
+				
+				double current_cost = current_node.getTotalCosts() + 1;
+				System.out.println("Current cost: " + current_cost);
+				if (current_cost <= threshold) {
+				
+					open_list.put(current_node.getState_hash(), current_node);
+					solved_node = IDA(current_node, threshold);
+					if (solved_node != null && (current_best_node == null || solved_node.getTotalCosts() < current_best_node.getTotalCosts()) ) {
+						current_best_node = solved_node;
+					}
+				} else {
+					if (current_cost < new_threshold) {
+						new_threshold = current_cost;
+					}
+				}
+			}
+		}
+		return null;
 	}
 	
 	public List<Character> calculateSolvingSequence() {
@@ -209,6 +280,16 @@ public class Solver {
 			current = current.getPredecessor_node();
 			
 		} while (current != null); 
+	}
+	
+	private int getTreeDepth(Node current_node) {
+		
+		int depth = 0;
+		while (current_node.getPredecessor_node() != null) {
+			current_node = current_node.getPredecessor_node();
+			depth++;
+		}
+		return depth;
 	}
 
 	private List<Node> getNeighbourNodes(Node current_node, Cube cube, char[] actions) {
