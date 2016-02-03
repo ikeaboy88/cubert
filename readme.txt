@@ -47,14 +47,14 @@ https://docs.google.com/presentation/d/13D4UeuutqEJWjn6-D78JGo9tZ_4ZXNmDbtxN8ro7
 
 Robot setup:
 ------------
-![My image](https://github.com/ikeaboy88/cubert/blob/master/pics/DSC_0362.JPG)
-![alt text](pics/DSC_0363.jpg)
-![alt text](pics/DSC_0364.jpg)
-![alt text](pics/DSC_0365.jpg)
-![alt text](pics/DSC_0366.jpg)
-![alt text](pics/DSC_0367.jpg)
-![alt text](pics/DSC_0368.jpg)
-![alt text](pics/DSC_0369.jpg)
+https://github.com/ikeaboy88/cubert/blob/master/pics/DSC_0362.JPG
+https://github.com/ikeaboy88/cubert/blob/master/pics/DSC_0363.JPG
+https://github.com/ikeaboy88/cubert/blob/master/pics/DSC_0364.JPG
+https://github.com/ikeaboy88/cubert/blob/master/pics/DSC_0365.JPG
+https://github.com/ikeaboy88/cubert/blob/master/pics/DSC_0366.JPG
+https://github.com/ikeaboy88/cubert/blob/master/pics/DSC_0367.JPG
+https://github.com/ikeaboy88/cubert/blob/master/pics/DSC_0368.JPG
+https://github.com/ikeaboy88/cubert/blob/master/pics/DSC_0369.JPG
 
 Usage Instructions:
 -------------------
