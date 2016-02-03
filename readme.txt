@@ -47,7 +47,7 @@ https://docs.google.com/presentation/d/13D4UeuutqEJWjn6-D78JGo9tZ_4ZXNmDbtxN8ro7
 
 Robot setup:
 ------------
-![My image](ikeaboy88.github.com/cubert/pics/DSC_0362.jpg)
+![My image](https://github.com/ikeaboy88/cubert/master/pics/DSC_0362.jpg)
 ![alt text](pics/DSC_0363.jpg)
 ![alt text](pics/DSC_0364.jpg)
 ![alt text](pics/DSC_0365.jpg)
