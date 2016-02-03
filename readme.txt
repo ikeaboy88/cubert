@@ -9,6 +9,37 @@ Code: Vanessa Werner (vw017@hdm-stuttgart.de) & Maximilian Braun (mb238@hdm-stut
 Robot design: David Gilday http://mindcuber.com/ (with a few little changes)
 -----------------------------------------------------------------------------------------
 
+Installation und Bauanleitung (WICHTIG: Alles 32Bit!)
+-----------------------------------------------------
+Java JDK - Development Kit:
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+
+USB Treiber für das NXT:
+http://cache.lego.com/r/education/-/media/lego%20education/home/downloads/software/drivers/fantompc.zip?l.r=-939606712
+
+LeJOS NXJ SDK:
+http://sourceforge.net/projects/nxt.lejos.p/files/latest/download?source=files
+
+Eclipse IDE:
+https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/luna/SR2/eclipse-jee-luna-SR2-win32.zip&mirror_id=1190
+
+	Eclipse Plugin: 
+	http://www.lejos.org/tools/eclipse/plugin/nxj/
+
+Tutorials: 
+----------
+LeJOS Tutorial:
+http://www.lejos.org/nxt/nxj/tutorial/
+
+LeJOSDroid sample project (Git Repo):
+https://github.com/Shawn-in-Tokyo/leJOS-Droid.git
+
+
+Bauanleitung: 
+http://mindcuber.com/mindcuber8527/MindCuber-8527.pdf 
+
+Zahnrad-Übersetzungen für Lego NXT
+http://gears.sariel.pl/
 Demo
 ----
 https://youtu.be/THuT3VbyxvY
