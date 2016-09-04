@@ -15,7 +15,7 @@ public class Main {
 		
 		do{
 			
-			//get mode and react dependant on mode (int) value
+			//get mode and react dependent on mode (int) value
 			mode =connect_PC.getMode();
 			
 			//when recieveing mode 0, calibrattion mode 
@@ -118,7 +118,7 @@ public class Main {
 			}
 			
 		}while(mode[0] != -1);
-		System.out.println("Und Tschüss!");
+		System.out.println("Und Tschï¿½ss!");
 		System.exit(0);		
 	}
 }
