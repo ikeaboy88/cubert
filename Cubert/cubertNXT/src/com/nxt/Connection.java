@@ -360,7 +360,7 @@ public class Connection {
 	}
 
 	/*
-	 * recieve keyboardinput just in time String recievedString = null;
+	 * receive keyboardinput just in time String recievedString = null;
 	 * recievedString = dis.readChar(); LCD.clear();
 	 * LCD.drawChar(recievedString, 1, 1); LCD.refresh();
 	 */
