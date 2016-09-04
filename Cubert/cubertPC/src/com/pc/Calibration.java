@@ -42,7 +42,7 @@ public class Calibration {
 			//fill calibration file with new calibration values
 			Writer file_writer = new FileWriter(calibration);
 			String sequence;
-			//go through byte buffer, read recieved reference rgb values and write them in reference_RGB_values.txt
+			//go through byte buffer, read received reference rgb values and write them in reference_RGB_values.txt
 			for (int i = 0 ; i < reference_rgb.length ; i++ ){
 			
 				//is there is a byte overflow, convert the byte into int

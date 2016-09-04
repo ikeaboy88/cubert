@@ -184,7 +184,7 @@ public class Connection {
 					
 					data_available = dis.read(solving_sequence_as_byte, data_recieved, solving_sequence_length);
 					data_recieved += data_available;
-					LCD.drawString("recieved:"+data_recieved, 0, 0);
+					LCD.drawString("received:"+data_recieved, 0, 0);
 				} catch (IOException e) {
 					LCD.drawString("nix da", 0, 1);
 					// TODO Auto-generated catch block
@@ -360,7 +360,7 @@ public class Connection {
 	}
 
 	/*
-	 * recieve keyboardinput just in time String recievedString = null;
+	 * receive keyboardinput just in time String recievedString = null;
 	 * recievedString = dis.readChar(); LCD.clear();
 	 * LCD.drawChar(recievedString, 1, 1); LCD.refresh();
 	 */
